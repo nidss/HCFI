@@ -28,76 +28,100 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
 
   return (
     <aside
-      className={`h-full shrink-0 border-r border-line bg-[#fafbfc] transition-all duration-200 ${
+      className={`h-full shrink-0 border-r border-line bg-[#f6f8fb] transition-all duration-200 ${
         collapsed ? "w-[76px]" : "w-64"
       }`}
     >
-      <div className="flex h-full flex-col">
-        <div className="flex items-center gap-3 border-b border-line-soft p-3">
-          <img src="/slogo.png" alt="Sikarin Hospital" className="size-10 shrink-0 object-contain" />
-          {!collapsed && (
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-bold text-ink-900 leading-tight">โรงพยาบาลศิครินทร์</p>
-              <p className="truncate text-[11px] text-ink-400 mt-0.5 leading-none">กรุงเทพฯ</p>
+      <div className="flex h-full flex-col justify-between">
+        <div className="flex flex-col">
+          {/* Header Card */}
+          <div className="p-3">
+            {collapsed ? (
+              <button
+                onClick={onToggle}
+                className="size-10 mx-auto flex items-center justify-center rounded-xl border border-line bg-white shadow-sm text-ink-400 hover:bg-line-soft transition-colors"
+                aria-label="ขยายเมนู"
+                title="ขยายเมนู"
+              >
+                <ChevronsRight size={16} />
+              </button>
+            ) : (
+              <div className="bg-white border border-[#dbe3ec] rounded-xl px-3 py-[11px] shadow-sm flex items-center justify-between gap-2.5">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <img src="/slogo.png" alt="Sikarin Hospital" className="size-10 shrink-0 object-contain rounded-lg" />
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-bold text-ink-900 leading-tight">โรงพยาบาลศิครินทร์</p>
+                    <p className="truncate text-[12px] text-[#99a1af] mt-0.5 leading-none">กรุงเทพฯ</p>
+                  </div>
+                </div>
+                <button
+                  onClick={onToggle}
+                  className="shrink-0 rounded-lg border border-[#dbe3ec] p-1 text-ink-400 hover:bg-line-soft bg-white transition-colors"
+                  aria-label="ย่อเมนู"
+                  title="ย่อเมนู"
+                >
+                  <ChevronsLeft size={14} />
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Navigation Links */}
+          <nav className="space-y-6 px-3 py-2 overflow-y-auto">
+            {/* Section 1 */}
+            <div>
+              {!collapsed && (
+                <p className="mb-1.5 px-3 text-[12px] font-medium text-[#99a1af]">งานหลัก</p>
+              )}
+              <NavItem to="/" icon={LayoutDashboard} label="ภาพรวม" collapsed={collapsed} exact />
             </div>
-          )}
-          <button
-            onClick={onToggle}
-            className="shrink-0 rounded-md border border-line p-1 text-ink-400 hover:bg-line-soft bg-white shadow-sm transition-transform"
-            aria-label="ย่อเมนู"
-            title="ย่อเมนู"
-          >
-            {collapsed ? <ChevronsRight size={14} /> : <ChevronsLeft size={14} />}
-          </button>
+
+            {/* Section 2 */}
+            <div>
+              {!collapsed && (
+                <p className="mb-1.5 px-3 text-[12px] font-medium text-[#99a1af]">ขั้นตอนเคลม</p>
+              )}
+              <div className="space-y-1">
+                {steps.map((s) => (
+                  <NavLink
+                    key={s.to}
+                    to={s.to}
+                    className={({ isActive }) =>
+                      `flex items-center rounded-lg px-3 py-2 text-sm transition-colors ${
+                        collapsed ? "justify-center" : "gap-2.5"
+                      } ${
+                        isActive ? "bg-[#d2f1e4]/70 text-[#054a3a] font-semibold" : "text-[#4a5565] hover:bg-line-soft hover:text-ink-900"
+                      }`
+                    }
+                    title={collapsed ? s.label : undefined}
+                  >
+                    {!collapsed && (
+                      <span className="w-3 shrink-0 text-[12px] text-[#99a1af] text-center">{s.n}</span>
+                    )}
+                    <s.icon size={18} className="shrink-0" />
+                    {!collapsed && <span className="flex-1 truncate">{s.label}</span>}
+                    {!collapsed && s.countStatus && incompleteCount > 0 && (
+                      <span className="rounded-full bg-[#fef3c6] px-1.5 py-0.5 text-[11px] font-semibold text-[#bb4d00]">
+                        {incompleteCount}
+                      </span>
+                    )}
+                  </NavLink>
+                ))}
+              </div>
+            </div>
+
+            {/* Section 3 */}
+            <div>
+              {!collapsed && (
+                <p className="mb-1.5 px-3 text-[12px] font-medium text-[#99a1af]">ระบบ</p>
+              )}
+              <NavItem to="/audit-log" icon={History} label="Audit Log" collapsed={collapsed} />
+            </div>
+          </nav>
         </div>
 
-        <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-4">
-          <div>
-            {!collapsed && (
-              <p className="mb-1.5 px-3 text-xs font-medium text-ink-300">งานหลัก</p>
-            )}
-            <NavItem to="/" icon={LayoutDashboard} label="ภาพรวม" collapsed={collapsed} exact />
-          </div>
-
-          <div>
-            {!collapsed && (
-              <p className="mb-2 flex items-center gap-1.5 px-3 text-xs font-medium text-ink-400">
-                ขั้นตอนเคลม
-              </p>
-            )}
-            <div className="space-y-1">
-              {steps.map((s) => (
-                <NavLink
-                  key={s.to}
-                  to={s.to}
-                  className={({ isActive }) =>
-                    `flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors ${
-                      isActive ? "bg-brand-50 text-brand-600 font-semibold" : "text-ink-600 hover:bg-line-soft hover:text-ink-900"
-                    }`
-                  }
-                >
-                  {!collapsed && (
-                    <span className="w-3 shrink-0 text-[11px] font-semibold text-ink-300">{s.n}</span>
-                  )}
-                  <s.icon size={18} className="shrink-0" />
-                  {!collapsed && <span className="flex-1 truncate">{s.label}</span>}
-                  {!collapsed && s.countStatus && incompleteCount > 0 && (
-                    <span className="rounded-full bg-status-waiting-bg px-1.5 py-0.5 text-[11px] font-semibold text-status-waiting-fg">
-                      {incompleteCount}
-                    </span>
-                  )}
-                </NavLink>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            {!collapsed && <p className="mb-1.5 px-3 text-xs font-medium text-ink-300">ระบบ</p>}
-            <NavItem to="/audit-log" icon={History} label="Audit Log" collapsed={collapsed} />
-          </div>
-        </nav>
-
-        <div className="border-t border-line-soft p-3">
+        {/* Footer Link (Settings) */}
+        <div className="p-3">
           <NavItem to="/settings" icon={Settings} label="การตั้งค่า" collapsed={collapsed} />
         </div>
       </div>
@@ -123,8 +147,10 @@ function NavItem({
       to={to}
       end={exact}
       className={({ isActive }) =>
-        `flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors ${
-          isActive ? "bg-brand-50 text-brand-600 font-semibold" : "text-ink-600 hover:bg-line-soft hover:text-ink-900"
+        `flex items-center rounded-lg px-3 py-2 text-sm transition-colors ${
+          collapsed ? "justify-center" : "gap-2.5"
+        } ${
+          isActive ? "bg-[#d2f1e4]/70 text-[#054a3a] font-semibold" : "text-[#4a5565] hover:bg-line-soft hover:text-ink-900"
         }`
       }
       title={collapsed ? label : undefined}
