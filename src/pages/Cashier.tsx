@@ -22,7 +22,7 @@ export function Cashier() {
 
       <Card className="mb-6">
         <div className="p-5">
-          <p className="mb-3 text-sm font-semibold text-ink-700">จับไฟล์ Invoice จาก Share Drive</p>
+          <p className="mb-3 text-sm font-medium text-ink-700">จับไฟล์ Invoice จาก Share Drive</p>
           <FileDrop
             label="ลากไฟล์ Invoice (PDF) ที่พิมพ์จาก HIS มาวาง หรือคลิกเพื่อเลือกไฟล์"
             hint="รองรับไฟล์ .pdf, .jpg, .jpeg, .png · ตั้งชื่อไฟล์ให้มีเลข HN เช่น invoice_6604302.pdf เพื่อให้ OCR จับคู่อัตโนมัติ"
@@ -37,7 +37,7 @@ export function Cashier() {
       <Card>
         <div className="flex items-center gap-2 border-b border-line-soft px-5 py-4">
           <Receipt size={16} className="text-ink-400" />
-          <h3 className="text-sm font-semibold text-ink-700">รายการที่ประมวลผลในเซสชันนี้</h3>
+          <h3 className="text-sm font-medium text-ink-700">รายการที่ประมวลผลในเซสชันนี้</h3>
         </div>
 
         {invoiceQueue.length === 0 ? (
@@ -69,7 +69,7 @@ export function Cashier() {
                       <td className="px-5 py-3 text-ink-600">{q.confidence ? `${q.confidence}%` : "-"}</td>
                       <td className="px-5 py-3">
                         <span
-                          className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold ${
+                          className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-medium ${
                             q.status === "จับคู่สำเร็จ"
                               ? "bg-status-ready-bg text-status-ready-fg"
                               : "bg-status-waiting-bg text-status-waiting-fg"

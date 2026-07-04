@@ -51,7 +51,7 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
                 <div className="flex items-center gap-2.5 min-w-0">
                   <img src="https://raw.githubusercontent.com/nidss/HCFI/main/public/slogo.png" alt="Sikarin Hospital" className="size-10 shrink-0 object-contain rounded-lg" />
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-bold text-ink-900 leading-tight">โรงพยาบาลศิครินทร์</p>
+                    <p className="truncate text-sm font-medium text-ink-900 leading-tight">โรงพยาบาลศิครินทร์</p>
                     <p className="truncate text-[12px] text-[#99a1af] mt-0.5 leading-none">กรุงเทพฯ</p>
                   </div>
                 </div>
@@ -94,7 +94,7 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
                       `flex items-center rounded-lg px-3 py-2 text-sm transition-colors ${
                         collapsed ? "justify-center" : "gap-2.5"
                       } ${
-                        isActive ? "bg-[#d2f1e4]/70 text-[#054a3a] font-semibold" : "text-[#4a5565] hover:bg-line-soft hover:text-ink-900"
+                        isActive ? "bg-[#d2f1e4]/70 text-[#054a3a] font-medium" : "text-[#4a5565] hover:bg-line-soft hover:text-ink-900"
                       }`
                     }
                     title={collapsed ? s.label : undefined}
@@ -105,7 +105,7 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
                     <s.icon size={18} className="shrink-0" />
                     {!collapsed && <span className="flex-1 truncate">{s.label}</span>}
                     {!collapsed && s.countStatus && incompleteCount > 0 && (
-                      <span className="rounded-full bg-[#fef3c6] px-1.5 py-0.5 text-[11px] font-semibold text-[#bb4d00]">
+                      <span className="rounded-full bg-[#fef3c6] px-1.5 py-0.5 text-[11px] font-medium text-[#bb4d00]">
                         {incompleteCount}
                       </span>
                     )}
@@ -157,7 +157,7 @@ function NavItem({
         `flex items-center rounded-lg px-3 py-2 text-sm transition-colors ${
           collapsed ? "justify-center" : "gap-2.5"
         } ${
-          isActive ? "bg-[#d2f1e4]/70 text-[#054a3a] font-semibold" : "text-[#4a5565] hover:bg-line-soft hover:text-ink-900"
+          isActive ? "bg-[#d2f1e4]/70 text-[#054a3a] font-medium" : "text-[#4a5565] hover:bg-line-soft hover:text-ink-900"
         }`
       }
       title={collapsed ? label : undefined}

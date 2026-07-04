@@ -37,7 +37,7 @@ export function Settings() {
 
       <Card className="mb-6">
         <div className="border-b border-line-soft px-5 py-4">
-          <h3 className="text-sm font-semibold text-ink-700">การเชื่อมต่อระบบ (System Integrations)</h3>
+          <h3 className="text-sm font-medium text-ink-700">การเชื่อมต่อระบบ (System Integrations)</h3>
         </div>
         <ul className="divide-y divide-line-soft">
           {integrations.map((i) => (
@@ -46,10 +46,10 @@ export function Settings() {
                 <i.icon size={18} />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold text-ink-800">{i.name}</p>
+                <p className="text-sm font-medium text-ink-800">{i.name}</p>
                 <p className="mt-0.5 text-sm text-ink-400">{i.description}</p>
               </div>
-              <span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold ${toneClasses[i.tone]}`}>
+              <span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-medium ${toneClasses[i.tone]}`}>
                 {i.status}
               </span>
             </li>
@@ -59,7 +59,7 @@ export function Settings() {
 
       <Card className="mb-6">
         <div className="border-b border-line-soft px-5 py-4">
-          <h3 className="text-sm font-semibold text-ink-700">ความปลอดภัยและการปฏิบัติตามกฎหมาย</h3>
+          <h3 className="text-sm font-medium text-ink-700">ความปลอดภัยและการปฏิบัติตามกฎหมาย</h3>
         </div>
         <div className="space-y-4 p-5">
           <div className="flex gap-3">

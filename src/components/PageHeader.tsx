@@ -31,10 +31,10 @@ export function PageHeader({
           <nav className="mb-2 flex items-center gap-1.5 text-xs text-[#99a1af]">
             <span className="font-medium text-ink-500">ClaimFlow</span>
             <span>/</span>
-            <span className="font-semibold text-[#364153]">{crumb}</span>
+            <span className="font-medium text-[#364153]">{crumb}</span>
           </nav>
         )}
-        <h1 className="text-2xl font-semibold text-ink-900">{title}</h1>
+        <h1 className="text-2xl font-medium text-ink-900">{title}</h1>
         {subtitle && <p className="mt-1 text-sm text-ink-400">{subtitle}</p>}
       </div>
       {action}

@@ -5,7 +5,7 @@ export function StatusBadge({ status }: { status: ClaimStatus }) {
   const c = statusColor[status];
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold whitespace-nowrap ${c.bg} ${c.fg}`}
+      className={`inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-medium whitespace-nowrap ${c.bg} ${c.fg}`}
     >
       {status}
     </span>
@@ -27,7 +27,7 @@ export function Pill({
     brand: "bg-brand-50 text-brand-600",
   };
   return (
-    <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold whitespace-nowrap ${tones[tone]}`}>
+    <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-medium whitespace-nowrap ${tones[tone]}`}>
       {children}
     </span>
   );

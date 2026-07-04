@@ -38,12 +38,12 @@ export function PatientSelect() {
           className="flex items-center gap-2 text-ink-500 hover:text-ink-900 transition-colors py-2"
         >
           <ArrowLeft size={18} />
-          <span className="font-['Prompt'] text-sm font-semibold">กลับหน้าหลัก</span>
+          <span className="font-['Prompt'] text-sm font-medium">กลับหน้าหลัก</span>
         </button>
 
         <div className="flex items-center gap-2">
           <img src="https://raw.githubusercontent.com/nidss/HCFI/main/public/slogo.png" alt="Hospital Logo" className="h-9 w-auto object-contain rounded-lg" />
-          <h1 className="text-lg font-bold text-ink-800 font-['Prompt']">พอร์ตัลเซ็นเอกสารคนไข้ (iPad)</h1>
+          <h1 className="text-lg font-medium text-ink-800 font-['Prompt']">พอร์ตัลเซ็นเอกสารคนไข้ (iPad)</h1>
         </div>
       </div>
 
@@ -55,7 +55,7 @@ export function PatientSelect() {
             <PenTool size={24} />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-ink-900 font-['Prompt']">กรุณาเลือกรายชื่อของท่านเพื่อเซ็นรับรอง</h2>
+            <h2 className="text-lg font-medium text-ink-900 font-['Prompt']">กรุณาเลือกรายชื่อของท่านเพื่อเซ็นรับรอง</h2>
             <p className="text-sm text-ink-400 font-['Prompt'] mt-1 leading-relaxed">
               กรุณาพิมพ์ค้นหาชื่อ หรือเลข HN ของท่าน จากนั้นแตะที่แถบรายชื่อเพื่อเริ่มเซ็นรับรองสำเนาบัตรประชาชน และรับทราบรายการค่าใช้จ่ายการรักษาพยาบาล
             </p>
@@ -98,26 +98,26 @@ export function PatientSelect() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
-                        <h3 className="text-base font-bold text-ink-800 font-['Prompt'] truncate">{p.name}</h3>
-                        <span className="text-xs text-ink-300 bg-[#f6f8fb] px-2 py-0.5 rounded font-mono font-semibold shrink-0">
+                        <h3 className="text-base font-medium text-ink-800 font-['Prompt'] truncate">{p.name}</h3>
+                        <span className="text-xs text-ink-300 bg-[#f6f8fb] px-2 py-0.5 rounded font-mono font-medium shrink-0">
                           {p.hn}
                         </span>
                       </div>
                       <div className="flex flex-wrap gap-2 mt-2">
                         {needsConsent && (
-                          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#bb4d00] bg-[#fef3c6] px-2.5 py-0.5 rounded-full">
+                          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-[#bb4d00] bg-[#fef3c6] px-2.5 py-0.5 rounded-full">
                             <FileText size={10} />
                             รอเซ็นสำเนาบัตรประชาชน
                           </span>
                         )}
                         {needsInvoice && (
-                          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#bb4d00] bg-[#fef3c6] px-2.5 py-0.5 rounded-full">
+                          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-[#bb4d00] bg-[#fef3c6] px-2.5 py-0.5 rounded-full">
                             <FileText size={10} />
                             รอรับทราบค่ารักษาพยาบาล
                           </span>
                         )}
                         {completed && (
-                          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#0a5f5e] bg-[#d2f1e4] px-2.5 py-0.5 rounded-full">
+                          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-[#0a5f5e] bg-[#d2f1e4] px-2.5 py-0.5 rounded-full">
                             ✓ เซ็นเอกสารครบถ้วนแล้ว
                           </span>
                         )}
@@ -127,11 +127,11 @@ export function PatientSelect() {
 
                   <div className="flex items-center gap-3 shrink-0 ml-4">
                     {!completed ? (
-                      <span className="hidden sm:inline-block text-xs font-bold text-brand-600 bg-brand-50 border border-brand-100 px-3 py-1.5 rounded-lg font-['Prompt']">
+                      <span className="hidden sm:inline-block text-xs font-medium text-brand-600 bg-brand-50 border border-brand-100 px-3 py-1.5 rounded-lg font-['Prompt']">
                         เริ่มเซ็นเอกสาร
                       </span>
                     ) : (
-                      <span className="hidden sm:inline-block text-xs font-semibold text-ink-300 px-3 py-1.5">
+                      <span className="hidden sm:inline-block text-xs font-medium text-ink-300 px-3 py-1.5">
                         เสร็จสิ้น
                       </span>
                     )}

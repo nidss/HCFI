@@ -41,11 +41,11 @@ export function Accounting() {
 
       <Card className="mb-6">
         <div className="flex items-center justify-between border-b border-line-soft px-5 py-4">
-          <h3 className="text-sm font-semibold text-ink-700">ผู้ป่วยที่พร้อมเบิก (เอกสารครบถ้วน)</h3>
+          <h3 className="text-sm font-medium text-ink-700">ผู้ป่วยที่พร้อมเบิก (เอกสารครบถ้วน)</h3>
           <button
             onClick={handleGroup}
             disabled={selected.length === 0}
-            className="flex items-center gap-1.5 rounded-lg bg-brand-600 px-3.5 py-2 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-40"
+            className="flex items-center gap-1.5 rounded-lg bg-brand-600 px-3.5 py-2 text-sm font-medium text-white hover:bg-brand-700 disabled:opacity-40"
           >
             <PackageCheck size={15} />
             รวบรวมเป็นชุดเอกสาร ({selected.length}
@@ -95,7 +95,7 @@ export function Accounting() {
 
       <Card>
         <div className="border-b border-line-soft px-5 py-4">
-          <h3 className="text-sm font-semibold text-ink-700">ชุดเอกสารทั้งหมด</h3>
+          <h3 className="text-sm font-medium text-ink-700">ชุดเอกสารทั้งหมด</h3>
         </div>
 
         {batches.length === 0 ? (
@@ -122,7 +122,7 @@ export function Accounting() {
                     <td className="px-5 py-3 text-ink-600">{formatCurrency(b.totalValue)}</td>
                     <td className="px-5 py-3">
                       <span
-                        className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-semibold ${
+                        className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium ${
                           b.status === "สำเร็จ"
                             ? "bg-status-ready-bg text-status-ready-fg"
                             : b.status === "กำลังส่งไป ERP"

@@ -66,7 +66,7 @@ export function AuditLog() {
                     <td className="whitespace-nowrap px-5 py-3 font-mono text-xs text-ink-400">{e.ip}</td>
                     <td className="whitespace-nowrap px-5 py-3">
                       <span
-                        className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold ${
+                        className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-medium ${
                           e.status === "สำเร็จ"
                             ? "bg-status-ready-bg text-status-ready-fg"
                             : "bg-status-danger-bg text-status-danger-fg"

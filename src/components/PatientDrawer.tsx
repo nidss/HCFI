@@ -14,7 +14,7 @@ export function PatientDrawer({ patient, onClose }: { patient: Patient; onClose:
       <div className="h-full w-full max-w-md overflow-y-auto bg-white shadow-xl animate-fade-in">
         <div className="flex items-start justify-between border-b border-line-soft p-5">
           <div>
-            <p className="text-lg font-semibold text-ink-800">{patient.name}</p>
+            <p className="text-lg font-medium text-ink-800">{patient.name}</p>
             <p className="text-sm text-ink-400">
               {patient.hn} · เข้ารับบริการ {formatThaiDate(patient.visitDate)}
             </p>
@@ -27,13 +27,13 @@ export function PatientDrawer({ patient, onClose }: { patient: Patient; onClose:
         <div className="flex items-center justify-between border-b border-line-soft p-5">
           <div>
             <p className="text-xs text-ink-400">มูลค่าเคลม</p>
-            <p className="text-sm font-semibold text-ink-700">{formatCurrency(patient.claimValue)}</p>
+            <p className="text-sm font-medium text-ink-700">{formatCurrency(patient.claimValue)}</p>
           </div>
           <StatusBadge status={patient.status} />
         </div>
 
         <div className="p-5">
-          <p className="mb-3 text-sm font-semibold text-ink-700">รายการเอกสาร</p>
+          <p className="mb-3 text-sm font-medium text-ink-700">รายการเอกสาร</p>
           <ul className="space-y-2">
             {patient.documents.map((d) => (
               <li key={d.id} className="rounded-lg border border-line-soft p-3">
@@ -45,7 +45,7 @@ export function PatientDrawer({ patient, onClose }: { patient: Patient; onClose:
                     </p>
                   </div>
                   {d.status === "ครบถ้วน" ? (
-                    <span className="shrink-0 rounded-full bg-status-ready-bg px-2.5 py-1 text-[11px] font-semibold text-status-ready-fg">
+                    <span className="shrink-0 rounded-full bg-status-ready-bg px-2.5 py-1 text-[11px] font-medium text-status-ready-fg">
                       ครบถ้วน
                     </span>
                   ) : pendingKind === d.kind ? (

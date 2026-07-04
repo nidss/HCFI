@@ -53,7 +53,7 @@ export function Reception() {
           <button
             type="submit"
             disabled={searching || nationalId.length !== 13}
-            className="flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-40"
+            className="flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-700 disabled:opacity-40"
           >
             {searching ? <Loader2 size={16} className="animate-spin" /> : <Search size={16} />}
             ค้นหาจากระบบ SIS
@@ -81,12 +81,12 @@ export function Reception() {
                 <UserRound size={26} />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-lg font-semibold text-ink-800">{result.name}</p>
+                <p className="truncate text-lg font-medium text-ink-800">{result.name}</p>
                 <p className="text-sm text-ink-400">
                   {result.hn} · เข้ารับบริการ {formatThaiDate(result.visitDate)}
                 </p>
               </div>
-              <span className="rounded-full bg-status-ready-bg px-3 py-1 text-xs font-semibold text-status-ready-fg">
+              <span className="rounded-full bg-status-ready-bg px-3 py-1 text-xs font-medium text-status-ready-fg">
                 พบข้อมูลจาก SIS
               </span>
             </div>
@@ -105,7 +105,7 @@ export function Reception() {
             </div>
 
             <div className="space-y-3 border-t border-line-soft p-5">
-              <p className="text-sm font-semibold text-ink-700">สแกนบัตรประชาชนเข้าสู่ระบบ</p>
+              <p className="text-sm font-medium text-ink-700">สแกนบัตรประชาชนเข้าสู่ระบบ</p>
               <FileDrop
                 compact
                 label={scannedFile ?? "ลากไฟล์ภาพบัตรประชาชนมาวาง หรือคลิกเพื่อสแกน"}
@@ -138,7 +138,7 @@ export function Reception() {
           <Card>
             <div className="flex items-center gap-2 border-b border-line-soft p-4">
               <IdCard size={16} className="text-ink-400" />
-              <h3 className="text-sm font-semibold text-ink-700">สถานะเอกสารของผู้ป่วย</h3>
+              <h3 className="text-sm font-medium text-ink-700">สถานะเอกสารของผู้ป่วย</h3>
             </div>
             <div className="px-4">
               <DocumentChecklist documents={result.documents} />

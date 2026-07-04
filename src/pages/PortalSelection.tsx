@@ -13,11 +13,11 @@ export function PortalSelection() {
       <div className="w-full max-w-4xl flex flex-col items-center text-center z-10 mb-12">
         <div className="flex items-center gap-3 mb-4">
           <img src="https://raw.githubusercontent.com/nidss/HCFI/main/public/slogo.png" alt="Sikarin Logo" className="h-12 w-auto object-contain rounded-xl shadow-sm" />
-          <h1 className="text-3xl font-extrabold tracking-tight text-ink-900 font-['Outfit']">
+          <h1 className="text-3xl font-medium tracking-tight text-ink-900 font-['Outfit']">
             Claim<span className="text-brand-600 font-normal">Flow</span>
           </h1>
         </div>
-        <h2 className="text-2xl font-bold text-ink-800 font-['Prompt']">ยินดีต้อนรับสู่ระบบบริหารงานเคลม</h2>
+        <h2 className="text-2xl font-medium text-ink-800 font-['Prompt']">ยินดีต้อนรับสู่ระบบบริหารงานเคลม</h2>
         <p className="text-sm text-ink-400 mt-2 font-['Prompt'] max-w-md">
           ระบบจัดการเอกสารเรียกร้องค่ารักษาพยาบาลอัจฉริยะ โรงพยาบาลศิครินทร์ กรุณาเลือกสิทธิ์การเข้าใช้งานเพื่อดำเนินการต่อ
         </p>
@@ -33,7 +33,7 @@ export function PortalSelection() {
             <div className="size-16 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center mb-6 group-hover:bg-brand-600 group-hover:text-white transition-all duration-300">
               <Monitor size={32} />
             </div>
-            <h3 className="text-xl font-bold text-ink-800 font-['Prompt'] mb-3 group-hover:text-brand-600 transition-colors">
+            <h3 className="text-xl font-medium text-ink-800 font-['Prompt'] mb-3 group-hover:text-brand-600 transition-colors">
               ส่วนของพนักงานโรงพยาบาล (Desktop)
             </h3>
             <p className="text-sm text-ink-400 font-['Prompt'] leading-relaxed mb-6">
@@ -42,7 +42,7 @@ export function PortalSelection() {
               ออกใบสรุปจ่ายเชื่อมต่อระบบ ERP และส่งเอกสารให้บริษัทประกันภัย
             </p>
           </div>
-          <button className="w-full bg-[#f6f8fb] text-brand-600 font-semibold py-3 px-4 rounded-xl group-hover:bg-brand-600 group-hover:text-white transition-all duration-300 font-['Prompt'] text-sm shadow-sm">
+          <button className="w-full bg-[#f6f8fb] text-brand-600 font-medium py-3 px-4 rounded-xl group-hover:bg-brand-600 group-hover:text-white transition-all duration-300 font-['Prompt'] text-sm shadow-sm">
             เข้าพอร์ตัลผู้ปฏิบัติงาน
           </button>
         </div>
@@ -56,7 +56,7 @@ export function PortalSelection() {
             <div className="size-16 rounded-xl bg-[#fff9db] text-[#d9480f] flex items-center justify-center mb-6 group-hover:bg-[#d9480f] group-hover:text-white transition-all duration-300">
               <Tablet size={32} />
             </div>
-            <h3 className="text-xl font-bold text-ink-800 font-['Prompt'] mb-3 group-hover:text-[#d9480f] transition-colors">
+            <h3 className="text-xl font-medium text-ink-800 font-['Prompt'] mb-3 group-hover:text-[#d9480f] transition-colors">
               ส่วนของคนไข้ (iPad)
             </h3>
             <p className="text-sm text-ink-400 font-['Prompt'] leading-relaxed mb-6">
@@ -65,7 +65,7 @@ export function PortalSelection() {
               เซ็นรับรองสำเนาถูกต้องของบัตรประชาชน และรับทราบรายการค่ารักษา
             </p>
           </div>
-          <button className="w-full bg-[#f6f8fb] text-[#d9480f] font-semibold py-3 px-4 rounded-xl group-hover:bg-[#d9480f] group-hover:text-white transition-all duration-300 font-['Prompt'] text-sm shadow-sm">
+          <button className="w-full bg-[#f6f8fb] text-[#d9480f] font-medium py-3 px-4 rounded-xl group-hover:bg-[#d9480f] group-hover:text-white transition-all duration-300 font-['Prompt'] text-sm shadow-sm">
             เข้าพอร์ตัลผู้ป่วย/แท็บเล็ต
           </button>
         </div>

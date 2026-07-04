@@ -46,7 +46,7 @@ export function InsurerLogin() {
           <div className="mb-3 flex size-12 items-center justify-center rounded-xl bg-brand-600 text-white">
             <Building2 size={22} />
           </div>
-          <h1 className="text-lg font-semibold text-ink-800">พอร์ทัลบริษัทประกัน</h1>
+          <h1 className="text-lg font-medium text-ink-800">พอร์ทัลบริษัทประกัน</h1>
           <p className="mt-1 text-sm text-ink-400">เข้าสู่ระบบเพื่อเข้าถึงเอกสารเคลมที่โรงพยาบาลจัดส่งให้</p>
         </div>
 
@@ -92,7 +92,7 @@ export function InsurerLogin() {
 
             <button
               type="submit"
-              className="w-full rounded-lg bg-brand-600 py-2.5 text-sm font-semibold text-white hover:bg-brand-700"
+              className="w-full rounded-lg bg-brand-600 py-2.5 text-sm font-medium text-white hover:bg-brand-700"
             >
               เข้าสู่ระบบ
             </button>

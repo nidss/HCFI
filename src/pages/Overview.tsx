@@ -74,7 +74,7 @@ export function Overview() {
       <div className="rounded-2xl bg-[#fafaf8] p-4 border border-line/60">
         <Card>
           <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line-soft px-5 py-4">
-            <h3 className="text-base font-semibold text-ink-800">รายการล่าสุด</h3>
+            <h3 className="text-base font-medium text-ink-800">รายการล่าสุด</h3>
             <div className="flex items-center gap-2">
               <input
                 type="text"
@@ -86,7 +86,7 @@ export function Overview() {
                 placeholder="ค้นหา HN, ชื่อผู้ป่วย..."
                 className="w-48 rounded-lg border border-line bg-white px-3 py-1.5 text-xs text-ink-800 placeholder:text-ink-300 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 transition-colors shadow-sm"
               />
-              <button className="rounded-lg border border-line bg-canvas px-3 py-1.5 text-xs font-semibold text-ink-600 hover:bg-line-soft transition-colors shadow-sm">
+              <button className="rounded-lg border border-line bg-canvas px-3 py-1.5 text-xs font-medium text-ink-600 hover:bg-line-soft transition-colors shadow-sm">
                 Recent
               </button>
             </div>
@@ -108,7 +108,7 @@ export function Overview() {
                       onClick={() => navigate("/documents", { state: { focusHn: p.hn } })}
                       className="cursor-pointer border-b border-line-soft last:border-0 hover:bg-canvas transition-colors"
                     >
-                      <td className="px-5 py-3.5 font-semibold text-ink-700">{p.hn}</td>
+                      <td className="px-5 py-3.5 font-medium text-ink-700">{p.hn}</td>
                       <td className="px-5 py-3.5 text-ink-600">{p.name}</td>
                       <td className="px-5 py-3.5">
                         <StatusBadge status={p.status} />
@@ -133,7 +133,7 @@ export function Overview() {
               <button
                 disabled={page <= 1}
                 onClick={() => setPage((p) => p - 1)}
-                className="rounded-lg border border-line bg-white px-3 py-1.5 font-semibold text-ink-600 hover:bg-canvas disabled:opacity-40 disabled:hover:bg-white transition-colors shadow-sm"
+                className="rounded-lg border border-line bg-white px-3 py-1.5 font-medium text-ink-600 hover:bg-canvas disabled:opacity-40 disabled:hover:bg-white transition-colors shadow-sm"
               >
                 &lt; ก่อนหน้า
               </button>
@@ -143,7 +143,7 @@ export function Overview() {
               <button
                 disabled={page >= totalPages}
                 onClick={() => setPage((p) => p + 1)}
-                className="rounded-lg border border-line bg-white px-3 py-1.5 font-semibold text-ink-600 hover:bg-canvas disabled:opacity-40 disabled:hover:bg-white transition-colors shadow-sm"
+                className="rounded-lg border border-line bg-white px-3 py-1.5 font-medium text-ink-600 hover:bg-canvas disabled:opacity-40 disabled:hover:bg-white transition-colors shadow-sm"
               >
                 ถัดไป &gt;
               </button>
@@ -174,9 +174,9 @@ function StatCard({
         highlight ? "border-brand-500 bg-gradient-to-b from-brand-50 to-white" : "border-line bg-white"
       }`}
     >
-      <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-500">{label}</p>
-      <p className="mt-1.5 text-[30px] font-semibold tracking-tight text-ink-800">{value}</p>
-      <span className={`mt-2 inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold ${pillClass}`}>
+      <p className="text-[11px] font-medium uppercase tracking-wide text-ink-500">{label}</p>
+      <p className="mt-1.5 text-[30px] font-medium tracking-tight text-ink-800">{value}</p>
+      <span className={`mt-2 inline-flex rounded-full px-2.5 py-1 text-[11px] font-medium ${pillClass}`}>
         {pillLabel}
       </span>
     </div>

@@ -40,7 +40,7 @@ export function Delivery() {
 
       <Card className="mb-6">
         <div className="border-b border-line-soft px-5 py-4">
-          <h3 className="text-sm font-semibold text-ink-700">สร้างลิงก์ดาวน์โหลด</h3>
+          <h3 className="text-sm font-medium text-ink-700">สร้างลิงก์ดาวน์โหลด</h3>
         </div>
         {packagedBatches.length === 0 && !justCreated ? (
           <EmptyState title="ยังไม่มีชุดเอกสารที่จัดแพ็กเกจพร้อมส่งมอบ" hint="ทำใบสรุปจ่ายให้เสร็จสิ้นก่อนที่หน้าใบสรุปจ่าย" />
@@ -87,7 +87,7 @@ export function Delivery() {
               <button
                 type="submit"
                 disabled={!batchId}
-                className="flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-40"
+                className="flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-700 disabled:opacity-40"
               >
                 <Link2 size={15} /> สร้างลิงก์ดาวน์โหลด
               </button>
@@ -105,7 +105,7 @@ export function Delivery() {
 
       <Card>
         <div className="border-b border-line-soft px-5 py-4">
-          <h3 className="text-sm font-semibold text-ink-700">ติดตามสถานะการส่งมอบ</h3>
+          <h3 className="text-sm font-medium text-ink-700">ติดตามสถานะการส่งมอบ</h3>
         </div>
         {deliveryLinks.length === 0 ? (
           <EmptyState title="ยังไม่มีการสร้างลิงก์ส่งมอบ" />
@@ -131,7 +131,7 @@ export function Delivery() {
                       <td className="px-5 py-3 text-ink-600">{l.insurerEmail}</td>
                       <td className="px-5 py-3">
                         <span
-                          className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold ${
+                          className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-medium ${
                             expired
                               ? "bg-status-danger-bg text-status-danger-fg"
                               : "bg-status-ready-bg text-status-ready-fg"

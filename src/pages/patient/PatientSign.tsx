@@ -122,7 +122,7 @@ function SignatureCanvas({ onSave, value }: { onSave: (url: string) => void; val
           <button
             type="button"
             onClick={handleClear}
-            className="absolute right-3 bottom-3 flex items-center gap-1 bg-white border border-[#dbe3ec] px-3 py-1.5 rounded-lg text-xs font-semibold text-ink-500 hover:bg-slate-50 shadow-sm transition-colors cursor-pointer"
+            className="absolute right-3 bottom-3 flex items-center gap-1 bg-white border border-[#dbe3ec] px-3 py-1.5 rounded-lg text-xs font-medium text-ink-500 hover:bg-slate-50 shadow-sm transition-colors cursor-pointer"
           >
             <X size={12} />
             <span>ล้างลายเซ็น</span>
@@ -193,16 +193,16 @@ export function PatientSign() {
           className="flex items-center gap-2 text-ink-500 hover:text-ink-900 transition-colors py-2"
         >
           <ArrowLeft size={18} />
-          <span className="font-['Prompt'] text-sm font-semibold">
+          <span className="font-['Prompt'] text-sm font-medium">
             {step === 3 ? "กลับไปพอร์ตัล" : "ย้อนกลับ"}
           </span>
         </button>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold font-mono px-2.5 py-1 bg-white border border-[#dbe3ec] text-ink-700 rounded-lg">
+          <span className="text-xs font-medium font-mono px-2.5 py-1 bg-white border border-[#dbe3ec] text-ink-700 rounded-lg">
             {patient.hn}
           </span>
-          <span className="text-sm font-bold text-ink-800 font-['Prompt']">{patient.name}</span>
+          <span className="text-sm font-medium text-ink-800 font-['Prompt']">{patient.name}</span>
         </div>
       </div>
 
@@ -218,37 +218,37 @@ export function PatientSign() {
           {/* Step 1 Bubble */}
           <div className="z-10 flex flex-col items-center">
             <div
-              className={`size-10 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-all ${
+              className={`size-10 rounded-full flex items-center justify-center font-medium text-sm border-2 transition-all ${
                 step >= 1 ? "bg-brand-600 border-brand-600 text-white" : "bg-white border-[#dbe3ec] text-ink-300"
               }`}
             >
               {step > 1 ? <Check size={16} /> : "1"}
             </div>
-            <span className="text-[11px] font-bold text-ink-600 font-['Prompt'] mt-1.5 bg-white px-2">บัตรประชาชน</span>
+            <span className="text-[11px] font-medium text-ink-600 font-['Prompt'] mt-1.5 bg-white px-2">บัตรประชาชน</span>
           </div>
 
           {/* Step 2 Bubble */}
           <div className="z-10 flex flex-col items-center">
             <div
-              className={`size-10 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-all ${
+              className={`size-10 rounded-full flex items-center justify-center font-medium text-sm border-2 transition-all ${
                 step >= 2 ? "bg-brand-600 border-brand-600 text-white" : "bg-white border-[#dbe3ec] text-ink-300"
               }`}
             >
               {step > 2 ? <Check size={16} /> : "2"}
             </div>
-            <span className="text-[11px] font-bold text-ink-600 font-['Prompt'] mt-1.5 bg-white px-2">ค่ารักษา</span>
+            <span className="text-[11px] font-medium text-ink-600 font-['Prompt'] mt-1.5 bg-white px-2">ค่ารักษา</span>
           </div>
 
           {/* Step 3 Bubble */}
           <div className="z-10 flex flex-col items-center">
             <div
-              className={`size-10 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-all ${
+              className={`size-10 rounded-full flex items-center justify-center font-medium text-sm border-2 transition-all ${
                 step === 3 ? "bg-brand-600 border-brand-600 text-white" : "bg-white border-[#dbe3ec] text-ink-300"
               }`}
             >
               3
             </div>
-            <span className="text-[11px] font-bold text-ink-600 font-['Prompt'] mt-1.5 bg-white px-2">เสร็จสมบูรณ์</span>
+            <span className="text-[11px] font-medium text-ink-600 font-['Prompt'] mt-1.5 bg-white px-2">เสร็จสมบูรณ์</span>
           </div>
         </div>
       </div>
@@ -257,7 +257,7 @@ export function PatientSign() {
       <div className="w-full max-w-2xl mx-auto flex-1 flex flex-col justify-center">
         {step === 1 && (
           <div className="bg-white border border-[#dbe3ec] rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col">
-            <h2 className="text-xl font-bold text-ink-950 font-['Prompt'] mb-1">ขั้นตอนที่ 1: รับรองสำเนาถูกต้องบัตรประชาชน</h2>
+            <h2 className="text-xl font-medium text-ink-950 font-['Prompt'] mb-1">ขั้นตอนที่ 1: รับรองสำเนาถูกต้องบัตรประชาชน</h2>
             <p className="text-xs text-ink-400 font-['Prompt'] mb-6">
               กรุณาเซ็นชื่อรับรองสำเนาถูกต้องด้านล่างรูปภาพ เพื่อใช้ประกอบคำขอเคลมประกันสุขภาพ
             </p>
@@ -267,7 +267,7 @@ export function PatientSign() {
               <div className="relative w-full max-w-md bg-white border border-[#dbe3ec] rounded-xl overflow-hidden shadow-sm flex flex-col">
                 <img src="https://raw.githubusercontent.com/nidss/HCFI/main/public/idcard.png" alt="ID Card Copy" className="w-full h-auto object-cover" />
                 <div className="border-t border-line-soft p-3.5 bg-slate-50/50 flex flex-col items-center text-center">
-                  <p className="text-xs font-bold text-ink-800 font-['Prompt']">ลงลายมือชื่อรับรองสำเนาถูกต้อง</p>
+                  <p className="text-xs font-medium text-ink-800 font-['Prompt']">ลงลายมือชื่อรับรองสำเนาถูกต้อง</p>
                   <p className="text-[10px] text-ink-400 font-['Prompt'] mt-0.5">รับรองสำเนาเพื่อการเคลมของโรงพยาบาลศิครินทร์เท่านั้น</p>
                 </div>
               </div>
@@ -275,7 +275,7 @@ export function PatientSign() {
 
             {/* Signature Area */}
             <div className="space-y-3">
-              <label className="block text-xs font-bold text-ink-600 font-['Prompt']">
+              <label className="block text-xs font-medium text-ink-600 font-['Prompt']">
                 ลงนามรับรองสำเนาถูกต้อง (Signature)
               </label>
               <SignatureCanvas onSave={setSigConsent} value={sigConsent} />
@@ -285,7 +285,7 @@ export function PatientSign() {
             <button
               disabled={!sigConsent}
               onClick={handleNextStep}
-              className="mt-8 w-full bg-brand-600 text-white font-bold py-3.5 px-4 rounded-xl font-['Prompt'] text-sm hover:bg-brand-700 transition-colors shadow-sm disabled:opacity-50 flex items-center justify-center gap-1.5"
+              className="mt-8 w-full bg-brand-600 text-white font-medium py-3.5 px-4 rounded-xl font-['Prompt'] text-sm hover:bg-brand-700 transition-colors shadow-sm disabled:opacity-50 flex items-center justify-center gap-1.5"
             >
               <span>บันทึกลายเซ็นและดำเนินการต่อ</span>
               <ChevronRight size={16} />
@@ -295,7 +295,7 @@ export function PatientSign() {
 
         {step === 2 && (
           <div className="bg-white border border-[#dbe3ec] rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col">
-            <h2 className="text-xl font-bold text-ink-950 font-['Prompt'] mb-1">ขั้นตอนที่ 2: รับทราบค่ารักษาพยาบาล (Invoice)</h2>
+            <h2 className="text-xl font-medium text-ink-950 font-['Prompt'] mb-1">ขั้นตอนที่ 2: รับทราบค่ารักษาพยาบาล (Invoice)</h2>
             <p className="text-xs text-ink-400 font-['Prompt'] mb-6">
               กรุณาตรวจทานรายละเอียดค่ารักษา และเซ็นรับรองรับทราบยอดรวมค่าใช้จ่ายเพื่อนำไปเรียกเก็บตรงกับบริษัทประกัน
             </p>
@@ -303,27 +303,27 @@ export function PatientSign() {
             {/* Expense Bill Display */}
             <div className="border border-[#dbe3ec] rounded-2xl bg-slate-50 overflow-hidden mb-6 shadow-inner">
               <div className="bg-white border-b border-[#dbe3ec] p-4 flex items-center justify-between">
-                <span className="text-xs font-bold text-ink-800 font-['Prompt']">สรุปค่าใช้จ่ายการรักษาพยาบาล</span>
-                <span className="text-xs text-ink-400 font-mono font-semibold">INV-{Math.floor(100000 + Math.random() * 900000)}</span>
+                <span className="text-xs font-medium text-ink-800 font-['Prompt']">สรุปค่าใช้จ่ายการรักษาพยาบาล</span>
+                <span className="text-xs text-ink-400 font-mono font-medium">INV-{Math.floor(100000 + Math.random() * 900000)}</span>
               </div>
               <div className="p-4 sm:p-5 space-y-3.5 text-xs font-['Prompt']">
                 <div className="flex items-center justify-between text-ink-600">
                   <span>ค่าห้องและค่าอาหาร (Room & Board)</span>
-                  <span className="font-semibold text-ink-800">฿{roomCost.toLocaleString()}</span>
+                  <span className="font-medium text-ink-800">฿{roomCost.toLocaleString()}</span>
                 </div>
                 <div className="flex items-center justify-between text-ink-600">
                   <span>ค่ายาและเวชภัณฑ์ (Medicine)</span>
-                  <span className="font-semibold text-ink-800">฿{medicineCost.toLocaleString()}</span>
+                  <span className="font-medium text-ink-800">฿{medicineCost.toLocaleString()}</span>
                 </div>
                 <div className="flex items-center justify-between text-ink-600">
                   <span>ค่าตรวจวินิจฉัย/ห้องแล็บ (Diagnostic/Lab)</span>
-                  <span className="font-semibold text-ink-800">฿{doctorCost.toLocaleString()}</span>
+                  <span className="font-medium text-ink-800">฿{doctorCost.toLocaleString()}</span>
                 </div>
                 <div className="flex items-center justify-between text-ink-600">
                   <span>ค่าธรรมเนียมแพทย์และบริการทางการแพทย์ (Doctor/Services)</span>
-                  <span className="font-semibold text-ink-800">฿{serviceCost.toLocaleString()}</span>
+                  <span className="font-medium text-ink-800">฿{serviceCost.toLocaleString()}</span>
                 </div>
-                <div className="border-t border-[#dbe3ec] pt-3.5 flex items-center justify-between text-sm font-bold text-ink-950">
+                <div className="border-t border-[#dbe3ec] pt-3.5 flex items-center justify-between text-sm font-medium text-ink-950">
                   <span>ยอดค่ารักษาพยาบาลรวมทั้งสิ้น (Total Amount)</span>
                   <span className="text-brand-600 text-base">฿{claimTotal.toLocaleString()}</span>
                 </div>
@@ -332,7 +332,7 @@ export function PatientSign() {
 
             {/* Signature Area */}
             <div className="space-y-3">
-              <label className="block text-xs font-bold text-ink-600 font-['Prompt']">
+              <label className="block text-xs font-medium text-ink-600 font-['Prompt']">
                 ลงนามรับทราบและยินยอมรับยอดค่าใช้จ่าย (Signature)
               </label>
               <SignatureCanvas onSave={setSigInvoice} value={sigInvoice} />
@@ -342,7 +342,7 @@ export function PatientSign() {
             <button
               disabled={!sigInvoice}
               onClick={handleNextStep}
-              className="mt-8 w-full bg-brand-600 text-white font-bold py-3.5 px-4 rounded-xl font-['Prompt'] text-sm hover:bg-brand-700 transition-colors shadow-sm disabled:opacity-50 flex items-center justify-center gap-1.5"
+              className="mt-8 w-full bg-brand-600 text-white font-medium py-3.5 px-4 rounded-xl font-['Prompt'] text-sm hover:bg-brand-700 transition-colors shadow-sm disabled:opacity-50 flex items-center justify-center gap-1.5"
             >
               <span>ยืนยันข้อมูลและส่งเอกสารทั้งหมด</span>
               <Check size={16} />
@@ -355,22 +355,22 @@ export function PatientSign() {
             <div className="size-20 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center mb-6 animate-bounce">
               <CheckCircle2 size={48} className="stroke-[2.5]" />
             </div>
-            <h2 className="text-2xl font-bold text-ink-950 font-['Prompt'] mb-3">เซ็นรับรองเอกสารเสร็จสมบูรณ์!</h2>
+            <h2 className="text-2xl font-medium text-ink-950 font-['Prompt'] mb-3">เซ็นรับรองเอกสารเสร็จสมบูรณ์!</h2>
             <p className="text-sm text-ink-400 font-['Prompt'] leading-relaxed max-w-md mb-8">
-              ระบบได้ทำการบันทึกลายเซ็นดิจิทัลของ <strong className="font-semibold text-ink-700">{patient.name}</strong> 
+              ระบบได้ทำการบันทึกลายเซ็นดิจิทัลของ <strong className="font-medium text-ink-700">{patient.name}</strong> 
               ลงในสำเนาบัตรประชาชน และใบเสร็จรับเงินค่ารักษาพยาบาลเรียบร้อยแล้ว ข้อมูลจะถูกอัปเดตและแจ้งเตือนไปยังพนักงานการเงินทันที
             </p>
 
             <div className="w-full bg-[#f6f8fb] border border-[#dbe3ec] rounded-2xl p-4 flex items-center justify-center gap-2 mb-8">
               <ShieldCheck size={16} className="text-[#0a5f5e]" />
-              <span className="text-xs font-semibold text-[#0a5f5e] font-['Prompt']">
+              <span className="text-xs font-medium text-[#0a5f5e] font-['Prompt']">
                 เข้ารหัสลายเซ็นแบบดิจิทัลความปลอดภัยสูงเรียบร้อยแล้ว
               </span>
             </div>
 
             <button
               onClick={() => navigate("/patient/select")}
-              className="w-full bg-brand-600 text-white font-bold py-3.5 px-4 rounded-xl font-['Prompt'] text-sm hover:bg-brand-700 transition-colors shadow-sm"
+              className="w-full bg-brand-600 text-white font-medium py-3.5 px-4 rounded-xl font-['Prompt'] text-sm hover:bg-brand-700 transition-colors shadow-sm"
             >
               เสร็จสิ้น (กลับหน้าเลือกคนไข้)
             </button>

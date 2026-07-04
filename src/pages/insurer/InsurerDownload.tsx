@@ -54,7 +54,7 @@ export function InsurerDownload() {
           <div className="flex size-9 items-center justify-center rounded-lg bg-brand-600 text-white">
             <Building2 size={17} />
           </div>
-          <span className="text-sm font-semibold text-ink-800">ClaimFlow — พอร์ทัลบริษัทประกัน</span>
+          <span className="text-sm font-medium text-ink-800">ClaimFlow — พอร์ทัลบริษัทประกัน</span>
         </div>
         <button
           onClick={() => {
@@ -77,7 +77,7 @@ export function InsurerDownload() {
           <div className="rounded-xl border border-line bg-white shadow-card">
             <div className="border-b border-line-soft p-5">
               <p className="text-xs font-medium text-ink-400">รหัสชุดเอกสาร</p>
-              <h1 className="text-xl font-semibold text-ink-800">{batch?.id}</h1>
+              <h1 className="text-xl font-medium text-ink-800">{batch?.id}</h1>
               <p className="mt-1 text-sm text-ink-500">
                 เลขใบสรุปจ่าย (ERP): <span className="font-mono">{batch?.referenceNumber}</span>
               </p>
@@ -117,7 +117,7 @@ export function InsurerDownload() {
             <div className="border-t border-line-soft p-5">
               <button
                 onClick={handleDownload}
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-brand-600 py-3 text-sm font-semibold text-white hover:bg-brand-700"
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-brand-600 py-3 text-sm font-medium text-white hover:bg-brand-700"
               >
                 <Download size={16} /> ดาวน์โหลดชุดเอกสาร (Package)
               </button>

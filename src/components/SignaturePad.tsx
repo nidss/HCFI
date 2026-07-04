@@ -70,7 +70,7 @@ export function SignaturePad({ title, description, documentName, onCancel, onCon
               <TabletSmartphone size={18} />
             </div>
             <div>
-              <h3 className="text-base font-semibold text-ink-800">{title}</h3>
+              <h3 className="text-base font-medium text-ink-800">{title}</h3>
               <p className="mt-0.5 text-sm text-ink-400">{description}</p>
             </div>
           </div>
@@ -121,7 +121,7 @@ export function SignaturePad({ title, description, documentName, onCancel, onCon
           <button
             onClick={onConfirm}
             disabled={!hasSignature}
-            className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-40"
           >
             ยืนยันลายเซ็น
           </button>
