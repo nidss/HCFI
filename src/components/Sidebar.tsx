@@ -29,7 +29,7 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
 
   return (
     <aside
-      className={`h-full shrink-0 border-r border-line bg-[#f6f8fb] transition-all duration-200 ${
+      className={`h-full shrink-0 bg-[#f6f8fb] transition-all duration-200 ${
         collapsed ? "w-[76px]" : "w-64"
       }`}
     >
