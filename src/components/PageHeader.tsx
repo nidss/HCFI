@@ -1,4 +1,16 @@
 import type { ReactNode } from "react";
+import { useLocation } from "react-router-dom";
+
+const crumbs: Record<string, string> = {
+  "/": "ภาพรวม",
+  "/reception": "แผนกต้อนรับ",
+  "/cashier": "ช่องชำระเงิน",
+  "/documents": "จัดการเอกสาร",
+  "/accounting": "ใบสรุปจ่าย",
+  "/delivery": "ส่งมอบเอกสาร",
+  "/audit-log": "Audit Log",
+  "/settings": "การตั้งค่า",
+};
 
 export function PageHeader({
   title,
@@ -9,9 +21,19 @@ export function PageHeader({
   subtitle?: string;
   action?: ReactNode;
 }) {
+  const location = useLocation();
+  const crumb = crumbs[location.pathname] ?? "";
+
   return (
     <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
       <div>
+        {crumb && (
+          <nav className="mb-2 flex items-center gap-1.5 text-xs text-[#99a1af]">
+            <span className="font-medium text-ink-500">ClaimFlow</span>
+            <span>/</span>
+            <span className="font-semibold text-[#364153]">{crumb}</span>
+          </nav>
+        )}
         <h1 className="text-2xl font-semibold text-ink-900">{title}</h1>
         {subtitle && <p className="mt-1 text-sm text-ink-400">{subtitle}</p>}
       </div>
