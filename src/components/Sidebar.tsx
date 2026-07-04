@@ -49,7 +49,7 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
             ) : (
               <div className="bg-white border border-[#dbe3ec] rounded-xl px-3 py-[11px] shadow-sm flex items-center justify-between gap-2.5">
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <img src="/slogo.png" alt="Sikarin Hospital" className="size-10 shrink-0 object-contain rounded-lg" />
+                  <img src="./slogo.png" alt="Sikarin Hospital" className="size-10 shrink-0 object-contain rounded-lg" />
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-bold text-ink-900 leading-tight">โรงพยาบาลศิครินทร์</p>
                     <p className="truncate text-[12px] text-[#99a1af] mt-0.5 leading-none">กรุงเทพฯ</p>

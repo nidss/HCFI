@@ -42,7 +42,7 @@ export function PatientSelect() {
         </button>
 
         <div className="flex items-center gap-2">
-          <img src="/slogo.png" alt="Hospital Logo" className="h-9 w-auto object-contain rounded-lg" />
+          <img src="./slogo.png" alt="Hospital Logo" className="h-9 w-auto object-contain rounded-lg" />
           <h1 className="text-lg font-bold text-ink-800 font-['Prompt']">พอร์ตัลเซ็นเอกสารคนไข้ (iPad)</h1>
         </div>
       </div>

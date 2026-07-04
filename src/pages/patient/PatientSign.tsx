@@ -265,7 +265,7 @@ export function PatientSign() {
             {/* ID Card Display Card */}
             <div className="border border-[#dbe3ec] rounded-2xl p-4 bg-slate-50 flex flex-col items-center mb-6">
               <div className="relative w-full max-w-md bg-white border border-[#dbe3ec] rounded-xl overflow-hidden shadow-sm flex flex-col">
-                <img src="/idcard.png" alt="ID Card Copy" className="w-full h-auto object-cover" />
+                <img src="./idcard.png" alt="ID Card Copy" className="w-full h-auto object-cover" />
                 <div className="border-t border-line-soft p-3.5 bg-slate-50/50 flex flex-col items-center text-center">
                   <p className="text-xs font-bold text-ink-800 font-['Prompt']">ลงลายมือชื่อรับรองสำเนาถูกต้อง</p>
                   <p className="text-[10px] text-ink-400 font-['Prompt'] mt-0.5">รับรองสำเนาเพื่อการเคลมของโรงพยาบาลศิครินทร์เท่านั้น</p>
