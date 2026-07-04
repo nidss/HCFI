@@ -12,7 +12,7 @@ export function PortalSelection() {
 
       <div className="w-full max-w-4xl flex flex-col items-center text-center z-10 mb-12">
         <div className="flex items-center gap-3 mb-4">
-          <img src="./slogo.png" alt="Sikarin Logo" className="h-12 w-auto object-contain rounded-xl shadow-sm" />
+          <img src="https://raw.githubusercontent.com/nidss/HCFI/main/public/slogo.png" alt="Sikarin Logo" className="h-12 w-auto object-contain rounded-xl shadow-sm" />
           <h1 className="text-3xl font-extrabold tracking-tight text-ink-900 font-['Outfit']">
             Claim<span className="text-brand-600 font-normal">Flow</span>
           </h1>
