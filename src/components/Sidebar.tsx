@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import {
   Building2,
+  ChevronDown,
   ChevronsLeft,
   ChevronsRight,
   FileStack,
@@ -79,7 +80,10 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
             {/* Section 2 */}
             <div>
               {!collapsed && (
-                <p className="mb-1.5 px-3 text-[12px] font-medium text-[#99a1af]">ขั้นตอนเคลม</p>
+                <p className="mb-1.5 px-3 text-[12px] font-medium text-[#99a1af] flex items-center gap-1">
+                  <ChevronDown size={14} className="shrink-0 text-[#99a1af]" />
+                  <span>ขั้นตอนเคลม</span>
+                </p>
               )}
               <div className="space-y-1">
                 {steps.map((s) => (
@@ -113,7 +117,10 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
             {/* Section 3 */}
             <div>
               {!collapsed && (
-                <p className="mb-1.5 px-3 text-[12px] font-medium text-[#99a1af]">ระบบ</p>
+                <p className="mb-1.5 px-3 text-[12px] font-medium text-[#99a1af] flex items-center gap-1">
+                  <ChevronDown size={14} className="shrink-0 text-[#99a1af]" />
+                  <span>ระบบ</span>
+                </p>
               )}
               <NavItem to="/audit-log" icon={History} label="Audit Log" collapsed={collapsed} />
             </div>

@@ -8,13 +8,15 @@ export function StaffLayout() {
   return (
     <div className="flex h-screen w-full overflow-hidden bg-canvas">
       <Sidebar collapsed={collapsed} onToggle={() => setCollapsed((c) => !c)} />
-      <div className="flex min-w-0 flex-1 flex-col">
-        <Topbar />
-        <main className="flex-1 overflow-y-auto">
-          <div className="mx-auto max-w-[1200px] px-6 py-6">
-            <Outlet />
-          </div>
-        </main>
+      <div className="flex min-w-0 flex-1 flex-col p-3 pl-1">
+        <div className="flex-1 rounded-[16px] border border-line bg-white flex flex-col overflow-hidden shadow-sm">
+          <Topbar />
+          <main className="flex-1 overflow-y-auto bg-white">
+            <div className="px-6 py-5">
+              <Outlet />
+            </div>
+          </main>
+        </div>
       </div>
     </div>
   );
