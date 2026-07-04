@@ -10,13 +10,17 @@ import { AuditLog } from "./pages/AuditLog";
 import { Settings } from "./pages/Settings";
 import { InsurerLogin } from "./pages/insurer/InsurerLogin";
 import { InsurerDownload } from "./pages/insurer/InsurerDownload";
+import { PortalSelection } from "./pages/PortalSelection";
+import { PatientSelect } from "./pages/patient/PatientSelect";
+import { PatientSign } from "./pages/patient/PatientSign";
 import { NotFound } from "./pages/NotFound";
 
 export default function App() {
   return (
     <Routes>
+      <Route path="/" element={<PortalSelection />} />
       <Route element={<StaffLayout />}>
-        <Route path="/" element={<Overview />} />
+        <Route path="/overview" element={<Overview />} />
         <Route path="/reception" element={<Reception />} />
         <Route path="/cashier" element={<Cashier />} />
         <Route path="/documents" element={<Documents />} />
@@ -25,6 +29,8 @@ export default function App() {
         <Route path="/audit-log" element={<AuditLog />} />
         <Route path="/settings" element={<Settings />} />
       </Route>
+      <Route path="/patient/select" element={<PatientSelect />} />
+      <Route path="/patient/sign/:hn" element={<PatientSign />} />
       <Route path="/insurer/login" element={<InsurerLogin />} />
       <Route path="/insurer/download" element={<InsurerDownload />} />
       <Route path="*" element={<NotFound />} />

@@ -74,7 +74,7 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
               {!collapsed && (
                 <p className="mb-1.5 px-3 text-[12px] font-medium text-[#99a1af]">งานหลัก</p>
               )}
-              <NavItem to="/" icon={LayoutDashboard} label="ภาพรวม" collapsed={collapsed} exact />
+              <NavItem to="/overview" icon={LayoutDashboard} label="ภาพรวม" collapsed={collapsed} exact />
             </div>
 
             {/* Section 2 */}
