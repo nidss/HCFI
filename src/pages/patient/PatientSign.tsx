@@ -246,7 +246,7 @@ export function PatientSign() {
                 step === 3 ? "bg-brand-600 border-brand-600 text-white" : "bg-white border-[#dbe3ec] text-ink-300"
               }`}
             >
-              "3"
+              3
             </div>
             <span className="text-[11px] font-bold text-ink-600 font-['Prompt'] mt-1.5 bg-white px-2">เสร็จสมบูรณ์</span>
           </div>
