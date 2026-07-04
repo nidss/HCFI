@@ -1,0 +1,131 @@
+import { useState } from "react";
+import { FileCheck2, PenLine, Receipt } from "lucide-react";
+import { Card, PageHeader, EmptyState } from "../components/PageHeader";
+import { FileDrop } from "../components/FileDrop";
+import { SignaturePad } from "../components/SignaturePad";
+import { useAppData } from "../context/AppDataContext";
+
+export function Cashier() {
+  const { patients, invoiceQueue, submitInvoiceForOcr, confirmInvoiceMatch, signInvoice } = useAppData();
+  const [signingHn, setSigningHn] = useState<string | null>(null);
+
+  const unmatchedCandidates = patients.filter((p) =>
+    p.documents.some((d) => d.kind === "ใบเสร็จรับเงิน (Invoice)" && d.status === "รอดำเนินการ"),
+  );
+
+  return (
+    <div>
+      <PageHeader
+        title="ช่องชำระเงิน"
+        subtitle="จับไฟล์ Invoice ที่พิมพ์จาก HIS (Ctrl+P) เข้าสู่ Share Drive แล้วอ่านด้วย OCR เพื่อจับคู่ HN โดยอัตโนมัติ"
+      />
+
+      <Card className="mb-6">
+        <div className="p-5">
+          <p className="mb-3 text-sm font-semibold text-ink-700">จับไฟล์ Invoice จาก Share Drive</p>
+          <FileDrop
+            label="ลากไฟล์ Invoice (PDF) ที่พิมพ์จาก HIS มาวาง หรือคลิกเพื่อเลือกไฟล์"
+            hint="รองรับไฟล์ .pdf, .jpg, .jpeg, .png · ตั้งชื่อไฟล์ให้มีเลข HN เช่น invoice_6604302.pdf เพื่อให้ OCR จับคู่อัตโนมัติ"
+            accept=".pdf,.jpg,.jpeg,.png"
+            onFiles={(files) => {
+              Array.from(files).forEach((f) => submitInvoiceForOcr(f.name));
+            }}
+          />
+        </div>
+      </Card>
+
+      <Card>
+        <div className="flex items-center gap-2 border-b border-line-soft px-5 py-4">
+          <Receipt size={16} className="text-ink-400" />
+          <h3 className="text-sm font-semibold text-ink-700">รายการที่ประมวลผลในเซสชันนี้</h3>
+        </div>
+
+        {invoiceQueue.length === 0 ? (
+          <EmptyState
+            icon={<FileCheck2 size={32} />}
+            title="ยังไม่มีไฟล์ที่ประมวลผล ลองอัปโหลด Invoice ด้านบน"
+          />
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-line-soft text-left text-xs text-ink-300">
+                  <th className="px-5 py-3 font-medium">ไฟล์</th>
+                  <th className="px-5 py-3 font-medium">HN ที่จับคู่</th>
+                  <th className="px-5 py-3 font-medium">ผู้ป่วย</th>
+                  <th className="px-5 py-3 font-medium">ความมั่นใจ OCR</th>
+                  <th className="px-5 py-3 font-medium">สถานะ</th>
+                  <th className="px-5 py-3 font-medium">การดำเนินการ</th>
+                </tr>
+              </thead>
+              <tbody>
+                {invoiceQueue.map((q) => {
+                  const patient = q.matchedHn ? patients.find((p) => p.hn === q.matchedHn) : undefined;
+                  return (
+                    <tr key={q.id} className="border-b border-line-soft last:border-0">
+                      <td className="max-w-[200px] truncate px-5 py-3 text-ink-600">{q.fileName}</td>
+                      <td className="px-5 py-3 font-medium text-ink-700">{q.matchedHn ?? "-"}</td>
+                      <td className="px-5 py-3 text-ink-600">{q.patientName ?? "-"}</td>
+                      <td className="px-5 py-3 text-ink-600">{q.confidence ? `${q.confidence}%` : "-"}</td>
+                      <td className="px-5 py-3">
+                        <span
+                          className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold ${
+                            q.status === "จับคู่สำเร็จ"
+                              ? "bg-status-ready-bg text-status-ready-fg"
+                              : "bg-status-waiting-bg text-status-waiting-fg"
+                          }`}
+                        >
+                          {q.status}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3">
+                        {q.status === "ต้องตรวจสอบด้วยตนเอง" ? (
+                          <select
+                            defaultValue=""
+                            onChange={(e) => e.target.value && confirmInvoiceMatch(q.id, e.target.value)}
+                            className="rounded-lg border border-line px-2.5 py-1.5 text-xs text-ink-700 focus:border-brand-500 focus:outline-none"
+                          >
+                            <option value="" disabled>
+                              เลือก HN ด้วยตนเอง
+                            </option>
+                            {unmatchedCandidates.map((p) => (
+                              <option key={p.hn} value={p.hn}>
+                                {p.hn} · {p.name}
+                              </option>
+                            ))}
+                          </select>
+                        ) : patient && !patient.invoiceSigned ? (
+                          <button
+                            onClick={() => setSigningHn(patient.hn)}
+                            className="flex items-center gap-1.5 rounded-lg bg-ink-800 px-3 py-1.5 text-xs font-medium text-white hover:bg-ink-900"
+                          >
+                            <PenLine size={13} /> ให้ผู้ป่วยเซ็นรับรอง
+                          </button>
+                        ) : (
+                          <span className="text-xs text-status-ready-fg">เซ็นรับรองแล้ว</span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Card>
+
+      {signingHn && (
+        <SignaturePad
+          title="เซ็นรับรองใบเสร็จรับเงิน"
+          description={patients.find((p) => p.hn === signingHn)?.name ?? signingHn}
+          documentName="ใบเสร็จรับเงิน (Invoice)"
+          onCancel={() => setSigningHn(null)}
+          onConfirm={() => {
+            signInvoice(signingHn);
+            setSigningHn(null);
+          }}
+        />
+      )}
+    </div>
+  );
+}
