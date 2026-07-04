@@ -28,28 +28,26 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
 
   return (
     <aside
-      className={`h-full shrink-0 border-r border-line bg-white transition-all duration-200 ${
+      className={`h-full shrink-0 border-r border-line bg-[#fafbfc] transition-all duration-200 ${
         collapsed ? "w-[76px]" : "w-64"
       }`}
     >
       <div className="flex h-full flex-col">
-        <div className="flex items-center gap-2 border-b border-line-soft p-3">
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-brand-600 text-white">
-            <Building2 size={20} />
-          </div>
+        <div className="flex items-center gap-3 border-b border-line-soft p-3">
+          <img src="/slogo.png" alt="Sikarin Hospital" className="size-10 shrink-0 object-contain" />
           {!collapsed && (
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-semibold text-ink-800">โรงพยาบาลศิครินทร์</p>
-              <p className="truncate text-xs text-ink-300">กรุงเทพฯ</p>
+              <p className="truncate text-sm font-bold text-ink-900 leading-tight">โรงพยาบาลศิครินทร์</p>
+              <p className="truncate text-[11px] text-ink-400 mt-0.5 leading-none">กรุงเทพฯ</p>
             </div>
           )}
           <button
             onClick={onToggle}
-            className="shrink-0 rounded-lg border border-line p-1.5 text-ink-400 hover:bg-line-soft"
+            className="shrink-0 rounded-md border border-line p-1 text-ink-400 hover:bg-line-soft bg-white shadow-sm transition-transform"
             aria-label="ย่อเมนู"
             title="ย่อเมนู"
           >
-            {collapsed ? <ChevronsRight size={16} /> : <ChevronsLeft size={16} />}
+            {collapsed ? <ChevronsRight size={14} /> : <ChevronsLeft size={14} />}
           </button>
         </div>
 
@@ -74,7 +72,7 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
                   to={s.to}
                   className={({ isActive }) =>
                     `flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors ${
-                      isActive ? "bg-brand-100/70 text-brand-700 font-semibold" : "text-ink-600 hover:bg-line-soft"
+                      isActive ? "bg-brand-50 text-brand-600 font-semibold" : "text-ink-600 hover:bg-line-soft hover:text-ink-900"
                     }`
                   }
                 >
@@ -126,7 +124,7 @@ function NavItem({
       end={exact}
       className={({ isActive }) =>
         `flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors ${
-          isActive ? "bg-brand-100/70 text-brand-700 font-semibold" : "text-ink-600 hover:bg-line-soft"
+          isActive ? "bg-brand-50 text-brand-600 font-semibold" : "text-ink-600 hover:bg-line-soft hover:text-ink-900"
         }`
       }
       title={collapsed ? label : undefined}
