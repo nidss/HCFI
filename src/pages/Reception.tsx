@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IdCard, Loader2, PenLine, ScanLine, Search, UserRound } from "lucide-react";
+import { IdCard, Loader2, PenLine, ScanLine, Search, UserRound, X } from "lucide-react";
 import { Card, PageHeader } from "../components/PageHeader";
 import { DocumentChecklist } from "../components/DocumentChecklist";
 import { FileDrop } from "../components/FileDrop";
@@ -15,6 +15,7 @@ export function Reception() {
   const [resultHn, setResultHn] = useState<string | null>(null);
   const [showSignature, setShowSignature] = useState(false);
   const [scannedFile, setScannedFile] = useState<string | null>(null);
+  const [showIdCardModal, setShowIdCardModal] = useState(false);
 
   const result = resultHn ? patients.find((p) => p.hn === resultHn) : undefined;
 
@@ -105,10 +106,19 @@ export function Reception() {
             </div>
 
             {result.nationalId === "0000000000000" ? (
-              <div className="border-t border-line-soft p-5">
-                <div className="flex items-center gap-3 rounded-lg bg-status-ready-bg/20 border border-status-ready-fg/20 px-4 py-3.5 text-sm text-status-ready-fg">
-                  <div className="font-semibold">บัตรประชาชน:</div>
-                  <div>ได้รับข้อมูลภาพถ่ายเรียบร้อยแล้วจากฝ่ายประชาสัมพันธ์</div>
+              <div className="space-y-3 border-t border-line-soft p-5">
+                <p className="text-sm font-medium text-ink-700">สแกนบัตรประชาชนเข้าสู่ระบบ</p>
+                <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-line bg-canvas p-6 text-center shadow-sm">
+                  <div className="text-sm text-ink-600">
+                    ได้รับรูปภาพบัตรประชาชนเรียบร้อยแล้วจากฝ่ายประชาสัมพันธ์
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowIdCardModal(true)}
+                    className="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2 text-xs font-medium text-white hover:bg-brand-700 shadow-sm transition-colors"
+                  >
+                    คลิกเพื่อดูรูป
+                  </button>
                 </div>
               </div>
             ) : (
@@ -167,6 +177,29 @@ export function Reception() {
             setShowSignature(false);
           }}
         />
+      )}
+
+      {showIdCardModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="relative max-w-xl w-full rounded-xl bg-white p-6 shadow-2xl animate-fade-in">
+            <div className="mb-4 flex items-center justify-between border-b border-line-soft pb-3">
+              <h3 className="text-base font-semibold text-ink-800">ภาพถ่ายบัตรประชาชน (ส่งโดยฝ่ายประชาสัมพันธ์)</h3>
+              <button
+                onClick={() => setShowIdCardModal(false)}
+                className="rounded-lg p-1.5 text-ink-400 hover:bg-line-soft hover:text-ink-600 transition-colors"
+              >
+                <X size={18} />
+              </button>
+            </div>
+            <div className="flex justify-center bg-canvas rounded-lg p-4">
+              <img
+                src="/idcard.png"
+                alt="ID Card Scan"
+                className="max-h-[60vh] rounded shadow-md object-contain"
+              />
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
