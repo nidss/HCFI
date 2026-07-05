@@ -96,12 +96,45 @@ export function Delivery() {
           </form>
         )}
 
-        {justCreated && (
-          <div className="mx-5 mb-5 flex items-center gap-2 rounded-lg bg-status-ready-bg px-4 py-3 text-sm text-status-ready-fg">
-            <MailCheck size={16} />
-            สร้างลิงก์และส่งอีเมลแจ้งบริษัทประกันเรียบร้อยแล้ว
-          </div>
-        )}
+        {justCreated && (() => {
+          const link = deliveryLinks.find((l) => l.token === justCreated);
+          const batch = batches.find((b) => b.id === link?.batchId);
+          const downloadUrl = `${window.location.origin}${window.location.pathname}#/insurer/login?token=${justCreated}`;
+          return (
+            <div className="mx-5 mb-5 rounded-lg border border-brand-200 bg-brand-50/40 p-5 text-sm animate-fade-in shadow-sm">
+              <div className="flex items-center gap-2 font-medium text-brand-700 mb-4 pb-2 border-b border-brand-200/50">
+                <MailCheck size={18} />
+                สร้างลิงก์และส่งอีเมลสำเร็จ
+              </div>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 text-ink-600">
+                <div>
+                  <span className="font-semibold text-ink-700">สถานะการจัดส่ง:</span>{" "}
+                  <span className="text-status-ready-fg font-medium">ส่งอีเมลสำเร็จ (Email Sent)</span>
+                </div>
+                <div>
+                  <span className="font-semibold text-ink-700">เลขที่อ้างอิงการจัดส่ง:</span>{" "}
+                  <span className="font-mono bg-white border px-1.5 py-0.5 rounded text-xs">{batch?.referenceNumber ?? "-"}</span>
+                </div>
+                <div className="sm:col-span-2">
+                  <span className="font-semibold text-ink-700">ลิงก์ดาวน์โหลด:</span>{" "}
+                  <a
+                    href={downloadUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="font-mono text-xs text-brand-600 hover:underline break-all"
+                  >
+                    {downloadUrl}
+                  </a>
+                </div>
+                <div>
+                  <span className="font-semibold text-ink-700">รหัสผ่านสำหรับเปิดไฟล์:</span>{" "}
+                  <span className="font-mono bg-white border px-1.5 py-0.5 rounded text-xs">insurer2026</span>{" "}
+                  <span className="text-xs text-ink-300">(Username: insurer_demo)</span>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
       </Card>
 
       <Card>
