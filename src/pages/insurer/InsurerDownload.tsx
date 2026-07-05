@@ -205,21 +205,21 @@ export function InsurerDownload() {
             </div>
 
             {/* Patients Table Card Section */}
-            <div className="rounded-xl border border-line bg-white shadow-card overflow-hidden">
-              <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line-soft px-5 py-4">
-                <h3 className="text-base font-medium text-ink-800">รายการเคลมผู้ป่วย</h3>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={handleDownload}
-                    className="flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2 text-xs font-medium text-white hover:bg-brand-700 shadow-sm transition-colors"
-                  >
-                    <Download size={13} /> ดาวน์โหลดชุดเอกสาร (Package)
-                  </button>
+            <div className="overflow-x-auto force-scrollbar pb-4">
+              <div className="rounded-xl border border-line bg-white shadow-card min-w-[1200px] overflow-hidden">
+                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line-soft px-5 py-4">
+                  <h3 className="text-base font-medium text-ink-800">รายการเคลมผู้ป่วย</h3>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={handleDownload}
+                      className="flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2 text-xs font-medium text-white hover:bg-brand-700 shadow-sm transition-colors"
+                    >
+                      <Download size={13} /> ดาวน์โหลดชุดเอกสาร (Package)
+                    </button>
+                  </div>
                 </div>
-              </div>
 
-              <div className="overflow-x-auto force-scrollbar pb-2">
-                <table className="w-full text-sm min-w-[1200px]">
+                <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-line-soft text-left text-xs text-ink-300 bg-slate-50/50">
                       <th className="px-5 py-3.5 font-medium w-[120px]">HN</th>
@@ -357,13 +357,13 @@ export function InsurerDownload() {
                     })}
                   </tbody>
                 </table>
-              </div>
 
-              {downloaded && (
-                <div className="border-t border-line-soft bg-status-ready-bg/10 px-5 py-3 text-center text-xs text-status-ready-fg">
-                  ดาวน์โหลดชุดเอกสารสำเร็จ ระบบได้บันทึกความพยายามลงใน Audit Log ของระบบโรงพยาบาลแล้ว
-                </div>
-              )}
+                {downloaded && (
+                  <div className="border-t border-line-soft bg-status-ready-bg/10 px-5 py-3 text-center text-xs text-status-ready-fg">
+                    ดาวน์โหลดชุดเอกสารสำเร็จ ระบบได้บันทึกความพยายามลงใน Audit Log ของระบบโรงพยาบาลแล้ว
+                  </div>
+                )}
+              </div>
             </div>
           </>
         )}
