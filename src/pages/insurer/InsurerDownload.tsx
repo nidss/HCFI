@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Building2, Download, FileText, LogOut, ShieldAlert } from "lucide-react";
+import { Building2, Download, FileText, LogOut, ShieldAlert, X } from "lucide-react";
 import { useAppData } from "../../context/AppDataContext";
 import { formatCurrency, formatThaiDateTime } from "../../lib/mockData";
 
@@ -17,6 +17,21 @@ export function InsurerDownload() {
   }));
 
   const getStatus = (hn: string) => statuses[hn] || "รอดำเนินการ";
+
+  // Reject modal states
+  const [rejectingPatient, setRejectingPatient] = useState<any | null>(null);
+  const [selectedDocs, setSelectedDocs] = useState<string[]>([]);
+  const [rejectReason, setRejectReason] = useState("");
+
+  // Toast notification state
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => setToastMessage(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
 
   const link = findDeliveryLinkByToken(token);
   const authed = typeof window !== "undefined" && sessionStorage.getItem("insurer_authed") === "1";
@@ -200,7 +215,11 @@ export function InsurerDownload() {
                                     อนุมัติ
                                   </button>
                                   <button
-                                    onClick={() => setStatuses((prev) => ({ ...prev, [p.hn]: "ตีกลับ" }))}
+                                    onClick={() => {
+                                      setRejectingPatient(p);
+                                      setSelectedDocs([]);
+                                      setRejectReason("");
+                                    }}
                                     className="rounded-lg bg-status-danger-bg hover:bg-status-danger-bg/85 px-3 py-1.5 text-xs font-semibold text-status-danger-fg transition-colors"
                                   >
                                     ตีกลับ
@@ -232,6 +251,91 @@ export function InsurerDownload() {
           </>
         )}
       </main>
+
+      {/* Reject Modal */}
+      {rejectingPatient && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="relative max-w-md w-full rounded-xl bg-white p-6 shadow-2xl animate-fade-in">
+            <div className="mb-4 flex items-center justify-between border-b border-line-soft pb-3">
+              <div>
+                <h3 className="text-base font-semibold text-ink-800">ปฏิเสธ / ตีกลับเอกสารเคลม</h3>
+                <p className="text-xs text-ink-400 mt-0.5">{rejectingPatient.name} ({rejectingPatient.hn})</p>
+              </div>
+              <button
+                onClick={() => setRejectingPatient(null)}
+                className="rounded-lg p-1.5 text-ink-400 hover:bg-line-soft hover:text-ink-600 transition-colors"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {/* Document Selection */}
+              <div>
+                <label className="mb-2 block text-xs font-semibold text-ink-600">เลือกเอกสารที่มีปัญหา / ตีกลับ</label>
+                <div className="space-y-2 rounded-lg border border-line p-3 max-h-40 overflow-y-auto">
+                  {rejectingPatient.documents.map((d: any) => (
+                    <label key={d.id} className="flex items-center gap-2 text-xs text-ink-700 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={selectedDocs.includes(d.kind)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedDocs((prev) => [...prev, d.kind]);
+                          } else {
+                            setSelectedDocs((prev) => prev.filter((x) => x !== d.kind));
+                          }
+                        }}
+                        className="rounded border-line text-brand-600 focus:ring-brand-500"
+                      />
+                      <span>{d.kind}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Reason Input */}
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold text-ink-600">ระบุเหตุผลในการตีกลับ</label>
+                <textarea
+                  value={rejectReason}
+                  onChange={(e) => setRejectReason(e.target.value)}
+                  placeholder="กรุณาระบุรายละเอียด เช่น ภาพถ่ายบัตรไม่ชัดเจน หรือ ข้อมูลส่วนลดไม่ถูกต้อง..."
+                  rows={3}
+                  className="w-full rounded-lg border border-line px-3 py-2 text-xs text-ink-800 placeholder:text-ink-300 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                />
+              </div>
+            </div>
+
+            <div className="mt-6 flex justify-end gap-3 border-t border-line-soft pt-4">
+              <button
+                onClick={() => setRejectingPatient(null)}
+                className="rounded-lg border border-line bg-white px-4 py-2 text-xs font-medium text-ink-600 hover:bg-line-soft"
+              >
+                ยกเลิก
+              </button>
+              <button
+                onClick={() => {
+                  setStatuses((prev) => ({ ...prev, [rejectingPatient.hn]: "ตีกลับ" }));
+                  setRejectingPatient(null);
+                  setToastMessage("ตีกลับเอกสารสำเร็จ");
+                }}
+                className="rounded-lg bg-[#fae8ff] px-4 py-2 text-xs font-semibold text-[#a21caf] hover:bg-[#f5d0fe] shadow-sm transition-colors"
+              >
+                ยืนยันการตีกลับ
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="fixed top-5 right-5 z-[60] flex items-center gap-2 rounded-lg bg-status-ready-bg border border-status-ready-fg/30 px-4 py-3 text-xs font-semibold text-status-ready-fg shadow-lg animate-fade-in">
+          <span className="inline-block size-1.5 rounded-full bg-status-ready-fg animate-pulse" />
+          {toastMessage}
+        </div>
+      )}
     </div>
   );
 }
