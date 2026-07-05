@@ -240,12 +240,12 @@ export function InsurerDownload() {
                             </span>
                           </td>
                           <td className="px-5 py-4 text-right">
-                            <div className="flex justify-end gap-2">
+                            <div className="flex justify-end gap-2.5 w-[170px] ml-auto">
                               {status === "รอดำเนินการ" ? (
                                 <>
                                   <button
                                     onClick={() => setReviews((prev) => ({ ...prev, [p.hn]: { status: "ตรวจสอบแล้ว" } }))}
-                                    className="rounded-lg bg-status-ready-bg hover:bg-status-ready-bg/85 px-3 py-1.5 text-xs font-semibold text-status-ready-fg transition-colors"
+                                    className="w-20 h-8 flex items-center justify-center rounded-lg bg-status-ready-bg hover:bg-status-ready-bg/85 text-xs font-semibold text-status-ready-fg transition-colors whitespace-nowrap"
                                   >
                                     อนุมัติ
                                   </button>
@@ -255,7 +255,7 @@ export function InsurerDownload() {
                                       setSelectedDocs([]);
                                       setRejectReason("");
                                     }}
-                                    className="rounded-lg bg-status-danger-bg hover:bg-status-danger-bg/85 px-3 py-1.5 text-xs font-semibold text-status-danger-fg transition-colors"
+                                    className="w-20 h-8 flex items-center justify-center rounded-lg bg-status-danger-bg hover:bg-status-danger-bg/85 text-xs font-semibold text-status-danger-fg transition-colors whitespace-nowrap"
                                   >
                                     ตีกลับ
                                   </button>
@@ -263,7 +263,7 @@ export function InsurerDownload() {
                               ) : (
                                 <button
                                   onClick={() => setReviews((prev) => ({ ...prev, [p.hn]: { status: "รอดำเนินการ" } }))}
-                                  className="rounded-lg border border-line bg-white hover:bg-line-soft px-3 py-1.5 text-xs font-medium text-ink-600 transition-colors shadow-sm"
+                                  className="w-[170px] h-8 flex items-center justify-center rounded-lg border border-line bg-white hover:bg-line-soft text-xs font-medium text-ink-600 transition-colors shadow-sm whitespace-nowrap"
                                 >
                                   แก้ไขสถานะ
                                 </button>
