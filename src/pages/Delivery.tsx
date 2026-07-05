@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Link2, MailCheck, X } from "lucide-react";
+import { CheckCircle2, Link2, MailCheck, X } from "lucide-react";
 import { Card, PageHeader, EmptyState } from "../components/PageHeader";
 import { useAppData } from "../context/AppDataContext";
 import { formatThaiDateTime } from "../lib/mockData";
@@ -194,34 +194,45 @@ export function Delivery() {
                     <table className="w-full text-left text-xs border-collapse">
                       <thead>
                         <tr className="border-b border-line-soft text-ink-400 bg-canvas/50">
-                          <th className="px-4 py-3.5 font-semibold w-24">HN</th>
-                          <th className="px-4 py-3.5 font-semibold w-40">ชื่อผู้ป่วย</th>
-                          <th className="px-4 py-3.5 font-semibold">รายการเอกสารที่ส่งมอบ</th>
+                          <th className="px-4 py-3 font-semibold w-24">HN</th>
+                          <th className="px-4 py-3 font-semibold w-40">ชื่อผู้ป่วย</th>
+                          <th className="px-3 py-3 font-semibold text-center w-24">บัตรประชาชน</th>
+                          <th className="px-3 py-3 font-semibold text-center w-24">ใบยินยอม</th>
+                          <th className="px-3 py-3 font-semibold text-center w-24">ใบเสร็จ (Invoice)</th>
+                          <th className="px-3 py-3 font-semibold text-center w-24">ใบรับรองแพทย์</th>
+                          <th className="px-3 py-3 font-semibold text-center w-24">สรุปการรักษา</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {bps.map((p) => (
-                          <tr key={p.hn} className="border-b border-line-soft last:border-0 hover:bg-canvas/30 transition-colors">
-                            <td className="px-4 py-3 font-mono text-ink-600 align-top">{p.hn}</td>
-                            <td className="px-4 py-3 font-medium text-ink-800 align-top">{p.name}</td>
-                            <td className="px-4 py-3">
-                              <div className="flex flex-wrap gap-1.5">
-                                {p.documents.map((d) => (
-                                  <span
-                                    key={d.id}
-                                    title={d.fileName}
-                                    className="inline-flex items-center rounded bg-brand-50 px-2 py-0.5 text-[10px] font-medium text-brand-700 border border-brand-200/50 cursor-help"
-                                  >
-                                    {d.kind}
-                                  </span>
-                                ))}
-                                {p.documents.length === 0 && (
-                                  <span className="text-xs text-ink-300 italic">ยังไม่มีเอกสารในระบบ</span>
-                                )}
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
+                        {bps.map((p) => {
+                          const hasIdCard = p.documents.some((d) => d.kind === "สำเนาบัตรประชาชน" && d.status === "ครบถ้วน");
+                          const hasConsent = p.documents.some((d) => d.kind === "ใบยินยอมเปิดเผยข้อมูล" && d.status === "ครบถ้วน");
+                          const hasInvoice = p.documents.some((d) => d.kind === "ใบเสร็จรับเงิน (Invoice)" && d.status === "ครบถ้วน");
+                          const hasMedCert = p.documents.some((d) => d.kind === "ใบรับรองแพทย์" && d.status === "ครบถ้วน");
+                          const hasSummary = p.documents.some((d) => d.kind === "สรุปการรักษา" && d.status === "ครบถ้วน");
+
+                          return (
+                            <tr key={p.hn} className="border-b border-line-soft last:border-0 hover:bg-canvas/30 transition-colors">
+                              <td className="px-4 py-3 font-mono text-ink-600 align-middle">{p.hn}</td>
+                              <td className="px-4 py-3 font-medium text-ink-800 align-middle">{p.name}</td>
+                              <td className="px-3 py-3 text-center align-middle">
+                                {hasIdCard ? <CheckCircle2 size={16} className="mx-auto text-status-ready-fg" /> : <span className="text-ink-200">-</span>}
+                              </td>
+                              <td className="px-3 py-3 text-center align-middle">
+                                {hasConsent ? <CheckCircle2 size={16} className="mx-auto text-status-ready-fg" /> : <span className="text-ink-200">-</span>}
+                              </td>
+                              <td className="px-3 py-3 text-center align-middle">
+                                {hasInvoice ? <CheckCircle2 size={16} className="mx-auto text-status-ready-fg" /> : <span className="text-ink-200">-</span>}
+                              </td>
+                              <td className="px-3 py-3 text-center align-middle">
+                                {hasMedCert ? <CheckCircle2 size={16} className="mx-auto text-status-ready-fg" /> : <span className="text-ink-200">-</span>}
+                              </td>
+                              <td className="px-3 py-3 text-center align-middle">
+                                {hasSummary ? <CheckCircle2 size={16} className="mx-auto text-status-ready-fg" /> : <span className="text-ink-200">-</span>}
+                              </td>
+                            </tr>
+                          );
+                        })}
                       </tbody>
                     </table>
                   </div>
