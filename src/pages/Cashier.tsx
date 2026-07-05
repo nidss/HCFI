@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-import { FileCheck2, PenLine, Receipt } from "lucide-react";
+import { FileCheck2, PenLine, Receipt, X } from "lucide-react";
 import { Card, PageHeader, EmptyState } from "../components/PageHeader";
 import { FileDrop } from "../components/FileDrop";
 import { SignaturePad } from "../components/SignaturePad";
@@ -11,6 +11,7 @@ export function Cashier() {
   const location = useLocation();
   const state = location.state as { hn?: string; name?: string } | null;
   const [signingHn, setSigningHn] = useState<string | null>(null);
+  const [viewingInvoiceHn, setViewingInvoiceHn] = useState<string | null>(null);
 
   const unmatchedCandidates = patients.filter((p) =>
     p.documents.some((d) => d.kind === "ใบเสร็จรับเงิน (Invoice)" && d.status === "รอดำเนินการ"),
@@ -115,10 +116,10 @@ export function Cashier() {
                           </select>
                         ) : patient && !patient.invoiceSigned ? (
                           <button
-                            onClick={() => setSigningHn(patient.hn)}
-                            className="flex items-center gap-1.5 rounded-lg bg-ink-800 px-3 py-1.5 text-xs font-medium text-white hover:bg-ink-900"
+                            onClick={() => setViewingInvoiceHn(patient.hn)}
+                            className="flex items-center gap-1.5 rounded-lg bg-ink-800 px-3 py-1.5 text-xs font-medium text-white hover:bg-ink-900 shadow-sm"
                           >
-                            <PenLine size={13} /> ให้ผู้ป่วยเซ็นรับรอง
+                            ดูเอกสาร
                           </button>
                         ) : (
                           <span className="text-xs text-status-ready-fg">เซ็นรับรองแล้ว</span>
@@ -144,6 +145,47 @@ export function Cashier() {
             setSigningHn(null);
           }}
         />
+      )}
+
+      {viewingInvoiceHn && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="relative max-w-xl w-full rounded-xl bg-white p-6 shadow-2xl animate-fade-in">
+            <div className="mb-4 flex items-center justify-between border-b border-line-soft pb-3">
+              <h3 className="text-base font-semibold text-ink-800">ตรวจสอบใบเสร็จรับเงิน (Invoice)</h3>
+              <button
+                onClick={() => setViewingInvoiceHn(null)}
+                className="rounded-lg p-1.5 text-ink-400 hover:bg-line-soft hover:text-ink-600 transition-colors"
+              >
+                <X size={18} />
+              </button>
+            </div>
+            <div className="flex justify-center bg-canvas rounded-lg p-4">
+              <img
+                src="https://raw.githubusercontent.com/nidss/HCFI/main/public/example-recipe.png"
+                alt="Invoice Document"
+                className="max-h-[60vh] rounded shadow-md object-contain"
+              />
+            </div>
+            <div className="mt-5 flex justify-end gap-3 border-t border-line-soft pt-4">
+              <button
+                onClick={() => setViewingInvoiceHn(null)}
+                className="rounded-lg border border-line px-4 py-2 text-xs font-medium text-ink-600 hover:bg-line-soft"
+              >
+                ปิด
+              </button>
+              <button
+                onClick={() => {
+                  const targetHn = viewingInvoiceHn;
+                  setViewingInvoiceHn(null);
+                  setSigningHn(targetHn);
+                }}
+                className="flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2 text-xs font-medium text-white hover:bg-brand-700 shadow-sm transition-colors"
+              >
+                <PenLine size={13} /> ลงนามรับรองเอกสาร
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
