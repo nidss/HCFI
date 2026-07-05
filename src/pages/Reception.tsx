@@ -149,32 +149,19 @@ export function Reception() {
               </div>
             )}
 
-            <div className="flex items-center justify-between border-t border-line-soft p-5">
-              <div className="flex items-center gap-2 text-sm text-ink-600">
-                <ScanLine size={16} className="text-ink-300" />
-                ใบยินยอมเปิดเผยข้อมูลส่วนบุคคล (PDPA)
-              </div>
-              {result.nationalId === "0000000000000" ? (
+            {result.nationalId === "0000000000000" && (
+              <div className="flex items-center justify-end border-t border-line-soft p-5">
                 <button
                   type="button"
                   onClick={() => {
                     navigate("/cashier", { state: { hn: result.hn, name: result.name } });
                   }}
-                  className="flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700 transition-colors shadow-sm"
+                  className="flex items-center gap-1.5 rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-brand-700 transition-colors shadow-sm"
                 >
                   ไปยังขั้นตอนต่อไป
                 </button>
-              ) : (
-                <button
-                  onClick={() => setShowSignature(true)}
-                  disabled={result.consentSigned}
-                  className="flex items-center gap-1.5 rounded-lg bg-ink-800 px-3.5 py-2 text-sm font-medium text-white hover:bg-ink-900 disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  <PenLine size={15} />
-                  {result.consentSigned ? "ลงนามแล้ว" : "ลงนามผ่าน iPad"}
-                </button>
-              )}
-            </div>
+              </div>
+            )}
           </Card>
 
           <Card>
