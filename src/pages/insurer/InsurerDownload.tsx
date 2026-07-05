@@ -56,7 +56,7 @@ export function InsurerDownload() {
 
   useEffect(() => {
     if (toastMessage) {
-      const timer = setTimeout(() => setToastMessage(null), 3000);
+      const timer = setTimeout(() => setToastMessage(null), 30000); // 30 seconds
       return () => clearTimeout(timer);
     }
   }, [toastMessage]);
@@ -373,10 +373,35 @@ export function InsurerDownload() {
 
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-5 right-5 z-[60] flex items-center gap-2 rounded-lg bg-status-ready-bg border border-status-ready-fg/30 px-4 py-3 text-xs font-semibold text-status-ready-fg shadow-lg animate-fade-in">
-          <span className="inline-block size-1.5 rounded-full bg-status-ready-fg animate-pulse" />
-          {toastMessage}
-        </div>
+        <>
+          <style>{`
+            @keyframes slide-in-right {
+              from {
+                transform: translateX(120%);
+                opacity: 0;
+              }
+              to {
+                transform: translateX(0);
+                opacity: 1;
+              }
+            }
+            .animate-slide-in-right {
+              animation: slide-in-right 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            }
+          `}</style>
+          <div className="fixed top-6 right-6 z-[60] flex items-center justify-between gap-4 rounded-xl bg-status-ready-bg border border-status-ready-fg/30 p-5 text-sm font-semibold text-status-ready-fg shadow-2xl animate-slide-in-right max-w-sm w-80">
+            <div className="flex items-center gap-2.5">
+              <span className="inline-block size-2 rounded-full bg-status-ready-fg animate-pulse shrink-0" />
+              <span>{toastMessage}</span>
+            </div>
+            <button
+              onClick={() => setToastMessage(null)}
+              className="rounded-lg p-1 text-status-ready-fg/70 hover:bg-status-ready-fg/10 hover:text-status-ready-fg transition-colors shrink-0"
+            >
+              <X size={16} />
+            </button>
+          </div>
+        </>
       )}
     </div>
   );
