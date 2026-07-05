@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { FileCheck2, PenLine, Receipt } from "lucide-react";
 import { Card, PageHeader, EmptyState } from "../components/PageHeader";
 import { FileDrop } from "../components/FileDrop";
@@ -7,6 +8,8 @@ import { useAppData } from "../context/AppDataContext";
 
 export function Cashier() {
   const { patients, invoiceQueue, submitInvoiceForOcr, confirmInvoiceMatch, signInvoice } = useAppData();
+  const location = useLocation();
+  const state = location.state as { hn?: string; name?: string } | null;
   const [signingHn, setSigningHn] = useState<string | null>(null);
 
   const unmatchedCandidates = patients.filter((p) =>
@@ -19,6 +22,22 @@ export function Cashier() {
         title="ช่องชำระเงิน"
         subtitle="จับไฟล์ Invoice ที่พิมพ์จาก HIS (Ctrl+P) เข้าสู่ Share Drive แล้วอ่านด้วย OCR เพื่อจับคู่ HN โดยอัตโนมัติ"
       />
+
+      {state?.hn && state?.name && (
+        <Card className="mb-6 bg-brand-50/50 border border-brand-200">
+          <div className="p-5 flex items-center justify-between gap-4">
+            <div>
+              <p className="text-xs text-brand-600 font-medium uppercase tracking-wide">กำลังดำเนินการชำระเงินสำหรับผู้ป่วย</p>
+              <p className="mt-1 text-lg font-medium text-ink-800">
+                {state.name} <span className="text-sm font-normal text-ink-400">({state.hn})</span>
+              </p>
+            </div>
+            <div className="rounded-full bg-brand-100 px-3 py-1 text-xs font-medium text-brand-700">
+              คนไข้ส่งต่อสำเร็จ
+            </div>
+          </div>
+        </Card>
+      )}
 
       <Card className="mb-6">
         <div className="p-5">

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { IdCard, Loader2, PenLine, ScanLine, Search, UserRound, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Card, PageHeader } from "../components/PageHeader";
 import { DocumentChecklist } from "../components/DocumentChecklist";
 import { FileDrop } from "../components/FileDrop";
@@ -9,6 +10,7 @@ import { formatThaiDate } from "../lib/mockData";
 
 export function Reception() {
   const { patients, findPatientByNationalId, logSisSearch, signConsent, uploadDocument } = useAppData();
+  const navigate = useNavigate();
   const [nationalId, setNationalId] = useState("");
   const [searching, setSearching] = useState(false);
   const [searched, setSearched] = useState(false);
@@ -147,12 +149,22 @@ export function Reception() {
               </div>
             )}
 
-            {result.nationalId !== "0000000000000" && (
-              <div className="flex items-center justify-between border-t border-line-soft p-5">
-                <div className="flex items-center gap-2 text-sm text-ink-600">
-                  <ScanLine size={16} className="text-ink-300" />
-                  ใบยินยอมเปิดเผยข้อมูลส่วนบุคคล (PDPA)
-                </div>
+            <div className="flex items-center justify-between border-t border-line-soft p-5">
+              <div className="flex items-center gap-2 text-sm text-ink-600">
+                <ScanLine size={16} className="text-ink-300" />
+                ใบยินยอมเปิดเผยข้อมูลส่วนบุคคล (PDPA)
+              </div>
+              {result.nationalId === "0000000000000" ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigate("/cashier", { state: { hn: result.hn, name: result.name } });
+                  }}
+                  className="flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700 transition-colors shadow-sm"
+                >
+                  ไปยังขั้นตอนต่อไป
+                </button>
+              ) : (
                 <button
                   onClick={() => setShowSignature(true)}
                   disabled={result.consentSigned}
@@ -161,8 +173,8 @@ export function Reception() {
                   <PenLine size={15} />
                   {result.consentSigned ? "ลงนามแล้ว" : "ลงนามผ่าน iPad"}
                 </button>
-              </div>
-            )}
+              )}
+            </div>
           </Card>
 
           <Card>
