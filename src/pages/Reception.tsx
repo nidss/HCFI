@@ -104,20 +104,29 @@ export function Reception() {
               </div>
             </div>
 
-            <div className="space-y-3 border-t border-line-soft p-5">
-              <p className="text-sm font-medium text-ink-700">สแกนบัตรประชาชนเข้าสู่ระบบ</p>
-              <FileDrop
-                compact
-                label={scannedFile ?? "ลากไฟล์ภาพบัตรประชาชนมาวาง หรือคลิกเพื่อสแกน"}
-                hint="รองรับ .jpg, .jpeg, .png จากเครื่องสแกนบัตรหรือกล้อง Tablet"
-                accept="image/*"
-                onFiles={(files) => {
-                  const name = files[0]?.name ?? "id_card_scan.jpg";
-                  setScannedFile(name);
-                  uploadDocument(result.hn, "สำเนาบัตรประชาชน", name);
-                }}
-              />
-            </div>
+            {result.nationalId === "0000000000000" ? (
+              <div className="border-t border-line-soft p-5">
+                <div className="flex items-center gap-3 rounded-lg bg-status-ready-bg/20 border border-status-ready-fg/20 px-4 py-3.5 text-sm text-status-ready-fg">
+                  <div className="font-semibold">บัตรประชาชน:</div>
+                  <div>ได้รับข้อมูลภาพถ่ายเรียบร้อยแล้วจากฝ่ายประชาสัมพันธ์</div>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-3 border-t border-line-soft p-5">
+                <p className="text-sm font-medium text-ink-700">สแกนบัตรประชาชนเข้าสู่ระบบ</p>
+                <FileDrop
+                  compact
+                  label={scannedFile ?? "ลากไฟล์ภาพบัตรประชาชนมาวาง หรือคลิกเพื่อสแกน"}
+                  hint="รองรับ .jpg, .jpeg, .png จากเครื่องสแกนบัตรหรือกล้อง Tablet"
+                  accept="image/*"
+                  onFiles={(files) => {
+                    const name = files[0]?.name ?? "id_card_scan.jpg";
+                    setScannedFile(name);
+                    uploadDocument(result.hn, "สำเนาบัตรประชาชน", name);
+                  }}
+                />
+              </div>
+            )}
 
             <div className="flex items-center justify-between border-t border-line-soft p-5">
               <div className="flex items-center gap-2 text-sm text-ink-600">
