@@ -38,6 +38,14 @@ export function InsurerDownload() {
     return `ตีกลับ - ${docs[0]} +${docs.length - 1}`;
   };
 
+  const getStatusTooltip = (p: any) => {
+    const r = getReview(p.hn);
+    if (r.status !== "ตีกลับ") return undefined;
+    const docs = r.rejectedDocs || [];
+    if (docs.length === 0) return "ตีกลับ";
+    return `เอกสารที่ตีกลับ:\n${docs.map((d) => `• ${d}`).join("\n")}`;
+  };
+
   // Reject modal states
   const [rejectingPatient, setRejectingPatient] = useState<any | null>(null);
   const [selectedDocs, setSelectedDocs] = useState<string[]>([]);
@@ -219,7 +227,8 @@ export function InsurerDownload() {
                           </td>
                           <td className="px-5 py-4">
                             <span
-                              className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-medium ${
+                              title={getStatusTooltip(p)}
+                              className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-medium cursor-help ${
                                 status === "ตรวจสอบแล้ว"
                                   ? "bg-status-ready-bg text-status-ready-fg"
                                   : status === "ตีกลับ"
