@@ -10,13 +10,33 @@ export function InsurerDownload() {
   const navigate = useNavigate();
   const { findDeliveryLinkByToken, patients, batches, recordDownloadAttempt } = useAppData();
   const [downloaded, setDownloaded] = useState(false);
-  const [statuses, setStatuses] = useState<Record<string, "รอดำเนินการ" | "ตรวจสอบแล้ว" | "ตีกลับ">>(() => ({
-    "HN 6604190": "ตรวจสอบแล้ว",
-    "HN 6604484": "ตีกลับ",
-    "HN 6604519": "รอดำเนินการ",
+  interface ClaimReview {
+    status: "รอดำเนินการ" | "ตรวจสอบแล้ว" | "ตีกลับ";
+    remark?: string;
+    rejectedDocs?: string[];
+  }
+
+  const [reviews, setReviews] = useState<Record<string, ClaimReview>>(() => ({
+    "HN 6604190": { status: "ตรวจสอบแล้ว" },
+    "HN 6604484": {
+      status: "ตีกลับ",
+      remark: "เอกสารสแกนไม่ชัดเจน กรุณาสแกนบัตรประชาชนใหม่",
+      rejectedDocs: ["สำเนาบัตรประชาชน"],
+    },
+    "HN 6604519": { status: "รอดำเนินการ" },
   }));
 
-  const getStatus = (hn: string) => statuses[hn] || "รอดำเนินการ";
+  const getReview = (hn: string): ClaimReview => reviews[hn] || { status: "รอดำเนินการ" };
+
+  const getStatusLabel = (p: any) => {
+    const r = getReview(p.hn);
+    if (r.status !== "ตีกลับ") return r.status;
+    const docs = r.rejectedDocs || [];
+    if (docs.length === 0) return "ตีกลับ";
+    if (docs.length === p.documents.length) return "ตีกลับทั้งหมด";
+    if (docs.length === 1) return `ตีกลับ - ${docs[0]}`;
+    return `ตีกลับ - ${docs[0]} +${docs.length - 1}`;
+  };
 
   // Reject modal states
   const [rejectingPatient, setRejectingPatient] = useState<any | null>(null);
@@ -47,9 +67,9 @@ export function InsurerDownload() {
 
   if (!link || !authed) return null;
 
-  const pendingCount = batchPatients.filter((p) => getStatus(p.hn) === "รอดำเนินการ").length;
-  const rejectedCount = batchPatients.filter((p) => getStatus(p.hn) === "ตีกลับ").length;
-  const approvedCount = batchPatients.filter((p) => getStatus(p.hn) === "ตรวจสอบแล้ว").length;
+  const pendingCount = batchPatients.filter((p) => getReview(p.hn).status === "รอดำเนินการ").length;
+  const rejectedCount = batchPatients.filter((p) => getReview(p.hn).status === "ตีกลับ").length;
+  const approvedCount = batchPatients.filter((p) => getReview(p.hn).status === "ตรวจสอบแล้ว").length;
 
   function handleDownload() {
     if (!batch) return;
@@ -178,19 +198,25 @@ export function InsurerDownload() {
                       <th className="px-5 py-3.5 font-medium">ชื่อผู้ป่วย</th>
                       <th className="px-5 py-3.5 font-medium">จำนวนเอกสาร</th>
                       <th className="px-5 py-3.5 font-medium">มูลค่าเคลม</th>
+                      <th className="px-5 py-3.5 font-medium">Remark</th>
                       <th className="px-5 py-3.5 font-medium">สถานะ</th>
                       <th className="px-5 py-3.5 font-medium text-right">การดำเนินการ</th>
                     </tr>
                   </thead>
                   <tbody>
                     {batchPatients.map((p) => {
-                      const status = getStatus(p.hn);
+                      const review = getReview(p.hn);
+                      const status = review.status;
+                      const statusLabel = getStatusLabel(p);
                       return (
                         <tr key={p.hn} className="border-b border-line-soft last:border-0 hover:bg-canvas/30 transition-colors">
                           <td className="px-5 py-4 font-mono text-ink-700">{p.hn}</td>
                           <td className="px-5 py-4 font-medium text-ink-800">{p.name}</td>
                           <td className="px-5 py-4 text-ink-600">{p.documents.length} ไฟล์</td>
                           <td className="px-5 py-4 font-medium text-ink-700">{formatCurrency(p.claimValue)}</td>
+                          <td className="px-5 py-4 text-ink-500 max-w-[200px] truncate" title={review.remark}>
+                            {review.remark || "-"}
+                          </td>
                           <td className="px-5 py-4">
                             <span
                               className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-medium ${
@@ -201,7 +227,7 @@ export function InsurerDownload() {
                                   : "bg-status-waiting-bg text-status-waiting-fg"
                               }`}
                             >
-                              {status}
+                              {statusLabel}
                             </span>
                           </td>
                           <td className="px-5 py-4 text-right">
@@ -209,7 +235,7 @@ export function InsurerDownload() {
                               {status === "รอดำเนินการ" ? (
                                 <>
                                   <button
-                                    onClick={() => setStatuses((prev) => ({ ...prev, [p.hn]: "ตรวจสอบแล้ว" }))}
+                                    onClick={() => setReviews((prev) => ({ ...prev, [p.hn]: { status: "ตรวจสอบแล้ว" } }))}
                                     className="rounded-lg bg-status-ready-bg hover:bg-status-ready-bg/85 px-3 py-1.5 text-xs font-semibold text-status-ready-fg transition-colors"
                                   >
                                     อนุมัติ
@@ -227,7 +253,7 @@ export function InsurerDownload() {
                                 </>
                               ) : (
                                 <button
-                                  onClick={() => setStatuses((prev) => ({ ...prev, [p.hn]: "รอดำเนินการ" }))}
+                                  onClick={() => setReviews((prev) => ({ ...prev, [p.hn]: { status: "รอดำเนินการ" } }))}
                                   className="rounded-lg border border-line bg-white hover:bg-line-soft px-3 py-1.5 text-xs font-medium text-ink-600 transition-colors shadow-sm"
                                 >
                                   แก้ไขสถานะ
@@ -316,7 +342,14 @@ export function InsurerDownload() {
               </button>
               <button
                 onClick={() => {
-                  setStatuses((prev) => ({ ...prev, [rejectingPatient.hn]: "ตีกลับ" }));
+                  setReviews((prev) => ({
+                    ...prev,
+                    [rejectingPatient.hn]: {
+                      status: "ตีกลับ",
+                      remark: rejectReason.trim() || undefined,
+                      rejectedDocs: selectedDocs.length > 0 ? selectedDocs : undefined,
+                    },
+                  }));
                   setRejectingPatient(null);
                   setToastMessage("ตีกลับเอกสารสำเร็จ");
                 }}
