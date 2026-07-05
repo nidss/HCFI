@@ -16,24 +16,24 @@ export function InsurerLogin() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  const link = findDeliveryLinkByToken(token);
+  const link = token ? findDeliveryLinkByToken(token) : undefined;
   const expired = link ? new Date(link.expiresAt).getTime() < Date.now() : false;
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!link || expired) return;
+    if (expired) return;
     const ok = username === DEMO_USERNAME && password === DEMO_PASSWORD;
     addAuditLog({
       user: username || "(ไม่ระบุ)",
       action: "เข้าสู่ระบบพอร์ทัลบริษัทประกัน",
-      target: link.batchId,
+      target: link?.batchId ?? "พอร์ทัลบริษัทประกัน",
       ip: genIp(),
       status: ok ? "สำเร็จ" : "ไม่สำเร็จ",
-      detail: ok ? "ล็อกอินสำเร็จก่อนเข้าถึงลิงก์ดาวน์โหลด" : "ล็อกอินไม่สำเร็จ Username หรือ Password ไม่ถูกต้อง",
+      detail: ok ? "ล็อกอินสำเร็จก่อนเข้าถึงหน้าภาพรวม" : "ล็อกอินไม่สำเร็จ Username หรือ Password ไม่ถูกต้อง",
     });
     if (ok) {
-      sessionStorage.setItem(`authed:${token}`, "1");
-      navigate(`/insurer/download?token=${token}`);
+      sessionStorage.setItem("insurer_authed", "1");
+      navigate("/insurer/overview");
     } else {
       setError("Username หรือ Password ไม่ถูกต้อง");
     }
@@ -50,12 +50,7 @@ export function InsurerLogin() {
           <p className="mt-1 text-sm text-ink-400">เข้าสู่ระบบเพื่อเข้าถึงเอกสารเคลมที่โรงพยาบาลจัดส่งให้</p>
         </div>
 
-        {!token || !link ? (
-          <div className="flex items-start gap-2 rounded-lg bg-status-danger-bg p-3 text-sm text-status-danger-fg">
-            <ShieldAlert size={16} className="mt-0.5 shrink-0" />
-            ลิงก์นี้ไม่ถูกต้องหรือถูกยกเลิกแล้ว กรุณาติดต่อโรงพยาบาลเพื่อขอลิงก์ใหม่
-          </div>
-        ) : expired ? (
+        {token && expired ? (
           <div className="flex items-start gap-2 rounded-lg bg-status-danger-bg p-3 text-sm text-status-danger-fg">
             <ShieldAlert size={16} className="mt-0.5 shrink-0" />
             ลิงก์ดาวน์โหลดหมดอายุแล้ว กรุณาติดต่อโรงพยาบาลเพื่อขอลิงก์ใหม่

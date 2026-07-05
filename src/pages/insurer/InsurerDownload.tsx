@@ -19,7 +19,7 @@ export function InsurerDownload() {
   const getStatus = (hn: string) => statuses[hn] || "รอดำเนินการ";
 
   const link = findDeliveryLinkByToken(token);
-  const authed = typeof window !== "undefined" && sessionStorage.getItem(`authed:${token}`) === "1";
+  const authed = typeof window !== "undefined" && sessionStorage.getItem("insurer_authed") === "1";
   const expired = link ? new Date(link.expiresAt).getTime() < Date.now() : false;
   const batch = link ? batches.find((b) => b.id === link.batchId) : undefined;
   const batchPatients = batch ? patients.filter((p) => batch.hns.includes(p.hn)) : [];
@@ -62,20 +62,33 @@ export function InsurerDownload() {
     <div className="min-h-screen bg-canvas pb-12">
       <header className="flex items-center justify-between border-b border-line-soft bg-white px-6 py-4">
         <div className="flex items-center gap-2.5">
-          <div className="flex size-9 items-center justify-center rounded-lg bg-brand-600 text-white">
+          <div className="flex size-9 items-center justify-center rounded-lg bg-indigo-600 text-white">
             <Building2 size={17} />
           </div>
-          <span className="text-sm font-medium text-ink-800">ClaimFlow — พอร์ทัลบริษัทประกัน</span>
+          <button
+            onClick={() => navigate("/insurer/overview")}
+            className="text-sm font-medium text-ink-800 hover:text-brand-600 transition-colors"
+          >
+            ClaimFlow — พอร์ทัลบริษัทประกัน
+          </button>
         </div>
-        <button
-          onClick={() => {
-            sessionStorage.removeItem(`authed:${token}`);
-            navigate(`/insurer/login?token=${token}`);
-          }}
-          className="flex items-center gap-1.5 text-sm text-ink-400 hover:text-ink-600"
-        >
-          <LogOut size={15} /> ออกจากระบบ
-        </button>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => navigate("/insurer/overview")}
+            className="text-xs font-semibold text-brand-600 hover:underline"
+          >
+            กลับหน้าภาพรวม
+          </button>
+          <button
+            onClick={() => {
+              sessionStorage.removeItem("insurer_authed");
+              navigate("/insurer/login");
+            }}
+            className="flex items-center gap-1.5 text-sm text-ink-400 hover:text-ink-600"
+          >
+            <LogOut size={15} /> ออกจากระบบ
+          </button>
+        </div>
       </header>
 
       <main className="mx-auto max-w-5xl px-4 py-8 space-y-6">
