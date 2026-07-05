@@ -108,18 +108,21 @@ export function InsurerDownload() {
     <div className="min-h-screen bg-canvas pb-12">
       {/* Custom Styles to make scrollbar always visible */}
       <style>{`
+        .force-scrollbar {
+          overflow-x: scroll !important;
+        }
         .force-scrollbar::-webkit-scrollbar {
-          height: 10px !important;
+          height: 12px !important;
           display: block !important;
         }
         .force-scrollbar::-webkit-scrollbar-track {
-          background: #f1f3f5 !important;
-          border-radius: 999px;
+          background: #e2e8f0 !important;
+          border-radius: 999px !important;
         }
         .force-scrollbar::-webkit-scrollbar-thumb {
-          background-color: #cbd5e1 !important;
-          border: 2px solid #f1f3f5 !important;
-          border-radius: 999px;
+          background-color: #94a3b8 !important;
+          border: 3px solid #e2e8f0 !important;
+          border-radius: 999px !important;
         }
       `}</style>
 
