@@ -199,16 +199,16 @@ export function InsurerDownload() {
               </div>
 
               <div className="overflow-x-auto">
-                <table className="w-full text-sm">
+                <table className="w-full text-sm min-w-[1050px]">
                   <thead>
                     <tr className="border-b border-line-soft text-left text-xs text-ink-300 bg-slate-50/50">
-                      <th className="px-5 py-3.5 font-medium">HN</th>
-                      <th className="px-5 py-3.5 font-medium">ชื่อผู้ป่วย</th>
-                      <th className="px-5 py-3.5 font-medium">จำนวนเอกสาร</th>
-                      <th className="px-5 py-3.5 font-medium">มูลค่าเคลม</th>
-                      <th className="px-5 py-3.5 font-medium">Remark</th>
-                      <th className="px-5 py-3.5 font-medium">สถานะ</th>
-                      <th className="px-5 py-3.5 font-medium text-right">การดำเนินการ</th>
+                      <th className="px-5 py-3.5 font-medium w-[120px]">HN</th>
+                      <th className="px-5 py-3.5 font-medium w-[180px]">ชื่อผู้ป่วย</th>
+                      <th className="px-5 py-3.5 font-medium w-[120px]">จำนวนเอกสาร</th>
+                      <th className="px-5 py-3.5 font-medium w-[120px]">มูลค่าเคลม</th>
+                      <th className="px-5 py-3.5 font-medium w-[240px]">Remark</th>
+                      <th className="px-5 py-3.5 font-medium w-[180px]">สถานะ</th>
+                      <th className="px-5 py-3.5 font-medium text-left w-[200px]">การดำเนินการ</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -222,7 +222,7 @@ export function InsurerDownload() {
                           <td className="px-5 py-4 font-medium text-ink-800">{p.name}</td>
                           <td className="px-5 py-4 text-ink-600">{p.documents.length} ไฟล์</td>
                           <td className="px-5 py-4 font-medium text-ink-700">{formatCurrency(p.claimValue)}</td>
-                          <td className="px-5 py-4 text-ink-500 max-w-[200px] truncate" title={review.remark}>
+                          <td className="px-5 py-4 text-ink-500 max-w-[220px] truncate" title={review.remark}>
                             {review.remark || "-"}
                           </td>
                           <td className="px-5 py-4">
@@ -239,8 +239,8 @@ export function InsurerDownload() {
                               {statusLabel}
                             </span>
                           </td>
-                          <td className="px-5 py-4 text-right">
-                            <div className="flex justify-end gap-2.5 w-[170px] ml-auto">
+                          <td className="px-5 py-4 text-left">
+                            <div className="flex justify-start gap-2.5 w-[170px] mr-auto">
                               {status === "รอดำเนินการ" ? (
                                 <>
                                   <button
