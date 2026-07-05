@@ -107,23 +107,32 @@ export function Reception() {
 
             {result.nationalId === "0000000000000" ? (
               <div className="space-y-3 border-t border-line-soft p-5">
-                <p className="text-sm font-medium text-ink-700">สแกนบัตรประชาชนเข้าสู่ระบบ</p>
+                <p className="text-sm font-medium text-ink-700">รูปภาพบัตรประชาชน</p>
                 <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-line bg-canvas p-6 text-center shadow-sm">
-                  <div className="text-sm text-ink-600">
+                  <div className="text-sm text-ink-600 mb-1">
                     ได้รับรูปภาพบัตรประชาชนเรียบร้อยแล้วจากฝ่ายประชาสัมพันธ์
                   </div>
                   <button
                     type="button"
                     onClick={() => setShowIdCardModal(true)}
-                    className="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2 text-xs font-medium text-white hover:bg-brand-700 shadow-sm transition-colors"
+                    className="group relative overflow-hidden rounded-lg border border-line bg-white p-1 hover:border-brand-500 hover:ring-1 hover:ring-brand-500 transition-all shadow-sm"
                   >
-                    คลิกเพื่อดูรูป
+                    <img
+                      src="/A4 - signed.png"
+                      alt="ID Card Thumbnail"
+                      className="h-24 w-auto rounded object-contain"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-ink-900/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="rounded bg-white/95 px-2.5 py-1 text-[11px] font-medium text-ink-700 shadow-sm">
+                        คลิกเพื่อดูรูป
+                      </span>
+                    </div>
                   </button>
                 </div>
               </div>
             ) : (
               <div className="space-y-3 border-t border-line-soft p-5">
-                <p className="text-sm font-medium text-ink-700">สแกนบัตรประชาชนเข้าสู่ระบบ</p>
+                <p className="text-sm font-medium text-ink-700">รูปภาพบัตรประชาชน</p>
                 <FileDrop
                   compact
                   label={scannedFile ?? "ลากไฟล์ภาพบัตรประชาชนมาวาง หรือคลิกเพื่อสแกน"}
@@ -179,7 +188,7 @@ export function Reception() {
         />
       )}
 
-      {showIdCardModal && (
+      {showIdCardModal && result && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
           <div className="relative max-w-xl w-full rounded-xl bg-white p-6 shadow-2xl animate-fade-in">
             <div className="mb-4 flex items-center justify-between border-b border-line-soft pb-3">
@@ -193,7 +202,7 @@ export function Reception() {
             </div>
             <div className="flex justify-center bg-canvas rounded-lg p-4">
               <img
-                src="/idcard.png"
+                src={result.nationalId === "0000000000000" ? "/A4 - signed.png" : "/idcard.png"}
                 alt="ID Card Scan"
                 className="max-h-[60vh] rounded shadow-md object-contain"
               />
