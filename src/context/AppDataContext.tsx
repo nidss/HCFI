@@ -51,6 +51,7 @@ interface AppDataApi {
 const AppDataContext = createContext<AppDataApi | null>(null);
 
 function recomputeStatus(p: Patient): Patient["status"] {
+  if (p.status === "-") return "-";
   if (p.status === "รอเลข ERP" || p.status === "พร้อมส่งมอบ" || p.status === "ส่งมอบแล้ว") {
     return p.status;
   }

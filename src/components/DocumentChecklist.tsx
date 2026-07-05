@@ -2,6 +2,13 @@ import { CheckCircle2, Circle } from "lucide-react";
 import type { ClaimDocument } from "../lib/types";
 
 export function DocumentChecklist({ documents }: { documents: ClaimDocument[] }) {
+  if (documents.length === 0) {
+    return (
+      <div className="py-8 text-center text-xs text-ink-300">
+        ยังไม่มีรายการเอกสาร (ผู้ป่วยใหม่ยังไม่ได้เข้ารับการรักษา)
+      </div>
+    );
+  }
   return (
     <ul className="divide-y divide-line-soft">
       {documents.map((d) => (

@@ -104,9 +104,13 @@ export function Documents() {
                     <td className="px-5 py-3 text-ink-600">{p.name}</td>
                     <td className="px-5 py-3 text-ink-500">{formatThaiDate(p.visitDate)}</td>
                     <td className="px-5 py-3">
-                      <span className="rounded-md bg-line-soft px-2 py-1 text-xs font-medium text-ink-500">
-                        STAGE {p.stage}
-                      </span>
+                      {p.stage > 0 ? (
+                        <span className="rounded-md bg-line-soft px-2 py-1 text-xs font-medium text-ink-500">
+                          STAGE {p.stage}
+                        </span>
+                      ) : (
+                        <span className="text-xs text-ink-300">ยังไม่เข้ารักษา</span>
+                      )}
                     </td>
                     <td className="px-5 py-3 text-ink-600">{formatCurrency(p.claimValue)}</td>
                     <td className="px-5 py-3">

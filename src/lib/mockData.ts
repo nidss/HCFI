@@ -60,6 +60,7 @@ export function formatCurrency(value: number | null): string {
 }
 
 function buildDocuments(status: ClaimStatus, daysAgo: number): ClaimDocument[] {
+  if (status === "-") return [];
   const idCard = doc("สำเนาบัตรประชาชน", "ครบถ้วน", "สแกนบัตร", daysAgo);
   const consent = doc(
     "ใบยินยอมเปิดเผยข้อมูล",
@@ -116,6 +117,7 @@ const seedRows: SeedRow[] = [
   { hn: "HN 6604512", name: "ชัยวัฒน์ มณีวรรณ", nationalId: "1100701234573", daysAgo: 9, stage: 3, claimValue: 24200, status: "พร้อมเบิก" },
   { hn: "HN 6604519", name: "ศิริพร ไชยวงศ์", nationalId: "1100701234574", daysAgo: 8, stage: 5, claimValue: 25550, status: "ส่งมอบแล้ว", batchId: "BATCH-2026-0018" },
   { hn: "HN 6604526", name: "เอกชัย สุขสวัสดิ์", nationalId: "1100701234575", daysAgo: 7, stage: 4, claimValue: 26900, status: "รอเลข ERP", batchId: "BATCH-2026-0031" },
+  { hn: "HN 6604600", name: "สมฉวี มีความสุข", nationalId: "0000000000000", daysAgo: 0, stage: 0, claimValue: null, status: "-" },
 ];
 
 export function createInitialPatients(): Patient[] {
@@ -128,8 +130,8 @@ export function createInitialPatients(): Patient[] {
     claimValue: row.claimValue,
     status: row.status,
     documents: buildDocuments(row.status, row.daysAgo),
-    consentSigned: row.status !== "รอเซ็นยินยอม",
-    invoiceSigned: row.status !== "รอเซ็นยินยอม",
+    consentSigned: row.status !== "รอเซ็นยินยอม" && row.status !== "-",
+    invoiceSigned: row.status !== "รอเซ็นยินยอม" && row.status !== "-",
     ocrConfidence: row.ocrConfidence,
     batchId: row.batchId,
   }));
@@ -226,6 +228,7 @@ export const statusColor: Record<ClaimStatus, { bg: string; fg: string }> = {
   "รอเลข ERP": { bg: "bg-status-erp-bg", fg: "text-status-erp-fg" },
   "พร้อมส่งมอบ": { bg: "bg-indigo-100", fg: "text-indigo-700" },
   "ส่งมอบแล้ว": { bg: "bg-status-sent-bg", fg: "text-status-sent-fg" },
+  "-": { bg: "bg-line-soft", fg: "text-ink-400" },
 };
 
 export function genToken(): string {

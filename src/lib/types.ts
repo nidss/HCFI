@@ -4,7 +4,8 @@ export type ClaimStatus =
   | "พร้อมเบิก"
   | "รอเลข ERP"
   | "พร้อมส่งมอบ"
-  | "ส่งมอบแล้ว";
+  | "ส่งมอบแล้ว"
+  | "-";
 
 export type DocKind =
   | "สำเนาบัตรประชาชน"
@@ -27,7 +28,7 @@ export interface Patient {
   name: string;
   nationalId: string;
   visitDate: string;
-  stage: 1 | 2 | 3 | 4 | 5;
+  stage: 0 | 1 | 2 | 3 | 4 | 5;
   claimValue: number | null;
   status: ClaimStatus;
   documents: ClaimDocument[];
