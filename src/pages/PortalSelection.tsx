@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Monitor, Tablet, ShieldAlert } from "lucide-react";
+import { Monitor, Tablet, ShieldAlert, Building2 } from "lucide-react";
 
 export function PortalSelection() {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ export function PortalSelection() {
       <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#d2f1e4]/40 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-brand-100/40 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="w-full max-w-4xl flex flex-col items-center text-center z-10 mb-12">
+      <div className="w-full max-w-5xl flex flex-col items-center text-center z-10 mb-12">
         <div className="flex items-center gap-3 mb-4">
           <img src="https://raw.githubusercontent.com/nidss/HCFI/main/public/slogo.png" alt="Sikarin Logo" className="h-12 w-auto object-contain rounded-xl shadow-sm" />
           <h1 className="text-3xl font-medium tracking-tight text-ink-900 font-['Outfit']">
@@ -23,26 +23,26 @@ export function PortalSelection() {
         </p>
       </div>
 
-      <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-8 z-10">
+      <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-3 gap-6 z-10">
         {/* Staff Portal Card */}
         <div 
           onClick={() => navigate("/overview")}
-          className="group cursor-pointer bg-white border border-[#dbe3ec] hover:border-brand-500 rounded-2xl p-8 flex flex-col justify-between shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5"
+          className="group cursor-pointer bg-white border border-[#dbe3ec] hover:border-brand-500 rounded-2xl p-6 flex flex-col justify-between shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5"
         >
           <div>
-            <div className="size-16 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center mb-6 group-hover:bg-brand-600 group-hover:text-white transition-all duration-300">
-              <Monitor size={32} />
+            <div className="size-14 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center mb-6 group-hover:bg-brand-600 group-hover:text-white transition-all duration-300">
+              <Monitor size={28} />
             </div>
-            <h3 className="text-xl font-medium text-ink-800 font-['Prompt'] mb-3 group-hover:text-brand-600 transition-colors">
+            <h3 className="text-lg font-medium text-ink-800 font-['Prompt'] mb-3 group-hover:text-brand-600 transition-colors">
               ส่วนของพนักงานโรงพยาบาล (Desktop)
             </h3>
-            <p className="text-sm text-ink-400 font-['Prompt'] leading-relaxed mb-6">
+            <p className="text-xs text-ink-400 font-['Prompt'] leading-relaxed mb-6">
               ระบบแดชบอร์ดหลักสำหรับแผนกต้อนรับ การเงิน และตรวจสอบเอกสาร (Audit) 
               สำหรับติดตามคิวผู้ป่วย นำเข้าใบเสร็จ (Invoice) ด้วย OCR 
               ออกใบสรุปจ่ายเชื่อมต่อระบบ ERP และส่งเอกสารให้บริษัทประกันภัย
             </p>
           </div>
-          <button className="w-full bg-[#f6f8fb] text-brand-600 font-medium py-3 px-4 rounded-xl group-hover:bg-brand-600 group-hover:text-white transition-all duration-300 font-['Prompt'] text-sm shadow-sm">
+          <button className="w-full bg-[#f6f8fb] text-brand-600 font-medium py-2.5 px-4 rounded-xl group-hover:bg-brand-600 group-hover:text-white transition-all duration-300 font-['Prompt'] text-xs shadow-sm">
             เข้าพอร์ตัลผู้ปฏิบัติงาน
           </button>
         </div>
@@ -50,23 +50,46 @@ export function PortalSelection() {
         {/* Patient Portal Card */}
         <div 
           onClick={() => navigate("/patient/select")}
-          className="group cursor-pointer bg-white border border-[#dbe3ec] hover:border-brand-500 rounded-2xl p-8 flex flex-col justify-between shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5"
+          className="group cursor-pointer bg-white border border-[#dbe3ec] hover:border-brand-500 rounded-2xl p-6 flex flex-col justify-between shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5"
         >
           <div>
-            <div className="size-16 rounded-xl bg-[#fff9db] text-[#d9480f] flex items-center justify-center mb-6 group-hover:bg-[#d9480f] group-hover:text-white transition-all duration-300">
-              <Tablet size={32} />
+            <div className="size-14 rounded-xl bg-[#fff9db] text-[#d9480f] flex items-center justify-center mb-6 group-hover:bg-[#d9480f] group-hover:text-white transition-all duration-300">
+              <Tablet size={28} />
             </div>
-            <h3 className="text-xl font-medium text-ink-800 font-['Prompt'] mb-3 group-hover:text-[#d9480f] transition-colors">
+            <h3 className="text-lg font-medium text-ink-800 font-['Prompt'] mb-3 group-hover:text-[#d9480f] transition-colors">
               ส่วนของคนไข้ (iPad)
             </h3>
-            <p className="text-sm text-ink-400 font-['Prompt'] leading-relaxed mb-6">
+            <p className="text-xs text-ink-400 font-['Prompt'] leading-relaxed mb-6">
               หน้าจอสำหรับเครื่องแท็บเล็ต/iPad ประจำเคาน์เตอร์บริการ 
               เพื่อให้ผู้ป่วยตรวจทานข้อมูลส่วนตัว เซ็นยอมรับเงื่อนไขการเปิดเผยข้อมูลการรักษาพยาบาล 
               เซ็นรับรองสำเนาถูกต้องของบัตรประชาชน และรับทราบรายการค่ารักษา
             </p>
           </div>
-          <button className="w-full bg-[#f6f8fb] text-[#d9480f] font-medium py-3 px-4 rounded-xl group-hover:bg-[#d9480f] group-hover:text-white transition-all duration-300 font-['Prompt'] text-sm shadow-sm">
+          <button className="w-full bg-[#f6f8fb] text-[#d9480f] font-medium py-2.5 px-4 rounded-xl group-hover:bg-[#d9480f] group-hover:text-white transition-all duration-300 font-['Prompt'] text-xs shadow-sm">
             เข้าพอร์ตัลผู้ป่วย/แท็บเล็ต
+          </button>
+        </div>
+
+        {/* Insurer Portal Card */}
+        <div 
+          onClick={() => navigate("/insurer/login?token=tok_9f21ac3e8b4d")}
+          className="group cursor-pointer bg-white border border-[#dbe3ec] hover:border-brand-500 rounded-2xl p-6 flex flex-col justify-between shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5"
+        >
+          <div>
+            <div className="size-14 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+              <Building2 size={28} />
+            </div>
+            <h3 className="text-lg font-medium text-ink-800 font-['Prompt'] mb-3 group-hover:text-indigo-600 transition-colors">
+              ส่วนของบริษัทประกันภัย (Insurer)
+            </h3>
+            <p className="text-xs text-ink-400 font-['Prompt'] leading-relaxed mb-6">
+              ระบบตรวจสอบและรับรองเอกสารสำหรับบริษัทประกันภัยผู้รับมอบสิทธิ์ 
+              สามารถตรวจสอบรายการเคลมแบบตาราง อนุมัติหรือตีกลับเอกสารเคลมรายบุคคล 
+              และดาวน์โหลดแพ็กเกจไฟล์เอกสารสรุป
+            </p>
+          </div>
+          <button className="w-full bg-[#f6f8fb] text-indigo-600 font-medium py-2.5 px-4 rounded-xl group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300 font-['Prompt'] text-xs shadow-sm">
+            เข้าพอร์ตัลบริษัทประกัน
           </button>
         </div>
       </div>
