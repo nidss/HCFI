@@ -47,7 +47,7 @@ export function Cashier() {
             hint="รองรับไฟล์ .pdf, .jpg, .jpeg, .png · ตั้งชื่อไฟล์ให้มีเลข HN เช่น invoice_6604302.pdf เพื่อให้ OCR จับคู่อัตโนมัติ"
             accept=".pdf,.jpg,.jpeg,.png"
             onFiles={(files) => {
-              Array.from(files).forEach((f) => submitInvoiceForOcr(f.name));
+              Array.from(files).forEach((f) => submitInvoiceForOcr(f.name, state?.hn));
             }}
           />
         </div>

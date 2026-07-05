@@ -36,7 +36,7 @@ interface AppDataApi {
   findPatient: (hn: string) => Patient | undefined;
   logSisSearch: (nationalId: string, found: boolean) => void;
   signConsent: (hn: string) => void;
-  submitInvoiceForOcr: (fileName: string) => InvoiceQueueItem;
+  submitInvoiceForOcr: (fileName: string, overrideHn?: string | null) => InvoiceQueueItem;
   confirmInvoiceMatch: (queueId: string, hn: string) => void;
   signInvoice: (hn: string) => void;
   uploadDocument: (hn: string, kind: DocKind, fileName: string) => void;
@@ -131,9 +131,9 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
   );
 
   const submitInvoiceForOcr = useCallback(
-    (fileName: string): InvoiceQueueItem => {
+    (fileName: string, overrideHn?: string | null): InvoiceQueueItem => {
       const match = fileName.match(/(66\d{5})/);
-      const guessedHn = match ? `HN ${match[1]}` : null;
+      const guessedHn = overrideHn || (match ? `HN ${match[1]}` : null);
       const p = guessedHn ? patients.find((x) => x.hn === guessedHn) : undefined;
       const confidence = p ? Math.floor(88 + Math.random() * 11) : null;
       const queueItem: InvoiceQueueItem = {
