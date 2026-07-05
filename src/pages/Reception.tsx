@@ -118,7 +118,7 @@ export function Reception() {
                     className="group relative overflow-hidden rounded-lg border border-line bg-white p-1 hover:border-brand-500 hover:ring-1 hover:ring-brand-500 transition-all shadow-sm"
                   >
                     <img
-                      src="/A4 - signed.png"
+                      src="/A4-signed.png"
                       alt="ID Card Thumbnail"
                       className="h-24 w-auto rounded object-contain"
                     />
@@ -202,7 +202,7 @@ export function Reception() {
             </div>
             <div className="flex justify-center bg-canvas rounded-lg p-4">
               <img
-                src={result.nationalId === "0000000000000" ? "/A4 - signed.png" : "/idcard.png"}
+                src={result.nationalId === "0000000000000" ? "/A4-signed.png" : "/idcard.png"}
                 alt="ID Card Scan"
                 className="max-h-[60vh] rounded shadow-md object-contain"
               />
