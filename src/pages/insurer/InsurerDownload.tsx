@@ -54,6 +54,9 @@ export function InsurerDownload() {
   // Toast notification state
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
+  // Active tooltip state
+  const [activeTooltipHn, setActiveTooltipHn] = useState<string | null>(null);
+
   useEffect(() => {
     if (toastMessage) {
       const timer = setTimeout(() => setToastMessage(null), 30000); // 30 seconds
@@ -103,6 +106,23 @@ export function InsurerDownload() {
 
   return (
     <div className="min-h-screen bg-canvas pb-12">
+      {/* Custom Styles to make scrollbar always visible */}
+      <style>{`
+        .force-scrollbar::-webkit-scrollbar {
+          height: 10px !important;
+          display: block !important;
+        }
+        .force-scrollbar::-webkit-scrollbar-track {
+          background: #f1f3f5 !important;
+          border-radius: 999px;
+        }
+        .force-scrollbar::-webkit-scrollbar-thumb {
+          background-color: #cbd5e1 !important;
+          border: 2px solid #f1f3f5 !important;
+          border-radius: 999px;
+        }
+      `}</style>
+
       <header className="flex items-center justify-between border-b border-line-soft bg-white px-6 py-4">
         <div className="flex items-center gap-2.5">
           <div className="flex size-9 items-center justify-center rounded-lg bg-indigo-600 text-white">
@@ -198,8 +218,8 @@ export function InsurerDownload() {
                 </div>
               </div>
 
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm min-w-[1050px]">
+              <div className="overflow-x-auto force-scrollbar pb-2">
+                <table className="w-full text-sm min-w-[1200px]">
                   <thead>
                     <tr className="border-b border-line-soft text-left text-xs text-ink-300 bg-slate-50/50">
                       <th className="px-5 py-3.5 font-medium w-[120px]">HN</th>
@@ -207,7 +227,7 @@ export function InsurerDownload() {
                       <th className="px-5 py-3.5 font-medium w-[120px]">จำนวนเอกสาร</th>
                       <th className="px-5 py-3.5 font-medium w-[120px]">มูลค่าเคลม</th>
                       <th className="px-5 py-3.5 font-medium w-[240px]">Remark</th>
-                      <th className="px-5 py-3.5 font-medium w-[180px]">สถานะ</th>
+                      <th className="px-5 py-3.5 font-medium w-[260px]">สถานะ</th>
                       <th className="px-5 py-3.5 font-medium text-left w-[200px]">การดำเนินการ</th>
                     </tr>
                   </thead>
@@ -216,28 +236,90 @@ export function InsurerDownload() {
                       const review = getReview(p.hn);
                       const status = review.status;
                       const statusLabel = getStatusLabel(p);
+                      const docs = review.rejectedDocs || [];
                       return (
                         <tr key={p.hn} className="border-b border-line-soft last:border-0 hover:bg-canvas/30 transition-colors">
                           <td className="px-5 py-4 font-mono text-ink-700">{p.hn}</td>
                           <td className="px-5 py-4 font-medium text-ink-800">{p.name}</td>
                           <td className="px-5 py-4 text-ink-600">{p.documents.length} ไฟล์</td>
                           <td className="px-5 py-4 font-medium text-ink-700">{formatCurrency(p.claimValue)}</td>
-                          <td className="px-5 py-4 text-ink-500 max-w-[220px] truncate" title={review.remark}>
+                          <td className="px-5 py-4 text-ink-500 w-[240px] whitespace-normal break-words leading-relaxed">
                             {review.remark || "-"}
                           </td>
-                          <td className="px-5 py-4">
-                            <span
-                              title={getStatusTooltip(p)}
-                              className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-medium cursor-help ${
-                                status === "ตรวจสอบแล้ว"
-                                  ? "bg-status-ready-bg text-status-ready-fg"
-                                  : status === "ตีกลับ"
-                                  ? "bg-status-danger-bg text-status-danger-fg"
-                                  : "bg-status-waiting-bg text-status-waiting-fg"
-                              }`}
-                            >
-                              {statusLabel}
-                            </span>
+                          <td className="px-5 py-4 align-middle w-[260px]">
+                            {status === "ตีกลับ" ? (
+                              <div className="relative inline-flex items-center gap-1.5">
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setActiveTooltipHn(activeTooltipHn === p.hn ? null : p.hn);
+                                  }}
+                                  className="inline-flex rounded-full bg-status-danger-bg px-2.5 py-1 text-[11px] font-medium text-status-danger-fg cursor-pointer hover:bg-status-danger-bg/80 transition-colors whitespace-nowrap"
+                                >
+                                  {docs.length === p.documents.length ? "ตีกลับทั้งหมด" : `ตีกลับ - ${docs[0] || "เอกสาร"}`}
+                                </button>
+                                {docs.length > 1 && (
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setActiveTooltipHn(activeTooltipHn === p.hn ? null : p.hn);
+                                    }}
+                                    className="inline-flex rounded-full bg-purple-100 border border-purple-200 px-2 py-0.5 text-[10px] font-bold text-purple-700 cursor-pointer hover:bg-purple-200 transition-colors whitespace-nowrap"
+                                  >
+                                    +{docs.length - 1}
+                                  </button>
+                                )}
+
+                                {activeTooltipHn === p.hn && (
+                                  <>
+                                    <div
+                                      className="fixed inset-0 z-40 bg-transparent cursor-default"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setActiveTooltipHn(null);
+                                      }}
+                                    />
+                                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2.5 z-50 min-w-[200px] rounded-lg border border-line-soft bg-white p-3 shadow-2xl animate-fade-in text-left">
+                                      <div className="flex items-center justify-between border-b border-line-soft pb-1.5 mb-1.5">
+                                        <span className="font-semibold text-ink-800 text-xs">เอกสารที่ตีกลับ</span>
+                                        <button
+                                          type="button"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            setActiveTooltipHn(null);
+                                          }}
+                                          className="text-ink-300 hover:text-ink-500 rounded p-0.5"
+                                        >
+                                          <X size={12} />
+                                        </button>
+                                      </div>
+                                      <ul className="space-y-1 text-xs text-ink-600">
+                                        {docs.map((d: string) => (
+                                          <li key={d} className="flex items-center gap-1.5">
+                                            <span className="size-1.5 rounded-full bg-status-danger-fg" />
+                                            <span>{d}</span>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                      <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1.5 border-[6px] border-transparent border-t-white" />
+                                      <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-2 border-[6px] border-transparent border-t-line-soft/30 -z-10" />
+                                    </div>
+                                  </>
+                                )}
+                              </div>
+                            ) : (
+                              <span
+                                className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-medium ${
+                                  status === "ตรวจสอบแล้ว"
+                                    ? "bg-status-ready-bg text-status-ready-fg"
+                                    : "bg-status-waiting-bg text-status-waiting-fg"
+                                }`}
+                              >
+                                {statusLabel}
+                              </span>
+                            )}
                           </td>
                           <td className="px-5 py-4 text-left">
                             <div className="flex justify-start gap-2.5 w-[170px] mr-auto">
