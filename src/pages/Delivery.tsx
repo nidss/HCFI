@@ -169,7 +169,7 @@ export function Delivery() {
 
       {viewingBatchId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 animate-fade-in">
-          <div className="relative max-w-lg w-full rounded-xl bg-white p-6 shadow-2xl flex flex-col max-h-[85vh]">
+          <div className="relative max-w-3xl w-full rounded-xl bg-white p-6 shadow-2xl flex flex-col max-h-[85vh]">
             <div className="mb-4 flex items-center justify-between border-b border-line-soft pb-3 shrink-0">
               <div>
                 <h3 className="text-base font-semibold text-ink-800">รายละเอียดเอกสารที่ส่งมอบ</h3>
@@ -182,35 +182,50 @@ export function Delivery() {
                 <X size={18} />
               </button>
             </div>
-            <div className="space-y-6 overflow-y-auto pr-1 py-1">
+            <div className="overflow-y-auto pr-1 py-1">
               {(() => {
                 const b = batches.find((x) => x.id === viewingBatchId);
                 const bps = patients.filter((p) => b?.hns.includes(p.hn));
                 if (bps.length === 0) {
                   return <p className="text-sm text-ink-400 text-center py-4">ไม่พบข้อมูลผู้ป่วยในชุดเอกสารนี้</p>;
                 }
-                return bps.map((p) => (
-                  <div key={p.hn} className="rounded-lg border border-line-soft p-4 bg-canvas/30">
-                    <div className="mb-2.5 flex items-center justify-between border-b border-line-soft pb-2">
-                      <span className="text-sm font-semibold text-ink-800">{p.name}</span>
-                      <span className="text-xs text-ink-400 font-mono">{p.hn}</span>
-                    </div>
-                    {p.documents.length === 0 ? (
-                      <p className="text-xs text-ink-300 italic py-1">ไม่มีเอกสารในระบบ (ยังไม่ได้รับการรักษา)</p>
-                    ) : (
-                      <ul className="space-y-1.5 text-xs text-ink-600">
-                        {p.documents.map((d) => (
-                          <li key={d.id} className="flex items-center justify-between gap-2">
-                            <span className="truncate">{d.kind}</span>
-                            <span className="shrink-0 rounded bg-brand-50 px-1.5 py-0.5 text-[10px] font-medium text-brand-700 font-mono">
-                              {d.fileName}
-                            </span>
-                          </li>
+                return (
+                  <div className="overflow-x-auto rounded-lg border border-line-soft">
+                    <table className="w-full text-left text-xs border-collapse">
+                      <thead>
+                        <tr className="border-b border-line-soft text-ink-400 bg-canvas/50">
+                          <th className="px-4 py-3.5 font-semibold w-24">HN</th>
+                          <th className="px-4 py-3.5 font-semibold w-40">ชื่อผู้ป่วย</th>
+                          <th className="px-4 py-3.5 font-semibold">รายการเอกสารที่ส่งมอบ</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {bps.map((p) => (
+                          <tr key={p.hn} className="border-b border-line-soft last:border-0 hover:bg-canvas/30 transition-colors">
+                            <td className="px-4 py-3 font-mono text-ink-600 align-top">{p.hn}</td>
+                            <td className="px-4 py-3 font-medium text-ink-800 align-top">{p.name}</td>
+                            <td className="px-4 py-3">
+                              <div className="flex flex-wrap gap-1.5">
+                                {p.documents.map((d) => (
+                                  <span
+                                    key={d.id}
+                                    title={d.fileName}
+                                    className="inline-flex items-center rounded bg-brand-50 px-2 py-0.5 text-[10px] font-medium text-brand-700 border border-brand-200/50 cursor-help"
+                                  >
+                                    {d.kind}
+                                  </span>
+                                ))}
+                                {p.documents.length === 0 && (
+                                  <span className="text-xs text-ink-300 italic">ยังไม่มีเอกสารในระบบ</span>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
                         ))}
-                      </ul>
-                    )}
+                      </tbody>
+                    </table>
                   </div>
-                ));
+                );
               })()}
             </div>
             <div className="mt-6 flex justify-end border-t border-line-soft pt-4 shrink-0">
