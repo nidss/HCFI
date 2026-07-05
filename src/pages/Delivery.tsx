@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { ExternalLink, Link2, MailCheck } from "lucide-react";
+import { Link2, MailCheck, X } from "lucide-react";
 import { Card, PageHeader, EmptyState } from "../components/PageHeader";
 import { useAppData } from "../context/AppDataContext";
 import { formatThaiDateTime } from "../lib/mockData";
@@ -22,6 +22,7 @@ export function Delivery() {
   const [email, setEmail] = useState("claims@insurer.co.th");
   const [days, setDays] = useState(7);
   const [justCreated, setJustCreated] = useState<string | null>(null);
+  const [viewingBatchId, setViewingBatchId] = useState<string | null>(null);
 
   function handleCreate(e: React.FormEvent) {
     e.preventDefault();
@@ -119,7 +120,7 @@ export function Delivery() {
                   <th className="px-5 py-3 font-medium">สถานะ</th>
                   <th className="px-5 py-3 font-medium">หมดอายุ</th>
                   <th className="px-5 py-3 font-medium">ความพยายามดาวน์โหลด</th>
-                  <th className="px-5 py-3 font-medium">พอร์ทัลบริษัทประกัน</th>
+                  <th className="px-5 py-3 font-medium">รายละเอียดเอกสาร</th>
                 </tr>
               </thead>
               <tbody>
@@ -150,14 +151,12 @@ export function Delivery() {
                         )}
                       </td>
                       <td className="px-5 py-3">
-                        <a
-                          href={`#/insurer/login?token=${l.token}`}
-                          target="_blank"
-                          rel="noreferrer"
+                        <button
+                          onClick={() => setViewingBatchId(l.batchId)}
                           className="flex w-fit items-center gap-1 text-xs font-medium text-brand-600 hover:underline"
                         >
-                          เปิดพอร์ทัล <ExternalLink size={12} />
-                        </a>
+                          ดูข้อมูล
+                        </button>
                       </td>
                     </tr>
                   );
@@ -167,6 +166,64 @@ export function Delivery() {
           </div>
         )}
       </Card>
+
+      {viewingBatchId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 animate-fade-in">
+          <div className="relative max-w-lg w-full rounded-xl bg-white p-6 shadow-2xl flex flex-col max-h-[85vh]">
+            <div className="mb-4 flex items-center justify-between border-b border-line-soft pb-3 shrink-0">
+              <div>
+                <h3 className="text-base font-semibold text-ink-800">รายละเอียดเอกสารที่ส่งมอบ</h3>
+                <p className="text-xs text-ink-400 mt-0.5">ชุดเอกสาร: {viewingBatchId}</p>
+              </div>
+              <button
+                onClick={() => setViewingBatchId(null)}
+                className="rounded-lg p-1.5 text-ink-400 hover:bg-line-soft hover:text-ink-600 transition-colors"
+              >
+                <X size={18} />
+              </button>
+            </div>
+            <div className="space-y-6 overflow-y-auto pr-1 py-1">
+              {(() => {
+                const b = batches.find((x) => x.id === viewingBatchId);
+                const bps = patients.filter((p) => b?.hns.includes(p.hn));
+                if (bps.length === 0) {
+                  return <p className="text-sm text-ink-400 text-center py-4">ไม่พบข้อมูลผู้ป่วยในชุดเอกสารนี้</p>;
+                }
+                return bps.map((p) => (
+                  <div key={p.hn} className="rounded-lg border border-line-soft p-4 bg-canvas/30">
+                    <div className="mb-2.5 flex items-center justify-between border-b border-line-soft pb-2">
+                      <span className="text-sm font-semibold text-ink-800">{p.name}</span>
+                      <span className="text-xs text-ink-400 font-mono">{p.hn}</span>
+                    </div>
+                    {p.documents.length === 0 ? (
+                      <p className="text-xs text-ink-300 italic py-1">ไม่มีเอกสารในระบบ (ยังไม่ได้รับการรักษา)</p>
+                    ) : (
+                      <ul className="space-y-1.5 text-xs text-ink-600">
+                        {p.documents.map((d) => (
+                          <li key={d.id} className="flex items-center justify-between gap-2">
+                            <span className="truncate">{d.kind}</span>
+                            <span className="shrink-0 rounded bg-brand-50 px-1.5 py-0.5 text-[10px] font-medium text-brand-700 font-mono">
+                              {d.fileName}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ));
+              })()}
+            </div>
+            <div className="mt-6 flex justify-end border-t border-line-soft pt-4 shrink-0">
+              <button
+                onClick={() => setViewingBatchId(null)}
+                className="rounded-lg border border-line bg-white px-4 py-2 text-xs font-medium text-ink-600 hover:bg-line-soft transition-colors"
+              >
+                ปิด
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
