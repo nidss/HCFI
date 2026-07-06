@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Check, IdCard, Loader2, PenLine, ScanLine, Search, UserRound, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Card, PageHeader } from "../components/PageHeader";
@@ -19,6 +19,8 @@ export function Reception() {
   const [scannedFile, setScannedFile] = useState<string | null>(null);
   const [showIdCardModal, setShowIdCardModal] = useState(false);
   const [uploadedPreviews, setUploadedPreviews] = useState<Record<string, string>>({});
+  const [dragOver, setDragOver] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const result = resultHn ? patients.find((p) => p.hn === resultHn) : undefined;
 
@@ -31,6 +33,21 @@ export function Reception() {
           : (hasIdCard ? "https://raw.githubusercontent.com/nidss/HCFI/main/public/idcard.png" : null)
         )
     : null;
+
+  function handlePhotoUpload(file: File) {
+    if (!result) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target?.result as string;
+      setUploadedPreviews((prev) => ({
+        ...prev,
+        [result.hn]: dataUrl,
+      }));
+    };
+    reader.readAsDataURL(file);
+    setScannedFile(file.name);
+    uploadDocument(result.hn, "สำเนาบัตรประชาชน", file.name);
+  }
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
@@ -121,9 +138,41 @@ export function Reception() {
             <div className="space-y-3 border-t border-line-soft p-5">
               <p className="text-sm font-medium text-ink-700">รูปภาพบัตรประชาชน</p>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setDragOver(true);
+                }}
+                onDragLeave={() => setDragOver(false)}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  setDragOver(false);
+                  const file = e.dataTransfer.files?.[0];
+                  if (file) {
+                    handlePhotoUpload(file);
+                  }
+                }}
+                onClick={() => fileInputRef.current?.click()}
+                className={`flex cursor-pointer flex-col items-center justify-center gap-4 rounded-lg border-2 border-dashed text-center transition-colors p-6 ${
+                  dragOver ? "border-brand-500 bg-brand-50" : "border-line hover:border-brand-300 hover:bg-canvas"
+                }`}
+              >
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      handlePhotoUpload(file);
+                    }
+                    e.target.value = "";
+                  }}
+                />
+
                 {previewSrc ? (
-                  <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-line bg-canvas p-4 text-center shadow-sm min-h-[160px]">
+                  <div className="flex flex-col items-center gap-3">
                     <div className="text-xs font-medium text-ink-500">
                       {uploadedPreviews[result.hn] 
                         ? "ภาพถ่ายบัตรประชาชน (อัปโหลดใหม่)" 
@@ -136,13 +185,16 @@ export function Reception() {
                     
                     <button
                       type="button"
-                      onClick={() => setShowIdCardModal(true)}
-                      className="group relative overflow-hidden rounded-lg border border-line bg-white p-1 hover:border-brand-500 hover:ring-1 hover:ring-brand-500 transition-all shadow-sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowIdCardModal(true);
+                      }}
+                      className="group relative overflow-hidden rounded-lg border border-line bg-white p-1 hover:border-brand-500 hover:ring-1 hover:ring-brand-500 transition-all shadow-sm block"
                     >
                       <img
                         src={previewSrc}
                         alt="ID Card Thumbnail"
-                        className="h-24 w-auto rounded object-contain"
+                        className="h-28 w-auto rounded object-contain"
                       />
                       <div className="absolute inset-0 flex items-center justify-center bg-ink-900/40 opacity-0 group-hover:opacity-100 transition-opacity">
                         <span className="rounded bg-white/95 px-2.5 py-1 text-[11px] font-medium text-ink-700 shadow-sm">
@@ -150,33 +202,24 @@ export function Reception() {
                         </span>
                       </div>
                     </button>
+                    
+                    <p className="text-xs text-ink-400">
+                      ลากไฟล์ภาพบัตรประชาชนใหม่มาวาง หรือคลิกที่นี่เพื่อเลือกไฟล์ใหม่
+                    </p>
                   </div>
-                ) : null}
-
-                <div className={previewSrc ? "" : "col-span-2"}>
-                  <FileDrop
-                    compact
-                    label={scannedFile ?? "ลากไฟล์ภาพบัตรประชาชนมาวาง หรือคลิกเพื่อเลือกไฟล์"}
-                    hint="รองรับ .jpg, .jpeg, .png จากเครื่องสแกนบัตรหรือกล้อง Tablet"
-                    accept="image/*"
-                    onFiles={(files) => {
-                      const file = files[0];
-                      if (file) {
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                          const dataUrl = e.target?.result as string;
-                          setUploadedPreviews((prev) => ({
-                            ...prev,
-                            [result.hn]: dataUrl,
-                          }));
-                        };
-                        reader.readAsDataURL(file);
-                        setScannedFile(file.name);
-                        uploadDocument(result.hn, "สำเนาบัตรประชาชน", file.name);
-                      }
-                    }}
-                  />
-                </div>
+                ) : (
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="rounded-full bg-brand-50 p-3 text-brand-600">
+                      <ScanLine size={24} />
+                    </div>
+                    <p className="text-sm font-medium text-ink-600">
+                      {scannedFile ?? "ลากไฟล์ภาพบัตรประชาชนมาวาง หรือคลิกเพื่ออัปโหลด"}
+                    </p>
+                    <p className="text-xs text-ink-300">
+                      รองรับไฟล์ภาพ .jpg, .jpeg, .png
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -189,7 +232,7 @@ export function Reception() {
                     className="flex items-center gap-1.5 rounded-lg border border-status-ready-fg bg-status-ready-bg/10 px-5 py-2.5 text-sm font-medium text-status-ready-fg hover:bg-status-ready-bg/20 transition-colors shadow-sm"
                   >
                     <Check size={16} />
-                    เซ็นบน iPad เรียบร้อยแล้ว
+                    ลงลายมือชื่อบน iPad เรียบร้อยแล้ว
                   </button>
                 ) : (
                   <button
