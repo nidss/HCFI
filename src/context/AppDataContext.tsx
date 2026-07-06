@@ -96,7 +96,7 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
         target: found ? nationalId : `${nationalId} (ไม่พบ)`,
         ip: genIp(),
         status: found ? "สำเร็จ" : "ไม่สำเร็จ",
-        detail: "ค้นหาด้วยเลขบัตรประชาชนจากระบบ SIS",
+        detail: "ค้นหาด้วยเลขบัตรประชาชนจากระบบ HIS",
       });
     },
     [addAuditLog],

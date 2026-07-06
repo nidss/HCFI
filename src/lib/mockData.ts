@@ -237,7 +237,7 @@ export function createInitialAuditLog(): AuditLogEntry[] {
       target: "HN 6604128",
       ip: "203.150.34.12",
       status: "สำเร็จ",
-      detail: "ค้นหาด้วยเลขบัตรประชาชนจากระบบ SIS",
+      detail: "ค้นหาด้วยเลขบัตรประชาชนจากระบบ HIS",
     },
   ];
 }

@@ -67,7 +67,7 @@ export function Reception() {
     <div>
       <PageHeader
         title="แผนกลงทะเบียน"
-        subtitle="ค้นหาผู้ป่วยจากระบบ SIS ด้วยเลขบัตรประชาชน และตรวจสอบเอกสารเบื้องต้นก่อนพบแพทย์"
+        subtitle="ค้นหาผู้ป่วยจากระบบ HIS ด้วยเลขบัตรประชาชน และตรวจสอบเอกสารเบื้องต้นก่อนพบแพทย์"
       />
 
       <Card className="mb-6">
@@ -87,17 +87,17 @@ export function Reception() {
             className="flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-700 disabled:opacity-40"
           >
             {searching ? <Loader2 size={16} className="animate-spin" /> : <Search size={16} />}
-            ค้นหาจากระบบ SIS
+            ค้นหาจากระบบ HIS
           </button>
           <p className="w-full text-xs text-ink-300">
-            เชื่อมต่อกับระบบ HIS (SIS ของ DXC) แบบอ่านอย่างเดียว เนื่องจากระบบเดิมไม่มี API สำหรับเชื่อมต่อโดยตรง
+            เชื่อมต่อกับระบบ HIS (DXC) แบบอ่านอย่างเดียว เนื่องจากระบบเดิมไม่มี API สำหรับเชื่อมต่อโดยตรง
           </p>
         </form>
       </Card>
 
       {searched && !result && (
         <Card className="p-8 text-center">
-          <p className="text-sm font-medium text-ink-500">ไม่พบข้อมูลผู้ป่วยจากระบบ SIS</p>
+          <p className="text-sm font-medium text-ink-500">ไม่พบข้อมูลผู้ป่วยจากระบบ HIS</p>
           <p className="mt-1 text-xs text-ink-300">
             ลองใช้เลขบัตรประชาชนตัวอย่าง 1100701234561 – 1100701234575
           </p>
@@ -118,7 +118,7 @@ export function Reception() {
                 </p>
               </div>
               <span className="rounded-full bg-status-ready-bg px-3 py-1 text-xs font-medium text-status-ready-fg">
-                พบข้อมูลจาก SIS
+                พบข้อมูลจาก HIS
               </span>
             </div>
 

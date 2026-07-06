@@ -4,7 +4,7 @@ import { Card, PageHeader } from "../components/PageHeader";
 const integrations = [
   {
     icon: Database,
-    name: "HIS — ระบบ SIS (DXC)",
+    name: "ระบบ HIS (DXC)",
     description: "ระบบเดิม ไม่มี API เชื่อมต่อโดยตรง ใช้วิธีอ่านค่าผ่านการพิมพ์ไฟล์ (Ctrl+P) และดึงข้อมูลด้วยการค้นหาแบบแมนนวล",
     status: "เชื่อมต่อแบบจำกัด",
     tone: "warning" as const,
