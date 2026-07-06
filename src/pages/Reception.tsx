@@ -241,7 +241,7 @@ export function Reception() {
                     className="flex items-center gap-1.5 rounded-lg border border-brand-200 bg-brand-50 px-5 py-2.5 text-sm font-medium text-brand-700 hover:bg-brand-100 transition-colors shadow-sm"
                   >
                     <PenLine size={16} />
-                    ไปเซ็นบน iPad
+                    ลงลายมือชื่อบน iPad
                   </button>
                 )}
                 
