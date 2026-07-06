@@ -59,34 +59,49 @@ export function formatCurrency(value: number | null): string {
   return `฿${value.toLocaleString("th-TH")}`;
 }
 
-function buildDocuments(status: ClaimStatus, daysAgo: number): ClaimDocument[] {
+function buildDocuments(hn: string, status: ClaimStatus, daysAgo: number): ClaimDocument[] {
   if (status === "-") return [];
-  const idCard = doc("สำเนาบัตรประชาชน", "ครบถ้วน", "สแกนบัตร", daysAgo);
-  const consent = doc(
-    "ใบยินยอมเปิดเผยข้อมูล",
-    status === "รอเซ็นยินยอม" ? "รอดำเนินการ" : "ครบถ้วน",
-    "ลงนามดิจิทัล",
-    daysAgo,
-  );
-  const invoice = doc(
-    "ใบเสร็จรับเงิน (Invoice)",
-    status === "รอเซ็นยินยอม" ? "รอดำเนินการ" : "ครบถ้วน",
-    "OCR",
-    daysAgo,
-  );
-  const medCert = doc(
-    "ใบรับรองแพทย์",
-    status === "เอกสารไม่ครบ" ? "รอดำเนินการ" : "ครบถ้วน",
-    "อัปโหลดโดยเจ้าหน้าที่",
-    daysAgo,
-  );
-  const summary = doc(
-    "สรุปการรักษา",
-    status === "เอกสารไม่ครบ" ? "รอดำเนินการ" : "ครบถ้วน",
-    "อัปโหลดโดยเจ้าหน้าที่",
-    daysAgo,
-  );
-  return [idCard, consent, invoice, medCert, summary];
+  const lastDigit = parseInt(hn.slice(-1)) || 0;
+
+  if (lastDigit === 1 || lastDigit === 6) {
+    // Workplace injury (กท.)
+    return [
+      doc("สำเนาบัตรประชาชนหรือบัตรพนักงานลงนามโดยผู้ป่วย", "ครบถ้วน", "สแกนบัตร", daysAgo),
+      doc("ใบยินยอมเปิดเผยข้อมูล", status === "รอเซ็นยินยอม" ? "รอดำเนินการ" : "ครบถ้วน", "ลงนามดิจิทัล", daysAgo),
+      doc("แบบ กท. 44", "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
+      doc("หนังสือรับรองของแพทย์ผู้รักษา (กท. 16 และ 16/1)", status === "เอกสารไม่ครบ" ? "รอดำเนินการ" : "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
+    ];
+  } else if (lastDigit === 2 || lastDigit === 7) {
+    // Accident / traffic injury (พ.ร.บ.)
+    return [
+      doc("สำเนาบัตรประชาชนหรือบัตรพนักงานลงนามโดยผู้ป่วย", "ครบถ้วน", "สแกนบัตร", daysAgo),
+      doc("สำเนาใบขับขี่", "ครบถ้วน", "สแกนบัตร", daysAgo),
+      doc("ใบยินยอมเปิดเผยข้อมูล", status === "รอเซ็นยินยอม" ? "รอดำเนินการ" : "ครบถ้วน", "ลงนามดิจิทัล", daysAgo),
+      doc("สำเนารายงานประจำวันเกี่ยวกับคดี (สำนักงานตำรวจแห่งชาติ)", status === "เอกสารไม่ครบ" ? "รอดำเนินการ" : "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
+      doc("เอกสารใบส่งตัวพนักงาน", "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
+    ];
+  } else if (lastDigit === 3 || lastDigit === 8) {
+    // Corporate Group Checkup
+    return [
+      doc("ต้นฉบับใบวางบิล(NS)", "ครบถ้วน", "OCR", daysAgo),
+      doc("ใบยินยอมเปิดเผยข้อมูล", status === "รอเซ็นยินยอม" ? "รอดำเนินการ" : "ครบถ้วน", "ลงนามดิจิทัล", daysAgo),
+      doc("ใบสรุปยอดรายการตรวจสุขภาพและลงนามยืนยันโดยบริษัทคู่สัญญา", "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
+      doc("ใบสรุปยอดขายประจำเดือน", status === "เอกสารไม่ครบ" ? "รอดำเนินการ" : "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
+    ];
+  } else {
+    // General Medical Insurance Claim (Standard)
+    return [
+      doc("สำเนาบัตรประชาชนหรือบัตรพนักงานลงนามโดยผู้ป่วย", "ครบถ้วน", "สแกนบัตร", daysAgo),
+      doc("สำเนาบัตรประกัน", "ครบถ้วน", "สแกนบัตร", daysAgo),
+      doc("ใบยินยอมเปิดเผยข้อมูล", status === "รอเซ็นยินยอม" ? "รอดำเนินการ" : "ครบถ้วน", "ลงนามดิจิทัล", daysAgo),
+      doc("ต้นฉบับใบแจ้งหนี้(DXC)", status === "รอเซ็นยินยอม" ? "รอดำเนินการ" : "ครบถ้วน", "OCR", daysAgo),
+      doc("Service Charge Report(DXC)", "ครบถ้วน", "OCR", daysAgo),
+      doc("เอกสารใบเคลม", status === "เอกสารไม่ครบ" ? "รอดำเนินการ" : "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
+      doc("ใบรับรองแพทย์ลงนามโดยแพทย์", "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
+      doc("Drug and Material Charges Report(DXC)", "ครบถ้วน", "OCR", daysAgo),
+      doc("ประวัติการรักษา(DXC)", status === "เอกสารไม่ครบ" ? "รอดำเนินการ" : "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
+    ];
+  }
 }
 
 interface SeedRow {
@@ -129,7 +144,7 @@ export function createInitialPatients(): Patient[] {
     stage: row.stage,
     claimValue: row.claimValue,
     status: row.status,
-    documents: buildDocuments(row.status, row.daysAgo),
+    documents: buildDocuments(row.hn, row.status, row.daysAgo),
     consentSigned: row.status !== "รอเซ็นยินยอม" && row.status !== "-",
     invoiceSigned: row.status !== "รอเซ็นยินยอม" && row.status !== "-",
     ocrConfidence: row.ocrConfidence,

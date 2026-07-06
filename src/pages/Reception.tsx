@@ -24,7 +24,7 @@ export function Reception() {
 
   const result = resultHn ? patients.find((p) => p.hn === resultHn) : undefined;
 
-  const hasIdCard = result?.documents.some((d) => d.kind === "สำเนาบัตรประชาชน") ?? false;
+  const hasIdCard = result?.documents.some((d) => d.kind === "สำเนาบัตรประชาชน" || d.kind === "สำเนาบัตรประชาชนหรือบัตรพนักงานลงนามโดยผู้ป่วย") ?? false;
   const previewSrc = result
     ? uploadedPreviews[result.hn]
       ? uploadedPreviews[result.hn]
@@ -46,7 +46,7 @@ export function Reception() {
     };
     reader.readAsDataURL(file);
     setScannedFile(file.name);
-    uploadDocument(result.hn, "สำเนาบัตรประชาชน", file.name);
+    uploadDocument(result.hn, "สำเนาบัตรประชาชนหรือบัตรพนักงานลงนามโดยผู้ป่วย", file.name);
   }
 
   function handleSearch(e: React.FormEvent) {

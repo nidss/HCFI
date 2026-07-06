@@ -229,39 +229,34 @@ export function Delivery() {
                         <tr className="border-b border-line-soft text-ink-400 bg-canvas/50">
                           <th className="px-4 py-3 font-semibold w-24">HN</th>
                           <th className="px-4 py-3 font-semibold w-40">ชื่อผู้ป่วย</th>
-                          <th className="px-3 py-3 font-semibold text-center w-24">บัตรประชาชน</th>
-                          <th className="px-3 py-3 font-semibold text-center w-24">ใบยินยอม</th>
-                          <th className="px-3 py-3 font-semibold text-center w-24">ใบเสร็จ (Invoice)</th>
-                          <th className="px-3 py-3 font-semibold text-center w-24">ใบรับรองแพทย์</th>
-                          <th className="px-3 py-3 font-semibold text-center w-24">สรุปการรักษา</th>
+                          <th className="px-4 py-3 font-semibold">สถานะเอกสารที่จัดส่ง</th>
                         </tr>
                       </thead>
                       <tbody>
                         {bps.map((p) => {
-                          const hasIdCard = p.documents.some((d) => d.kind === "สำเนาบัตรประชาชน" && d.status === "ครบถ้วน");
-                          const hasConsent = p.documents.some((d) => d.kind === "ใบยินยอมเปิดเผยข้อมูล" && d.status === "ครบถ้วน");
-                          const hasInvoice = p.documents.some((d) => d.kind === "ใบเสร็จรับเงิน (Invoice)" && d.status === "ครบถ้วน");
-                          const hasMedCert = p.documents.some((d) => d.kind === "ใบรับรองแพทย์" && d.status === "ครบถ้วน");
-                          const hasSummary = p.documents.some((d) => d.kind === "สรุปการรักษา" && d.status === "ครบถ้วน");
-
                           return (
                             <tr key={p.hn} className="border-b border-line-soft last:border-0 hover:bg-canvas/30 transition-colors">
                               <td className="px-4 py-3 font-mono text-ink-600 align-middle">{p.hn}</td>
                               <td className="px-4 py-3 font-medium text-ink-800 align-middle">{p.name}</td>
-                              <td className="px-3 py-3 text-center align-middle">
-                                {hasIdCard ? <CheckCircle2 size={16} className="mx-auto text-status-ready-fg" /> : <span className="text-ink-200">-</span>}
-                              </td>
-                              <td className="px-3 py-3 text-center align-middle">
-                                {hasConsent ? <CheckCircle2 size={16} className="mx-auto text-status-ready-fg" /> : <span className="text-ink-200">-</span>}
-                              </td>
-                              <td className="px-3 py-3 text-center align-middle">
-                                {hasInvoice ? <CheckCircle2 size={16} className="mx-auto text-status-ready-fg" /> : <span className="text-ink-200">-</span>}
-                              </td>
-                              <td className="px-3 py-3 text-center align-middle">
-                                {hasMedCert ? <CheckCircle2 size={16} className="mx-auto text-status-ready-fg" /> : <span className="text-ink-200">-</span>}
-                              </td>
-                              <td className="px-3 py-3 text-center align-middle">
-                                {hasSummary ? <CheckCircle2 size={16} className="mx-auto text-status-ready-fg" /> : <span className="text-ink-200">-</span>}
+                              <td className="px-4 py-3 align-middle">
+                                <div className="flex flex-wrap gap-1.5 py-1">
+                                  {p.documents.map((d) => (
+                                    <span
+                                      key={d.id}
+                                      className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                                        d.status === "ครบถ้วน"
+                                          ? "bg-status-ready-bg text-status-ready-fg"
+                                          : "bg-status-waiting-bg text-status-waiting-fg"
+                                      }`}
+                                    >
+                                      {d.status === "ครบถ้วน" && <CheckCircle2 size={10} />}
+                                      {d.kind}
+                                    </span>
+                                  ))}
+                                  {p.documents.length === 0 && (
+                                    <span className="text-ink-300 text-xs">ไม่มีเอกสาร</span>
+                                  )}
+                                </div>
                               </td>
                             </tr>
                           );
