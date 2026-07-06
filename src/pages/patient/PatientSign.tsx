@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Check, CheckCircle2, ChevronRight, PenTool, ShieldCheck, X } from "lucide-react";
+import { ArrowLeft, Check, CheckCircle2, ChevronLeft, ChevronRight, Maximize2, PenTool, ShieldCheck, X } from "lucide-react";
 import { useAppData } from "../../context/AppDataContext";
 
 // Responsive touch-friendly HTML5 Canvas Signature Pad
@@ -133,6 +133,11 @@ function SignatureCanvas({ onSave, value }: { onSave: (url: string) => void; val
   );
 }
 
+const exampleDocs = Array.from({ length: 23 }, (_, i) => {
+  const pageNum = String(i + 3).padStart(2, "0");
+  return `/example_docs/hospital_document_mockups_Page_${pageNum}.jpg`;
+});
+
 export function PatientSign() {
   const { hn } = useParams<{ hn: string }>();
   const navigate = useNavigate();
@@ -142,6 +147,8 @@ export function PatientSign() {
   const [step, setStep] = useState(1);
   const [sigConsent, setSigConsent] = useState("");
   const [sigInvoice, setSigInvoice] = useState("");
+  const [docPageIndex, setDocPageIndex] = useState(0);
+  const [showFullScreenDoc, setShowFullScreenDoc] = useState(false);
 
   const previewSrc = patient
     ? patient.nationalId === "0000000000000"
@@ -346,6 +353,61 @@ export function PatientSign() {
               </div>
             )}
 
+            {/* Document Paging Viewer (only for registration patients) */}
+            {patient.claimValue === null && (
+              <div className="mb-6">
+                <label className="block text-xs font-semibold text-ink-600 font-['Prompt'] mb-2.5">
+                  เอกสารลงทะเบียนคนไข้ (รวม {exampleDocs.length} หน้า)
+                </label>
+                <div className="relative border border-[#dbe3ec] rounded-2xl p-4 bg-slate-50 flex flex-col items-center">
+                  {/* Document Container */}
+                  <div className="relative w-full max-w-sm bg-white border border-[#dbe3ec] rounded-xl overflow-hidden shadow-sm flex flex-col items-center">
+                    <img
+                      src={exampleDocs[docPageIndex]}
+                      alt={`Document Page ${docPageIndex + 3}`}
+                      className="h-96 w-auto object-contain cursor-pointer"
+                      onClick={() => setShowFullScreenDoc(true)}
+                    />
+                    
+                    {/* Hover Full Screen Overlay Button */}
+                    <button
+                      type="button"
+                      onClick={() => setShowFullScreenDoc(true)}
+                      className="absolute top-3 right-3 bg-slate-900/80 hover:bg-slate-900 text-white rounded-lg p-2 shadow transition-colors flex items-center gap-1 text-xs font-['Prompt']"
+                    >
+                      <Maximize2 size={14} />
+                      <span>เต็มจอ</span>
+                    </button>
+                  </div>
+
+                  {/* Navigation Paging Controls */}
+                  <div className="flex items-center justify-between w-full max-w-xs mt-4">
+                    <button
+                      type="button"
+                      disabled={docPageIndex === 0}
+                      onClick={() => setDocPageIndex((prev) => Math.max(0, prev - 1))}
+                      className="rounded-lg border border-[#dbe3ec] bg-white p-2 text-ink-600 hover:bg-slate-50 disabled:opacity-30 transition-colors"
+                    >
+                      <ChevronLeft size={16} />
+                    </button>
+                    
+                    <span className="text-xs font-medium text-ink-700 font-['Prompt']">
+                      หน้า {docPageIndex + 3} / {exampleDocs.length + 2}
+                    </span>
+
+                    <button
+                      type="button"
+                      disabled={docPageIndex === exampleDocs.length - 1}
+                      onClick={() => setDocPageIndex((prev) => Math.min(exampleDocs.length - 1, prev + 1))}
+                      className="rounded-lg border border-[#dbe3ec] bg-white p-2 text-ink-600 hover:bg-slate-50 disabled:opacity-30 transition-colors"
+                    >
+                      <ChevronRight size={16} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Documents to Review List */}
             <div className="mb-6">
               <label className="block text-xs font-semibold text-ink-600 font-['Prompt'] mb-2.5">
@@ -418,6 +480,47 @@ export function PatientSign() {
             </button>
           </div>
         )}
+      {showFullScreenDoc && (
+        <div className="fixed inset-0 bg-slate-900/95 z-[9999] flex flex-col items-center justify-center p-4">
+          <div className="w-full max-w-5xl flex items-center justify-between text-white mb-4">
+            <span className="font-['Prompt'] text-sm font-medium">
+              เอกสารหน้าที่ {docPageIndex + 3} / {exampleDocs.length + 2}
+            </span>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                disabled={docPageIndex === 0}
+                onClick={() => setDocPageIndex((prev) => Math.max(0, prev - 1))}
+                className="rounded-lg border border-slate-700 bg-slate-800 p-2 hover:bg-slate-700 disabled:opacity-30 transition-colors"
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <button
+                type="button"
+                disabled={docPageIndex === exampleDocs.length - 1}
+                onClick={() => setDocPageIndex((prev) => Math.min(exampleDocs.length - 1, prev + 1))}
+                className="rounded-lg border border-slate-700 bg-slate-800 p-2 hover:bg-slate-700 disabled:opacity-30 transition-colors"
+              >
+                <ChevronRight size={16} />
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowFullScreenDoc(false)}
+                className="rounded-lg border border-slate-700 bg-slate-800 p-2 hover:bg-slate-700 transition-colors"
+              >
+                <X size={16} />
+              </button>
+            </div>
+          </div>
+          <div className="flex-1 w-full max-w-5xl flex items-center justify-center overflow-auto">
+            <img
+              src={exampleDocs[docPageIndex]}
+              alt={`Full Screen Page ${docPageIndex + 3}`}
+              className="max-h-[85vh] max-w-full object-contain rounded-lg shadow-2xl"
+            />
+          </div>
+        </div>
+      )}
       </div>
     </div>
   );
