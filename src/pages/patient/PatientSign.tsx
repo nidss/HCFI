@@ -190,7 +190,7 @@ export function PatientSign() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#f6f8fb] flex flex-col p-6 sm:p-8">
+    <div className="h-full w-full bg-[#f6f8fb] flex flex-col p-6 sm:p-8 overflow-y-auto">
       {/* Top Header Bar */}
       <div className="w-full max-w-4xl mx-auto flex items-center justify-between mb-6">
         <button

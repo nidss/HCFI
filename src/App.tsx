@@ -12,6 +12,7 @@ import { InsurerLogin } from "./pages/insurer/InsurerLogin";
 import { InsurerDownload } from "./pages/insurer/InsurerDownload";
 import { InsurerOverview } from "./pages/insurer/InsurerOverview";
 import { PortalSelection } from "./pages/PortalSelection";
+import { PatientPortalLayout } from "./layouts/PatientPortalLayout";
 import { PatientSelect } from "./pages/patient/PatientSelect";
 import { PatientSign } from "./pages/patient/PatientSign";
 import { NotFound } from "./pages/NotFound";
@@ -30,8 +31,10 @@ export default function App() {
         <Route path="/audit-log" element={<AuditLog />} />
         <Route path="/settings" element={<Settings />} />
       </Route>
-      <Route path="/patient/select" element={<PatientSelect />} />
-      <Route path="/patient/sign/:hn" element={<PatientSign />} />
+      <Route element={<PatientPortalLayout />}>
+        <Route path="/patient/select" element={<PatientSelect />} />
+        <Route path="/patient/sign/:hn" element={<PatientSign />} />
+      </Route>
       <Route path="/insurer/login" element={<InsurerLogin />} />
       <Route path="/insurer/overview" element={<InsurerOverview />} />
       <Route path="/insurer/download" element={<InsurerDownload />} />
