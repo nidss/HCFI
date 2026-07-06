@@ -66,7 +66,7 @@ export function Reception() {
   return (
     <div>
       <PageHeader
-        title="แผนกต้อนรับ"
+        title="แผนกลงทะเบียน"
         subtitle="ค้นหาผู้ป่วยจากระบบ SIS ด้วยเลขบัตรประชาชน และตรวจสอบเอกสารเบื้องต้นก่อนพบแพทย์"
       />
 

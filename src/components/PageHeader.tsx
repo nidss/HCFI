@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 
 const crumbs: Record<string, string> = {
   "/": "ภาพรวม",
-  "/reception": "แผนกต้อนรับ",
+  "/reception": "แผนกลงทะเบียน",
   "/cashier": "ช่องชำระเงิน",
   "/documents": "จัดการเอกสาร",
   "/accounting": "ใบสรุปจ่าย",

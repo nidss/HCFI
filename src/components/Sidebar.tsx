@@ -16,7 +16,7 @@ import {
 import { useAppData } from "../context/AppDataContext";
 
 const steps = [
-  { n: 1, to: "/reception", label: "แผนกต้อนรับ", icon: UserRoundPlus },
+  { n: 1, to: "/reception", label: "แผนกลงทะเบียน", icon: UserRoundPlus },
   { n: 2, to: "/cashier", label: "ช่องชำระเงิน", icon: Wallet },
   { n: 3, to: "/documents", label: "จัดการเอกสาร", icon: FolderKanban, countStatus: "เอกสารไม่ครบ" as const },
   { n: 4, to: "/accounting", label: "ใบสรุปจ่าย", icon: FileStack },
