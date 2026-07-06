@@ -135,7 +135,7 @@ function SignatureCanvas({ onSave, value }: { onSave: (url: string) => void; val
 
 const exampleDocs = Array.from({ length: 23 }, (_, i) => {
   const pageNum = String(i + 3).padStart(2, "0");
-  return `/example_docs/hospital_document_mockups_Page_${pageNum}.jpg`;
+  return `example_docs/hospital_document_mockups_Page_${pageNum}.jpg`;
 });
 
 export function PatientSign() {
@@ -152,8 +152,8 @@ export function PatientSign() {
 
   const previewSrc = patient
     ? patient.nationalId === "0000000000000"
-      ? "/A4-signed.png"
-      : "/idcard.png"
+      ? "A4-signed.png"
+      : "idcard.png"
     : null;
 
   // Redirect if patient not found

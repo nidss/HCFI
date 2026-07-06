@@ -29,8 +29,8 @@ export function Reception() {
     ? uploadedPreviews[result.hn]
       ? uploadedPreviews[result.hn]
       : (result.nationalId === "0000000000000"
-          ? "/A4-signed.png"
-          : (hasIdCard ? "/idcard.png" : null)
+          ? "A4-signed.png"
+          : (hasIdCard ? "idcard.png" : null)
         )
     : null;
 
@@ -301,7 +301,7 @@ export function Reception() {
             </div>
             <div className="flex justify-center bg-canvas rounded-lg p-4">
               <img
-                src={previewSrc || "/idcard.png"}
+                src={previewSrc || "idcard.png"}
                 alt="ID Card Scan"
                 className="max-h-[60vh] rounded shadow-md object-contain"
               />

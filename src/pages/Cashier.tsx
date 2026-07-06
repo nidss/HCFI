@@ -161,7 +161,7 @@ export function Cashier() {
             </div>
             <div className="flex justify-center bg-canvas rounded-lg p-4">
               <img
-                src="/example-recipe.png"
+                src="example-recipe.png"
                 alt="Invoice Document"
                 className="max-h-[60vh] rounded shadow-md object-contain"
               />
