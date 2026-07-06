@@ -2,9 +2,9 @@ import { Outlet } from "react-router-dom";
 
 export function PatientPortalLayout() {
   return (
-    <div className="min-h-screen w-full bg-slate-950 flex items-center justify-center p-0 sm:p-8 md:p-12 bg-gradient-to-br from-slate-950 via-slate-900 to-brand-950 overflow-auto">
+    <div className="min-h-screen w-full bg-white flex items-center justify-center p-0 sm:p-8 md:p-12 overflow-auto">
       {/* iPad Container Frame */}
-      <div className="relative w-full h-screen sm:h-auto max-w-[1120px] bg-slate-900 rounded-none sm:rounded-[44px] p-0 sm:p-5 md:p-6 shadow-none sm:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.9)] border-0 sm:border border-slate-800/80 flex flex-col items-center justify-center shrink-0">
+      <div className="relative w-full h-screen sm:h-auto max-w-[1120px] bg-slate-900 rounded-none sm:rounded-[44px] p-0 sm:p-5 md:p-6 shadow-none sm:shadow-[0_25px_60px_rgba(0,0,0,0.25)] border-0 sm:border border-slate-950 flex flex-col items-center justify-center shrink-0">
         
         {/* Top Camera Notch (Only on Tablet/Desktop) */}
         <div className="hidden sm:flex absolute top-4 left-1/2 -translate-x-1/2 items-center gap-1.5 z-10">
