@@ -143,6 +143,12 @@ export function PatientSign() {
   const [sigConsent, setSigConsent] = useState("");
   const [sigInvoice, setSigInvoice] = useState("");
 
+  const previewSrc = patient
+    ? patient.nationalId === "0000000000000"
+      ? "/A4-signed.png"
+      : "/idcard.png"
+    : null;
+
   // Redirect if patient not found
   useEffect(() => {
     if (!patient) {
@@ -265,7 +271,7 @@ export function PatientSign() {
             {/* ID Card Display Card */}
             <div className="border border-[#dbe3ec] rounded-2xl p-4 bg-slate-50 flex flex-col items-center mb-6">
               <div className="relative w-full max-w-md bg-white border border-[#dbe3ec] rounded-xl overflow-hidden shadow-sm flex flex-col">
-                <img src="https://raw.githubusercontent.com/nidss/HCFI/main/public/idcard.png" alt="ID Card Copy" className="w-full h-auto object-cover" />
+                <img src={previewSrc || "/idcard.png"} alt="ID Card Copy" className="w-full h-auto object-cover" />
                 <div className="border-t border-line-soft p-3.5 bg-slate-50/50 flex flex-col items-center text-center">
                   <p className="text-xs font-medium text-ink-800 font-['Prompt']">ลงลายมือชื่อรับรองสำเนาถูกต้อง</p>
                   <p className="text-[10px] text-ink-400 font-['Prompt'] mt-0.5">รับรองสำเนาเพื่อการเคลมของโรงพยาบาลศิครินทร์เท่านั้น</p>
@@ -295,45 +301,81 @@ export function PatientSign() {
 
         {step === 2 && (
           <div className="bg-white border border-[#dbe3ec] rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col">
-            <h2 className="text-xl font-medium text-ink-950 font-['Prompt'] mb-1">ขั้นตอนที่ 2: รับทราบค่ารักษาพยาบาล (Invoice)</h2>
+            <h2 className="text-xl font-medium text-ink-950 font-['Prompt'] mb-1">
+              {patient.claimValue !== null 
+                ? "ขั้นตอนที่ 2: รับทราบค่ารักษาพยาบาล (Invoice)" 
+                : "ขั้นตอนที่ 2: ตรวจสอบและรับรองเอกสารลงทะเบียน"
+              }
+            </h2>
             <p className="text-xs text-ink-400 font-['Prompt'] mb-6">
-              กรุณาตรวจทานรายละเอียดค่ารักษา และเซ็นรับรองรับทราบยอดรวมค่าใช้จ่ายเพื่อนำไปเรียกเก็บตรงกับบริษัทประกัน
+              {patient.claimValue !== null
+                ? "กรุณาตรวจทานรายละเอียดค่ารักษา และเซ็นรับรองรับทราบยอดรวมค่าใช้จ่ายเพื่อนำไปเรียกเก็บตรงกับบริษัทประกัน"
+                : "กรุณาตรวจทานรายละเอียดของชุดเอกสาร และลงนามรับรองความถูกต้องเพื่อยื่นเอกสารเข้าสู่ระบบ"
+              }
             </p>
 
             {/* Expense Bill Display */}
-            <div className="border border-[#dbe3ec] rounded-2xl bg-slate-50 overflow-hidden mb-6 shadow-inner">
-              <div className="bg-white border-b border-[#dbe3ec] p-4 flex items-center justify-between">
-                <span className="text-xs font-medium text-ink-800 font-['Prompt']">สรุปค่าใช้จ่ายการรักษาพยาบาล</span>
-                <span className="text-xs text-ink-400 font-mono font-medium">INV-{Math.floor(100000 + Math.random() * 900000)}</span>
+            {patient.claimValue !== null && (
+              <div className="border border-[#dbe3ec] rounded-2xl bg-slate-50 overflow-hidden mb-6 shadow-inner">
+                <div className="bg-white border-b border-[#dbe3ec] p-4 flex items-center justify-between">
+                  <span className="text-xs font-medium text-ink-800 font-['Prompt']">สรุปค่าใช้จ่ายการรักษาพยาบาล</span>
+                  <span className="text-xs text-ink-400 font-mono font-medium">INV-{Math.floor(100000 + Math.random() * 900000)}</span>
+                </div>
+                <div className="p-4 sm:p-5 space-y-3.5 text-xs font-['Prompt']">
+                  <div className="flex items-center justify-between text-ink-600">
+                    <span>ค่าห้องและค่าอาหาร (Room & Board)</span>
+                    <span className="font-medium text-ink-800">฿{roomCost.toLocaleString()}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-ink-600">
+                    <span>ค่ายาและเวชภัณฑ์ (Medicine)</span>
+                    <span className="font-medium text-ink-800">฿{medicineCost.toLocaleString()}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-ink-600">
+                    <span>ค่าตรวจวินิจฉัย/ห้องแล็บ (Diagnostic/Lab)</span>
+                    <span className="font-medium text-ink-800">฿{doctorCost.toLocaleString()}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-ink-600">
+                    <span>ค่าธรรมเนียมแพทย์และบริการทางการแพทย์ (Doctor/Services)</span>
+                    <span className="font-medium text-ink-800">฿{serviceCost.toLocaleString()}</span>
+                  </div>
+                  <div className="border-t border-[#dbe3ec] pt-3.5 flex items-center justify-between text-sm font-medium text-ink-950">
+                    <span>ยอดค่ารักษาพยาบาลรวมทั้งสิ้น (Total Amount)</span>
+                    <span className="text-brand-600 text-base">฿{claimTotal.toLocaleString()}</span>
+                  </div>
+                </div>
               </div>
-              <div className="p-4 sm:p-5 space-y-3.5 text-xs font-['Prompt']">
-                <div className="flex items-center justify-between text-ink-600">
-                  <span>ค่าห้องและค่าอาหาร (Room & Board)</span>
-                  <span className="font-medium text-ink-800">฿{roomCost.toLocaleString()}</span>
-                </div>
-                <div className="flex items-center justify-between text-ink-600">
-                  <span>ค่ายาและเวชภัณฑ์ (Medicine)</span>
-                  <span className="font-medium text-ink-800">฿{medicineCost.toLocaleString()}</span>
-                </div>
-                <div className="flex items-center justify-between text-ink-600">
-                  <span>ค่าตรวจวินิจฉัย/ห้องแล็บ (Diagnostic/Lab)</span>
-                  <span className="font-medium text-ink-800">฿{doctorCost.toLocaleString()}</span>
-                </div>
-                <div className="flex items-center justify-between text-ink-600">
-                  <span>ค่าธรรมเนียมแพทย์และบริการทางการแพทย์ (Doctor/Services)</span>
-                  <span className="font-medium text-ink-800">฿{serviceCost.toLocaleString()}</span>
-                </div>
-                <div className="border-t border-[#dbe3ec] pt-3.5 flex items-center justify-between text-sm font-medium text-ink-950">
-                  <span>ยอดค่ารักษาพยาบาลรวมทั้งสิ้น (Total Amount)</span>
-                  <span className="text-brand-600 text-base">฿{claimTotal.toLocaleString()}</span>
-                </div>
+            )}
+
+            {/* Documents to Review List */}
+            <div className="mb-6">
+              <label className="block text-xs font-semibold text-ink-600 font-['Prompt'] mb-2.5">
+                รายการเอกสารที่เกี่ยวข้องในระบบ (Documents in Claim Profile)
+              </label>
+              <div className="bg-[#fafbfc] border border-[#dbe3ec] rounded-2xl p-4 space-y-2.5">
+                {patient.documents.map((d) => (
+                  <div key={d.id} className="flex items-center justify-between text-xs font-['Prompt']">
+                    <span className="text-ink-600 font-medium">{d.kind}</span>
+                    <span
+                      className={`px-2.5 py-0.5 rounded-full text-[10px] font-semibold ${
+                        d.status === "ครบถ้วน"
+                          ? "bg-[#d2f1e4] text-[#0a5f5e]"
+                          : "bg-[#fef3c6] text-[#bb4d00]"
+                      }`}
+                    >
+                      {d.status === "ครบถ้วน" ? "✓ ครบถ้วน" : "รอดำเนินการ"}
+                    </span>
+                  </div>
+                ))}
+                {patient.documents.length === 0 && (
+                  <div className="text-center text-xs text-ink-300 py-2">ไม่มีเอกสารที่ต้องตรวจสอบ</div>
+                )}
               </div>
             </div>
 
             {/* Signature Area */}
             <div className="space-y-3">
-              <label className="block text-xs font-medium text-ink-600 font-['Prompt']">
-                ลงนามรับทราบและยินยอมรับยอดค่าใช้จ่าย (Signature)
+              <label className="block text-xs font-medium text-[#4a5565] font-['Prompt']">
+                ลงนามรับทราบและยินยอมรับรองเอกสาร (Signature)
               </label>
               <SignatureCanvas onSave={setSigInvoice} value={sigInvoice} />
             </div>

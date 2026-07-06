@@ -60,7 +60,13 @@ export function formatCurrency(value: number | null): string {
 }
 
 function buildDocuments(hn: string, status: ClaimStatus, daysAgo: number): ClaimDocument[] {
-  if (status === "-") return [];
+  if (status === "-") {
+    return [
+      doc("สำเนาบัตรประชาชนหรือบัตรพนักงานลงนามโดยผู้ป่วย", "ครบถ้วน", "สแกนบัตร", daysAgo),
+      doc("ใบยินยอมเปิดเผยข้อมูล", "รอดำเนินการ", "ลงนามดิจิทัล", daysAgo),
+      doc("หน้าใบเช็คสิทธิประกัน(จากลงทะเบียน)", "รอดำเนินการ", "ลงนามดิจิทัล", daysAgo),
+    ];
+  }
   const lastDigit = parseInt(hn.slice(-1)) || 0;
 
   if (lastDigit === 1 || lastDigit === 6) {

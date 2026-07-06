@@ -29,8 +29,8 @@ export function Reception() {
     ? uploadedPreviews[result.hn]
       ? uploadedPreviews[result.hn]
       : (result.nationalId === "0000000000000"
-          ? "https://raw.githubusercontent.com/nidss/HCFI/main/public/A4-signed.png"
-          : (hasIdCard ? "https://raw.githubusercontent.com/nidss/HCFI/main/public/idcard.png" : null)
+          ? "/A4-signed.png"
+          : (hasIdCard ? "/idcard.png" : null)
         )
     : null;
 
@@ -228,7 +228,9 @@ export function Reception() {
                 {result.consentSigned ? (
                   <button
                     type="button"
-                    onClick={() => setShowSignature(true)}
+                    onClick={() => {
+                      window.open(`${window.location.origin}${window.location.pathname}#/patient/sign/${result.hn}`, "_blank");
+                    }}
                     className="flex items-center gap-1.5 rounded-lg border border-status-ready-fg bg-status-ready-bg/10 px-5 py-2.5 text-sm font-medium text-status-ready-fg hover:bg-status-ready-bg/20 transition-colors shadow-sm"
                   >
                     <Check size={16} />
@@ -237,7 +239,9 @@ export function Reception() {
                 ) : (
                   <button
                     type="button"
-                    onClick={() => setShowSignature(true)}
+                    onClick={() => {
+                      window.open(`${window.location.origin}${window.location.pathname}#/patient/sign/${result.hn}`, "_blank");
+                    }}
                     className="flex items-center gap-1.5 rounded-lg border border-brand-200 bg-brand-50 px-5 py-2.5 text-sm font-medium text-brand-700 hover:bg-brand-100 transition-colors shadow-sm"
                   >
                     <PenLine size={16} />
@@ -297,7 +301,7 @@ export function Reception() {
             </div>
             <div className="flex justify-center bg-canvas rounded-lg p-4">
               <img
-                src={previewSrc || "https://raw.githubusercontent.com/nidss/HCFI/main/public/idcard.png"}
+                src={previewSrc || "/idcard.png"}
                 alt="ID Card Scan"
                 className="max-h-[60vh] rounded shadow-md object-contain"
               />

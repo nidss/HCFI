@@ -42,7 +42,7 @@ export function PatientSelect() {
         </button>
 
         <div className="flex items-center gap-2">
-          <img src="https://raw.githubusercontent.com/nidss/HCFI/main/public/slogo.png" alt="Hospital Logo" className="h-9 w-auto object-contain rounded-lg" />
+          <img src="/slogo.png" alt="Hospital Logo" className="h-9 w-auto object-contain rounded-lg" />
           <h1 className="text-lg font-medium text-ink-800 font-['Prompt']">พอร์ตัลเซ็นเอกสารคนไข้ (iPad)</h1>
         </div>
       </div>
@@ -107,7 +107,7 @@ export function PatientSelect() {
                         {needsConsent && (
                           <span className="inline-flex items-center gap-1 text-[11px] font-medium text-[#bb4d00] bg-[#fef3c6] px-2.5 py-0.5 rounded-full">
                             <FileText size={10} />
-                            รอเซ็นสำเนาบัตรประชาชน
+                            รอลงลายมือชื่อใบยินยอม (PDPA)
                           </span>
                         )}
                         {needsInvoice && (
