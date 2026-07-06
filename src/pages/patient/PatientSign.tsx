@@ -481,17 +481,17 @@ export function PatientSign() {
           </div>
         )}
       {showFullScreenDoc && (
-        <div className="fixed inset-0 bg-slate-900/95 z-[9999] flex flex-col items-center justify-center p-4">
-          <div className="w-full max-w-5xl flex items-center justify-between text-white mb-4">
-            <span className="font-['Prompt'] text-sm font-medium">
+        <div className="absolute inset-0 bg-white z-[9999] flex flex-col items-center justify-center p-5 sm:p-6 overflow-hidden rounded-none sm:rounded-[20px]">
+          <div className="w-full flex items-center justify-between text-ink-800 mb-4 border-b border-line-soft pb-3">
+            <span className="font-['Prompt'] text-sm font-semibold">
               เอกสารหน้าที่ {docPageIndex + 3} / {exampleDocs.length + 2}
             </span>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <button
                 type="button"
                 disabled={docPageIndex === 0}
                 onClick={() => setDocPageIndex((prev) => Math.max(0, prev - 1))}
-                className="rounded-lg border border-slate-700 bg-slate-800 p-2 hover:bg-slate-700 disabled:opacity-30 transition-colors"
+                className="rounded-lg border border-line bg-white p-2 text-ink-600 hover:bg-slate-50 disabled:opacity-30 transition-colors cursor-pointer"
               >
                 <ChevronLeft size={16} />
               </button>
@@ -499,24 +499,24 @@ export function PatientSign() {
                 type="button"
                 disabled={docPageIndex === exampleDocs.length - 1}
                 onClick={() => setDocPageIndex((prev) => Math.min(exampleDocs.length - 1, prev + 1))}
-                className="rounded-lg border border-slate-700 bg-slate-800 p-2 hover:bg-slate-700 disabled:opacity-30 transition-colors"
+                className="rounded-lg border border-line bg-white p-2 text-ink-600 hover:bg-slate-50 disabled:opacity-30 transition-colors cursor-pointer"
               >
                 <ChevronRight size={16} />
               </button>
               <button
                 type="button"
                 onClick={() => setShowFullScreenDoc(false)}
-                className="rounded-lg border border-slate-700 bg-slate-800 p-2 hover:bg-slate-700 transition-colors"
+                className="rounded-lg border border-line bg-white p-2 text-ink-600 hover:bg-slate-50 transition-colors cursor-pointer"
               >
                 <X size={16} />
               </button>
             </div>
           </div>
-          <div className="flex-1 w-full max-w-5xl flex items-center justify-center overflow-auto">
+          <div className="flex-1 w-full flex items-center justify-center overflow-auto bg-slate-50/50 rounded-xl p-3 border border-line-soft">
             <img
               src={exampleDocs[docPageIndex]}
               alt={`Full Screen Page ${docPageIndex + 3}`}
-              className="max-h-[85vh] max-w-full object-contain rounded-lg shadow-2xl"
+              className="max-h-full max-w-full object-contain rounded shadow-sm"
             />
           </div>
         </div>
