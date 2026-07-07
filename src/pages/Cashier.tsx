@@ -193,7 +193,7 @@ export function Cashier() {
                 }}
                 className="flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2 text-xs font-medium text-white hover:bg-brand-700 shadow-sm transition-colors"
               >
-                <PenLine size={13} /> ลงลายมือชื่อรับรองเอกสาร
+                <PenLine size={13} /> ลงลายมือชื่อบน iPad
               </button>
             </div>
           </div>
