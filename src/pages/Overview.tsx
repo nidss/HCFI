@@ -15,9 +15,10 @@ export function Overview() {
   const stats = useMemo(() => {
     const pendingToday = patients.filter((p) => p.status === "เอกสารไม่ครบ" || p.status === "รอเซ็นยินยอม").length;
     const ready = patients.filter((p) => p.status === "พร้อมเบิก").length;
+    const rejected = patients.filter((p) => p.status === "ตีกลับ").length;
     const delivered = patients.filter((p) => p.status === "ส่งมอบแล้ว");
     const deliveredValue = delivered.reduce((sum, p) => sum + (p.claimValue ?? 0), 0);
-    return { pendingToday, ready, deliveredCount: delivered.length, deliveredValue };
+    return { pendingToday, ready, rejected, deliveredCount: delivered.length, deliveredValue };
   }, [patients]);
 
   const sorted = useMemo(
@@ -47,12 +48,18 @@ export function Overview() {
 
       {/* Stats Cards Section */}
       <div className="rounded-2xl bg-[#fafaf8] p-4 border border-line/60">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard
             label="เอกสารรอดำเนินการวันนี้"
             value={stats.pendingToday}
             pillLabel={`${stats.pendingToday} รายการรอ OCR/จับคู่`}
             pillClass="bg-status-waiting-bg text-status-waiting-fg"
+          />
+          <StatCard
+            label="เอกสารตีกลับ"
+            value={stats.rejected}
+            pillLabel={`${stats.rejected} รายการส่งคืนให้แก้ไข`}
+            pillClass="bg-status-danger-bg text-status-danger-fg"
           />
           <StatCard
             label="พร้อมเบิก (ครบเอกสาร)"
