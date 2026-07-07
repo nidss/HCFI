@@ -195,15 +195,6 @@ export function Cashier() {
                 >
                   <ZoomIn size={15} />
                 </button>
-                {zoomScale !== 1 && (
-                  <button
-                    type="button"
-                    onClick={() => setZoomScale(1)}
-                    className="text-[10px] font-bold text-brand-600 px-1.5 hover:underline border-l border-line-soft pl-2 ml-1"
-                  >
-                    Reset
-                  </button>
-                )}
               </div>
 
               {/* Image Viewport */}
