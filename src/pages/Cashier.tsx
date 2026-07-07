@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { FileCheck2, PenLine, Receipt, X } from "lucide-react";
+import { FileCheck2, PenLine, Receipt, X, ZoomIn, ZoomOut } from "lucide-react";
 import { Card, PageHeader, EmptyState } from "../components/PageHeader";
 import { FileDrop } from "../components/FileDrop";
 import { SignaturePad } from "../components/SignaturePad";
@@ -13,6 +13,7 @@ export function Cashier() {
   const [signingHn, setSigningHn] = useState<string | null>(null);
   const [viewingInvoiceHn, setViewingInvoiceHn] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [zoomScale, setZoomScale] = useState(1);
 
   useEffect(() => {
     if (toastMessage) {
@@ -161,22 +162,71 @@ export function Cashier() {
             <div className="mb-4 flex items-center justify-between border-b border-line-soft pb-3">
               <h3 className="text-base font-semibold text-ink-800">ตรวจสอบใบเสร็จรับเงิน (Invoice)</h3>
               <button
-                onClick={() => setViewingInvoiceHn(null)}
+                onClick={() => {
+                  setViewingInvoiceHn(null);
+                  setZoomScale(1);
+                }}
                 className="rounded-lg p-1.5 text-ink-400 hover:bg-line-soft hover:text-ink-600 transition-colors"
               >
                 <X size={18} />
               </button>
             </div>
-            <div className="flex justify-center bg-canvas rounded-lg p-4">
-              <img
-                src="example-recipe.png"
-                alt="Invoice Document"
-                className="max-h-[60vh] rounded shadow-md object-contain"
-              />
+
+            {/* Image Preview Container with Zoom Controls */}
+            <div className="relative bg-canvas rounded-lg p-4 flex flex-col items-center">
+              {/* Zoom Controls */}
+              <div className="absolute top-6 right-6 flex items-center gap-1 bg-white/95 border border-line-soft rounded-lg p-1 shadow-md z-10">
+                <button
+                  type="button"
+                  onClick={() => setZoomScale((prev) => Math.max(0.5, prev - 0.25))}
+                  className="rounded p-1 hover:bg-slate-100 text-ink-600 transition-colors"
+                  title="Zoom Out"
+                >
+                  <ZoomOut size={15} />
+                </button>
+                <span className="text-[11px] font-mono font-semibold text-ink-600 px-1 select-none">
+                  {Math.round(zoomScale * 100)}%
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setZoomScale((prev) => Math.min(3, prev + 0.25))}
+                  className="rounded p-1 hover:bg-slate-100 text-ink-600 transition-colors"
+                  title="Zoom In"
+                >
+                  <ZoomIn size={15} />
+                </button>
+                {zoomScale !== 1 && (
+                  <button
+                    type="button"
+                    onClick={() => setZoomScale(1)}
+                    className="text-[10px] font-bold text-brand-600 px-1.5 hover:underline border-l border-line-soft pl-2 ml-1"
+                  >
+                    Reset
+                  </button>
+                )}
+              </div>
+
+              {/* Image Viewport */}
+              <div className="w-full max-h-[55vh] overflow-auto flex items-start justify-center border border-line-soft/55 rounded bg-[#f6f8fb] p-2 min-h-[350px]">
+                <img
+                  src="https://nidss.github.io/HCFI/example_docs/hospital_document_mockups_Page_13.jpg"
+                  alt="Invoice Document"
+                  className="rounded shadow-sm transition-all duration-150 origin-top"
+                  style={{
+                    width: `${zoomScale * 100}%`,
+                    maxWidth: zoomScale === 1 ? "100%" : "none",
+                    height: "auto",
+                  }}
+                />
+              </div>
             </div>
+
             <div className="mt-5 flex justify-end gap-3 border-t border-line-soft pt-4">
               <button
-                onClick={() => setViewingInvoiceHn(null)}
+                onClick={() => {
+                  setViewingInvoiceHn(null);
+                  setZoomScale(1);
+                }}
                 className="rounded-lg border border-line px-4 py-2 text-xs font-medium text-ink-600 hover:bg-line-soft"
               >
                 ปิด
@@ -185,6 +235,7 @@ export function Cashier() {
                 onClick={() => {
                   const targetHn = viewingInvoiceHn;
                   setViewingInvoiceHn(null);
+                  setZoomScale(1);
                   setToastMessage("ส่งข้อมูลไปที่ iPad เรียบร้อยแล้ว");
                   // Simulating iPad signature completion for a seamless mock experience
                   setTimeout(() => {
