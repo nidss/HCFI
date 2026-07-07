@@ -5,6 +5,7 @@ export type ClaimStatus =
   | "รอเลข ERP"
   | "พร้อมส่งมอบ"
   | "ส่งมอบแล้ว"
+  | "ตีกลับ"
   | "-";
 
 export type DocKind =
@@ -38,7 +39,7 @@ export interface ClaimDocument {
   id: string;
   kind: DocKind;
   fileName: string;
-  status: "ครบถ้วน" | "รอดำเนินการ";
+  status: "ครบถ้วน" | "รอดำเนินการ" | "ตีกลับ";
   source: "สแกนบัตร" | "OCR" | "อัปโหลดโดยเจ้าหน้าที่" | "ลงนามดิจิทัล";
   addedAt: string;
 }

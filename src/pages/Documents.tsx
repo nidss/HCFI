@@ -9,6 +9,7 @@ import { formatCurrency, formatThaiDate } from "../lib/mockData";
 import type { ClaimStatus } from "../lib/types";
 
 const statusColumns: ClaimStatus[] = [
+  "ตีกลับ",
   "เอกสารไม่ครบ",
   "รอเซ็นยินยอม",
   "พร้อมเบิก",
@@ -140,7 +141,7 @@ export function Documents() {
           </div>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-7">
           {statusColumns.map((status) => {
             const items = filtered.filter((p) => p.status === status);
             return (

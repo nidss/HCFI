@@ -65,13 +65,29 @@ export function PatientDrawer({ patient, onClose }: { patient: Patient; onClose:
                     <div className="min-w-0">
                       <p className="truncate text-sm text-ink-700">{d.kind}</p>
                       <p className="truncate text-xs text-ink-300">
-                        {d.status === "ครบถ้วน" ? `${d.fileName} · ${d.source}` : "ยังไม่ได้รับเอกสาร"}
+                        {d.status === "ครบถ้วน"
+                          ? `${d.fileName} · ${d.source}`
+                          : d.status === "ตีกลับ"
+                          ? "ถูกตีกลับโดยบริษัทประกัน - กรุณาอัปโหลดเอกสารที่แก้ไขแล้ว"
+                          : "ยังไม่ได้รับเอกสาร"}
                       </p>
                     </div>
                     {d.status === "ครบถ้วน" ? (
                       <span className="shrink-0 rounded-full bg-status-ready-bg px-2.5 py-1 text-[11px] font-medium text-status-ready-fg">
                         ครบถ้วน
                       </span>
+                    ) : d.status === "ตีกลับ" && pendingKind !== d.kind ? (
+                      <div className="flex items-center gap-2">
+                        <span className="shrink-0 rounded-full bg-status-danger-bg px-2.5 py-1 text-[11px] font-medium text-status-danger-fg">
+                          ตีกลับ
+                        </span>
+                        <button
+                          onClick={() => setPendingKind(d.kind)}
+                          className="flex shrink-0 items-center gap-1 rounded-lg border border-line px-2.5 py-1.5 text-xs font-medium text-ink-600 hover:bg-line-soft"
+                        >
+                          <UploadCloud size={13} /> อัปโหลดใหม่
+                        </button>
+                      </div>
                     ) : pendingKind === d.kind ? (
                       <button
                         onClick={() => setPendingKind(null)}

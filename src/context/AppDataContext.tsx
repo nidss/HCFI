@@ -56,6 +56,8 @@ function recomputeStatus(p: Patient): Patient["status"] {
     return p.status;
   }
   if (!p.consentSigned || !p.invoiceSigned) return "รอเซ็นยินยอม";
+  const hasRejectedDoc = p.documents.some((d) => d.status === "ตีกลับ");
+  if (hasRejectedDoc) return "ตีกลับ";
   const missing = p.documents.some((d) => d.status === "รอดำเนินการ");
   return missing ? "เอกสารไม่ครบ" : "พร้อมเบิก";
 }

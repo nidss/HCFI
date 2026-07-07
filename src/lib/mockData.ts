@@ -75,7 +75,7 @@ function buildDocuments(hn: string, status: ClaimStatus, daysAgo: number): Claim
       doc("สำเนาบัตรประชาชนหรือบัตรพนักงานลงนามโดยผู้ป่วย", "ครบถ้วน", "สแกนบัตร", daysAgo),
       doc("ใบยินยอมเปิดเผยข้อมูล", status === "รอเซ็นยินยอม" ? "รอดำเนินการ" : "ครบถ้วน", "ลงนามดิจิทัล", daysAgo),
       doc("แบบ กท. 44", "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
-      doc("หนังสือรับรองของแพทย์ผู้รักษา (กท. 16 และ 16/1)", status === "เอกสารไม่ครบ" ? "รอดำเนินการ" : "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
+      doc("หนังสือรับรองของแพทย์ผู้รักษา (กท. 16 และ 16/1)", status === "เอกสารไม่ครบ" ? "รอดำเนินการ" : status === "ตีกลับ" ? "ตีกลับ" : "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
     ];
   } else if (lastDigit === 2 || lastDigit === 7) {
     // Accident / traffic injury (พ.ร.บ.)
@@ -83,7 +83,7 @@ function buildDocuments(hn: string, status: ClaimStatus, daysAgo: number): Claim
       doc("สำเนาบัตรประชาชนหรือบัตรพนักงานลงนามโดยผู้ป่วย", "ครบถ้วน", "สแกนบัตร", daysAgo),
       doc("สำเนาใบขับขี่", "ครบถ้วน", "สแกนบัตร", daysAgo),
       doc("ใบยินยอมเปิดเผยข้อมูล", status === "รอเซ็นยินยอม" ? "รอดำเนินการ" : "ครบถ้วน", "ลงนามดิจิทัล", daysAgo),
-      doc("สำเนารายงานประจำวันเกี่ยวกับคดี (สำนักงานตำรวจแห่งชาติ)", status === "เอกสารไม่ครบ" ? "รอดำเนินการ" : "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
+      doc("สำเนารายงานประจำวันเกี่ยวกับคดี (สำนักงานตำรวจแห่งชาติ)", status === "เอกสารไม่ครบ" ? "รอดำเนินการ" : status === "ตีกลับ" ? "ตีกลับ" : "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
       doc("เอกสารใบส่งตัวพนักงาน", "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
     ];
   } else if (lastDigit === 3 || lastDigit === 8) {
@@ -92,7 +92,7 @@ function buildDocuments(hn: string, status: ClaimStatus, daysAgo: number): Claim
       doc("ต้นฉบับใบวางบิล(NS)", "ครบถ้วน", "OCR", daysAgo),
       doc("ใบยินยอมเปิดเผยข้อมูล", status === "รอเซ็นยินยอม" ? "รอดำเนินการ" : "ครบถ้วน", "ลงนามดิจิทัล", daysAgo),
       doc("ใบสรุปยอดรายการตรวจสุขภาพและลงนามยืนยันโดยบริษัทคู่สัญญา", "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
-      doc("ใบสรุปยอดขายประจำเดือน", status === "เอกสารไม่ครบ" ? "รอดำเนินการ" : "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
+      doc("ใบสรุปยอดขายประจำเดือน", status === "เอกสารไม่ครบ" ? "รอดำเนินการ" : status === "ตีกลับ" ? "ตีกลับ" : "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
     ];
   } else {
     // General Medical Insurance Claim (Standard)
@@ -102,10 +102,10 @@ function buildDocuments(hn: string, status: ClaimStatus, daysAgo: number): Claim
       doc("ใบยินยอมเปิดเผยข้อมูล", status === "รอเซ็นยินยอม" ? "รอดำเนินการ" : "ครบถ้วน", "ลงนามดิจิทัล", daysAgo),
       doc("ต้นฉบับใบแจ้งหนี้(DXC)", status === "รอเซ็นยินยอม" ? "รอดำเนินการ" : "ครบถ้วน", "OCR", daysAgo),
       doc("Service Charge Report(DXC)", "ครบถ้วน", "OCR", daysAgo),
-      doc("เอกสารใบเคลม", status === "เอกสารไม่ครบ" ? "รอดำเนินการ" : "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
+      doc("เอกสารใบเคลม", status === "เอกสารไม่ครบ" ? "รอดำเนินการ" : status === "ตีกลับ" ? "ตีกลับ" : "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
       doc("ใบรับรองแพทย์ลงนามโดยแพทย์", "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
       doc("Drug and Material Charges Report(DXC)", "ครบถ้วน", "OCR", daysAgo),
-      doc("ประวัติการรักษา(DXC)", status === "เอกสารไม่ครบ" ? "รอดำเนินการ" : "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
+      doc("ประวัติการรักษา(DXC)", status === "เอกสารไม่ครบ" ? "รอดำเนินการ" : status === "ตีกลับ" ? "ตีกลับ" : "ครบถ้วน", "อัปโหลดโดยเจ้าหน้าที่", daysAgo),
     ];
   }
 }
@@ -124,7 +124,7 @@ interface SeedRow {
 
 const seedRows: SeedRow[] = [
   { hn: "HN 6604128", name: "ณัฐพงษ์ นามสกุล", nationalId: "1100701234561", daysAgo: 21, stage: 3, claimValue: 8000, status: "พร้อมเบิก", ocrConfidence: 94 },
-  { hn: "HN 6603871", name: "ปิยะดา ศรีสุข", nationalId: "1100701234562", daysAgo: 20, stage: 3, claimValue: null, status: "เอกสารไม่ครบ" },
+  { hn: "HN 6603871", name: "ปิยะดา ศรีสุข", nationalId: "1100701234562", daysAgo: 20, stage: 3, claimValue: null, status: "ตีกลับ" },
   { hn: "HN 6604256", name: "วิชัย เจริญพร", nationalId: "1100701234563", daysAgo: 19, stage: 4, claimValue: 10700, status: "รอเลข ERP", batchId: "BATCH-2026-0031" },
   { hn: "HN 6604190", name: "สุนิสา รุ่งเรือง", nationalId: "1100701234564", daysAgo: 18, stage: 5, claimValue: 12050, status: "ส่งมอบแล้ว", batchId: "BATCH-2026-0018" },
   { hn: "HN 6604302", name: "อรรถพล แสงทอง", nationalId: "1100701234565", daysAgo: 17, stage: 2, claimValue: null, status: "รอเซ็นยินยอม" },
@@ -267,6 +267,7 @@ export const statusColor: Record<ClaimStatus, { bg: string; fg: string }> = {
   "รอเลข ERP": { bg: "bg-status-erp-bg", fg: "text-status-erp-fg" },
   "พร้อมส่งมอบ": { bg: "bg-indigo-100", fg: "text-indigo-700" },
   "ส่งมอบแล้ว": { bg: "bg-status-sent-bg", fg: "text-status-sent-fg" },
+  "ตีกลับ": { bg: "bg-status-danger-bg", fg: "text-status-danger-fg" },
   "-": { bg: "bg-line-soft", fg: "text-ink-400" },
 };
 
