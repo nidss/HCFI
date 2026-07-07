@@ -11,6 +11,7 @@ export function Overview() {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState<string>("all");
 
   const stats = useMemo(() => {
     const pendingToday = patients.filter((p) => p.status === "เอกสารไม่ครบ" || p.status === "รอเซ็นยินยอม").length;
@@ -27,14 +28,20 @@ export function Overview() {
   );
 
   const filteredPatients = useMemo(() => {
-    if (!searchTerm.trim()) return sorted;
-    const lower = searchTerm.toLowerCase();
-    return sorted.filter(
-      (p) =>
-        p.hn.toLowerCase().includes(lower) ||
-        p.name.toLowerCase().includes(lower)
-    );
-  }, [sorted, searchTerm]);
+    let result = sorted;
+    if (selectedStatus !== "all") {
+      result = result.filter((p) => p.status === selectedStatus);
+    }
+    if (searchTerm.trim()) {
+      const lower = searchTerm.toLowerCase();
+      result = result.filter(
+        (p) =>
+          p.hn.toLowerCase().includes(lower) ||
+          p.name.toLowerCase().includes(lower)
+      );
+    }
+    return result;
+  }, [sorted, searchTerm, selectedStatus]);
 
   const totalPages = Math.max(1, Math.ceil(filteredPatients.length / PAGE_SIZE));
   const pageItems = filteredPatients.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -93,9 +100,24 @@ export function Overview() {
                 placeholder="ค้นหา HN, ชื่อผู้ป่วย..."
                 className="w-48 rounded-lg border border-line bg-white px-3 py-1.5 text-xs text-ink-800 placeholder:text-ink-300 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 transition-colors shadow-sm"
               />
-              <button className="rounded-lg border border-line bg-canvas px-3 py-1.5 text-xs font-medium text-ink-600 hover:bg-line-soft transition-colors shadow-sm">
-                Recent
-              </button>
+              <select
+                value={selectedStatus}
+                onChange={(e) => {
+                  setSelectedStatus(e.target.value);
+                  setPage(1);
+                }}
+                className="rounded-lg border border-line bg-white px-3 py-1.5 text-xs font-medium text-ink-700 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 transition-colors shadow-sm cursor-pointer font-['Prompt']"
+              >
+                <option value="all">สถานะทั้งหมด</option>
+                <option value="ตีกลับ">ตีกลับ</option>
+                <option value="เอกสารไม่ครบ">เอกสารไม่ครบ</option>
+                <option value="รอเซ็นยินยอม">รอเซ็นยินยอม</option>
+                <option value="พร้อมเบิก">พร้อมเบิก</option>
+                <option value="รอเลข ERP">รอเลข ERP</option>
+                <option value="พร้อมส่งมอบ">พร้อมส่งมอบ</option>
+                <option value="ส่งมอบแล้ว">ส่งมอบแล้ว</option>
+                <option value="-">-</option>
+              </select>
             </div>
           </div>
           <div className="overflow-x-auto">
