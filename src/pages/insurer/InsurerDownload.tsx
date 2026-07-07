@@ -30,6 +30,8 @@ export function InsurerDownload() {
   const [viewingDoc, setViewingDoc] = useState<any | null>(null);
   const [rejectingDoc, setRejectingDoc] = useState<any | null>(null);
   const [docRejectReason, setDocRejectReason] = useState("");
+  const [showConfirmApprove, setShowConfirmApprove] = useState(false);
+  const [showConfirmReject, setShowConfirmReject] = useState(false);
 
   // Toast notification state
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -250,6 +252,28 @@ export function InsurerDownload() {
                       </div>
                       
                       <div className="flex items-center gap-3">
+                        <button
+                          onClick={() => {
+                            const lines = [
+                              `ดาวน์โหลดเอกสารทั้งหมดของคนไข้: ${activePatient.name} (${activePatient.hn})`,
+                              `จำนวนเอกสาร: ${activePatient.documents.length} รายการ`,
+                              ``,
+                              ...activePatient.documents.map((d) => `- ${d.kind}: ${d.fileName} (${docReviews[d.id]?.status || "รอดำเนินการ"})`),
+                            ];
+                            const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement("a");
+                            a.href = url;
+                            a.download = `documents_${activePatient.hn}.txt`;
+                            a.click();
+                            URL.revokeObjectURL(url);
+                            setToastMessage(`ดาวน์โหลดเอกสารทั้งหมดของ ${activePatient.name} สำเร็จ`);
+                          }}
+                          className="flex items-center gap-1.5 rounded-lg border border-line bg-white hover:bg-line-soft px-3 py-2 text-xs font-semibold text-ink-600 transition-colors shadow-sm cursor-pointer font-['Prompt'] mr-2"
+                        >
+                          <Download size={13} />
+                          <span>ดาวน์โหลดเอกสารทั้งหมด</span>
+                        </button>
                         <div className="text-right">
                           <p className="text-[10px] font-semibold text-ink-400 uppercase font-['Prompt']">ยอดรวมค่าเคลม</p>
                           <p className="text-lg font-bold text-ink-800 font-['Prompt']">{formatCurrency(activePatient.claimValue)}</p>
@@ -289,7 +313,7 @@ export function InsurerDownload() {
                             <tr className="border-b border-line-soft text-left text-xs text-ink-300 bg-slate-50/20">
                               <th className="px-5 py-3.5 font-medium font-['Prompt']">ชนิดเอกสาร</th>
                               <th className="px-5 py-3.5 font-medium font-['Prompt']">ชื่อไฟล์เอกสาร</th>
-                              <th className="px-5 py-3.5 font-medium font-['Prompt']">สถานะตรวจสอบ</th>
+                              <th className="px-5 py-3.5 font-medium w-[140px] whitespace-nowrap font-['Prompt']">สถานะตรวจสอบ</th>
                               <th className="px-5 py-3.5 font-medium text-left font-['Prompt']">ความเห็นบริษัทประกัน (Remark)</th>
                               <th className="px-5 py-3.5 font-medium text-center w-[220px] font-['Prompt']">การดำเนินการ</th>
                             </tr>
@@ -309,7 +333,7 @@ export function InsurerDownload() {
                                       <span>{doc.fileName}</span>
                                     </button>
                                   </td>
-                                  <td className="px-5 py-4">
+                                  <td className="px-5 py-4 w-[140px] whitespace-nowrap">
                                     <span
                                       className={`inline-flex rounded-full px-2.5 py-0.5 text-[10px] font-bold font-['Prompt'] ${
                                         docReview.status === "อนุมัติแล้ว"
@@ -374,6 +398,27 @@ export function InsurerDownload() {
                           </tbody>
                         </table>
                       </div>
+                    </div>
+
+                    {/* Action Bar at the Bottom */}
+                    <div className="flex justify-end gap-3 bg-slate-50 border border-line p-4 rounded-xl mt-6 shadow-sm">
+                      <button
+                        disabled={activePatient.documents.some((d) => docReviews[d.id]?.status === "ตีกลับ")}
+                        onClick={() => setShowConfirmApprove(true)}
+                        className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all cursor-pointer font-['Prompt'] shadow-sm ${
+                          activePatient.documents.some((d) => docReviews[d.id]?.status === "ตีกลับ")
+                            ? "bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed shadow-none"
+                            : "bg-status-ready-bg hover:bg-status-ready-bg/85 text-status-ready-fg border border-status-ready-fg/10"
+                        }`}
+                      >
+                        อนุมัติรายการ
+                      </button>
+                      <button
+                        onClick={() => setShowConfirmReject(true)}
+                        className="px-5 py-2.5 rounded-lg bg-status-danger-bg hover:bg-status-danger-bg/85 text-sm font-semibold text-status-danger-fg border border-status-danger-fg/10 transition-all cursor-pointer font-['Prompt'] shadow-sm"
+                      >
+                        ส่งรายการตีกลับไปยังโรงพยาบาล
+                      </button>
                     </div>
                   </div>
                 );
@@ -440,110 +485,42 @@ export function InsurerDownload() {
                     <table className="w-full text-sm">
                       <thead>
                         <tr className="border-b border-line-soft text-left text-xs text-ink-300 bg-slate-50/50">
-                          <th className="px-5 py-3.5 font-medium w-[120px]">HN</th>
+                          <th className="px-5 py-3.5 font-medium w-[140px] whitespace-nowrap">HN</th>
                           <th className="px-5 py-3.5 font-medium w-[180px]">ชื่อผู้ป่วย</th>
                           <th className="px-5 py-3.5 font-medium w-[120px]">จำนวนเอกสาร</th>
                           <th className="px-5 py-3.5 font-medium w-[120px]">มูลค่าเคลม</th>
-                          <th className="px-5 py-3.5 font-medium w-[240px]">Remark</th>
-                          <th className="px-5 py-3.5 font-medium w-[260px]">สถานะ</th>
-                          <th className="px-5 py-3.5 font-medium text-left w-[200px]">การจัดการ</th>
+                          <th className="px-5 py-3.5 font-medium w-[150px]">สถานะ</th>
+                          <th className="px-5 py-3.5 font-medium text-left w-[180px]">การจัดการ</th>
                         </tr>
                       </thead>
                       <tbody>
                         {batchPatients.map((p) => {
                           const r = getPatientReview(p.hn);
                           const status = r.status;
-                          const statusLabel = getStatusLabel(p);
-                          const docs = r.rejectedDocs || [];
                           return (
                             <tr
                               key={p.hn}
                               onClick={() => setActivePatientHn(p.hn)}
                               className="border-b border-line-soft last:border-0 hover:bg-canvas/30 hover:shadow-sm transition-all cursor-pointer"
                             >
-                              <td className="px-5 py-4 font-mono text-ink-700">{p.hn}</td>
-                              <td className="px-5 py-4 font-medium text-ink-800">{p.name}</td>
-                              <td className="px-5 py-4 text-ink-600">{p.documents.length} ไฟล์</td>
-                              <td className="px-5 py-4 font-medium text-ink-700">{formatCurrency(p.claimValue)}</td>
-                              <td className="px-5 py-4 text-ink-500 w-[240px] whitespace-normal break-words leading-relaxed">
-                                {r.remark || "-"}
+                              <td className="px-5 py-4 font-mono text-ink-700 w-[140px] whitespace-nowrap">{p.hn}</td>
+                              <td className="px-5 py-4 font-medium text-ink-800 w-[180px]">{p.name}</td>
+                              <td className="px-5 py-4 text-ink-600 w-[120px]">{p.documents.length} ไฟล์</td>
+                              <td className="px-5 py-4 font-medium text-ink-700 w-[120px]">{formatCurrency(p.claimValue)}</td>
+                              <td className="px-5 py-4 align-middle w-[150px]">
+                                <span
+                                  className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-medium whitespace-nowrap ${
+                                    status === "ตรวจสอบแล้ว"
+                                      ? "bg-status-ready-bg text-status-ready-fg"
+                                      : status === "ตีกลับ"
+                                      ? "bg-status-danger-bg text-status-danger-fg"
+                                      : "bg-status-waiting-bg text-status-waiting-fg"
+                                  }`}
+                                >
+                                  {status === "ตรวจสอบแล้ว" ? "อนุมัติแล้ว" : status === "ตีกลับ" ? "ตีกลับ" : "รอดำเนินการ"}
+                                </span>
                               </td>
-                              <td className="px-5 py-4 align-middle w-[260px]">
-                                {status === "ตีกลับ" ? (
-                                  <div className="relative inline-flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
-                                    <button
-                                      type="button"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        setActiveTooltipHn(activeTooltipHn === p.hn ? null : p.hn);
-                                      }}
-                                      className="inline-flex rounded-full bg-status-danger-bg px-2.5 py-1 text-[11px] font-medium text-status-danger-fg cursor-pointer hover:bg-status-danger-bg/80 transition-colors whitespace-nowrap"
-                                    >
-                                      {docs.length === p.documents.length ? "ตีกลับทั้งหมด" : `ตีกลับ - ${docs[0] || "เอกสาร"}`}
-                                    </button>
-                                    {docs.length > 1 && (
-                                      <button
-                                        type="button"
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          setActiveTooltipHn(activeTooltipHn === p.hn ? null : p.hn);
-                                        }}
-                                        className="inline-flex rounded-full bg-purple-100 border border-purple-200 px-2 py-0.5 text-[10px] font-bold text-purple-700 cursor-pointer hover:bg-purple-200 transition-colors whitespace-nowrap"
-                                      >
-                                        +{docs.length - 1}
-                                      </button>
-                                    )}
-
-                                    {activeTooltipHn === p.hn && (
-                                      <>
-                                        <div
-                                          className="fixed inset-0 z-40 bg-transparent cursor-default"
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            setActiveTooltipHn(null);
-                                          }}
-                                        />
-                                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2.5 z-50 min-w-[200px] rounded-lg border border-line-soft bg-white p-3 shadow-2xl animate-fade-in text-left">
-                                          <div className="flex items-center justify-between border-b border-line-soft pb-1.5 mb-1.5">
-                                            <span className="font-semibold text-ink-800 text-xs">เอกสารที่ตีกลับ</span>
-                                            <button
-                                              type="button"
-                                              onClick={(e) => {
-                                                e.stopPropagation();
-                                                setActiveTooltipHn(null);
-                                              }}
-                                              className="text-ink-300 hover:text-ink-500 rounded p-0.5"
-                                            >
-                                              <X size={12} />
-                                            </button>
-                                          </div>
-                                          <ul className="space-y-1 text-xs text-ink-600">
-                                            {docs.map((d: string) => (
-                                              <li key={d} className="flex items-center gap-1.5">
-                                                <span className="size-1.5 rounded-full bg-status-danger-fg" />
-                                                <span>{d}</span>
-                                              </li>
-                                            ))}
-                                          </ul>
-                                          <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1.5 border-[6px] border-transparent border-t-white" />
-                                          <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-2 border-[6px] border-transparent border-t-line-soft/30 -z-10" />
-                                        </div>
-                                      </>
-                                    )}
-                                  </div>
-                                ) : (
-                                  <span
-                                    className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-medium ${
-                                      status === "ตรวจสอบแล้ว"
-                                        ? "bg-status-ready-bg text-status-ready-fg"
-                                        : "bg-status-waiting-bg text-status-waiting-fg"
-                                    }`}
-                                  >
-                                    {statusLabel}
-                                  </span>
-                                )}
-                              </td>
-                              <td className="px-5 py-4 text-left">
+                              <td className="px-5 py-4 text-left w-[180px]">
                                 <span className="text-xs font-semibold text-brand-600 hover:text-brand-700 hover:underline">
                                   ตรวจสอบเอกสาร ({p.documents.length} ไฟล์) →
                                 </span>
@@ -653,6 +630,77 @@ export function InsurerDownload() {
                 className="rounded-lg bg-status-danger-bg hover:bg-status-danger-bg/85 text-xs font-semibold text-status-danger-fg px-4 py-2 shadow-sm transition-colors cursor-pointer font-['Prompt']"
               >
                 ยืนยันการตีกลับ
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Confirm Approve Modal */}
+      {showConfirmApprove && activePatientHn && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="relative max-w-sm w-full rounded-xl bg-white p-6 shadow-2xl animate-fade-in text-center animate-fade-in">
+            <h3 className="text-base font-semibold text-ink-800 font-['Prompt'] mb-2">ยืนยันอนุมัติรายการเคลม</h3>
+            <p className="text-xs text-ink-400 mb-6 font-['Prompt'] text-left leading-relaxed">
+              คุณต้องการยืนยันการอนุมัติการเคลมประกันของคนไข้รายนี้และส่งข้อมูลไปยังโรงพยาบาลใช่หรือไม่?
+            </p>
+            
+            <div className="flex justify-center gap-3">
+              <button
+                onClick={() => setShowConfirmApprove(false)}
+                className="rounded-lg border border-line bg-white px-4 py-2 text-xs font-semibold text-ink-600 hover:bg-line-soft cursor-pointer font-['Prompt']"
+              >
+                ยกเลิก
+              </button>
+              <button
+                onClick={() => {
+                  const p = batchPatients.find((x) => x.hn === activePatientHn);
+                  if (p) {
+                    p.documents.forEach((d) => {
+                      if (!docReviews[d.id] || docReviews[d.id].status === "รอดำเนินการ") {
+                        setDocReviews((prev) => ({
+                          ...prev,
+                          [d.id]: { status: "อนุมัติแล้ว" },
+                        }));
+                      }
+                    });
+                  }
+                  setShowConfirmApprove(false);
+                  setToastMessage("ส่งรายการอนุมัติไปยังโรงพยาบาลสำเร็จ");
+                }}
+                className="rounded-lg bg-status-ready-bg hover:bg-status-ready-bg/85 text-xs font-semibold text-status-ready-fg px-4 py-2 shadow-sm cursor-pointer font-['Prompt']"
+              >
+                ยืนยันอนุมัติ
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Confirm Reject Modal */}
+      {showConfirmReject && activePatientHn && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="relative max-w-sm w-full rounded-xl bg-white p-6 shadow-2xl animate-fade-in text-center animate-fade-in">
+            <h3 className="text-base font-semibold text-ink-800 font-['Prompt'] mb-2">ยืนยันส่งรายการตีกลับ</h3>
+            <p className="text-xs text-ink-400 mb-6 font-['Prompt'] text-left leading-relaxed">
+              คุณต้องการส่งรายการเอกสารที่ถูกปฏิเสธ/ตีกลับทั้งหมดไปยังโรงพยาบาลเพื่อทำการแก้ไขใช่หรือไม่?
+            </p>
+            
+            <div className="flex justify-center gap-3">
+              <button
+                onClick={() => setShowConfirmReject(false)}
+                className="rounded-lg border border-line bg-white px-4 py-2 text-xs font-semibold text-ink-600 hover:bg-line-soft cursor-pointer font-['Prompt']"
+              >
+                ยกเลิก
+              </button>
+              <button
+                onClick={() => {
+                  setShowConfirmReject(false);
+                  setToastMessage("ส่งรายการตีกลับไปยังโรงพยาบาลสำเร็จ");
+                }}
+                className="rounded-lg bg-status-danger-bg hover:bg-status-danger-bg/85 text-xs font-semibold text-status-danger-fg px-4 py-2 shadow-sm cursor-pointer font-['Prompt']"
+              >
+                ยืนยันส่งตีกลับ
               </button>
             </div>
           </div>
