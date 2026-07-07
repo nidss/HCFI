@@ -23,6 +23,7 @@ export function Documents() {
   const location = useLocation();
   const [view, setView] = useState<"table" | "kanban">("table");
   const [query, setQuery] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const [selectedHn, setSelectedHn] = useState<string | null>(
     (location.state as { focusHn?: string } | null)?.focusHn ?? null,
   );
@@ -33,10 +34,16 @@ export function Documents() {
   }, [location.state]);
 
   const filtered = useMemo(() => {
+    let result = patients;
+    if (selectedStatus !== "all") {
+      result = result.filter((p) => p.status === selectedStatus);
+    }
     const q = query.trim().toLowerCase();
-    if (!q) return patients;
-    return patients.filter((p) => p.hn.toLowerCase().includes(q) || p.name.toLowerCase().includes(q));
-  }, [patients, query]);
+    if (q) {
+      result = result.filter((p) => p.hn.toLowerCase().includes(q) || p.name.toLowerCase().includes(q));
+    }
+    return result;
+  }, [patients, query, selectedStatus]);
 
   const selectedPatient = selectedHn ? patients.find((p) => p.hn === selectedHn) : undefined;
 
@@ -67,17 +74,36 @@ export function Documents() {
         }
       />
 
-      <div className="mb-4 flex items-center justify-between">
-        <div className="relative max-w-xs flex-1">
-          <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-300" />
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="ค้นหา HN หรือชื่อผู้ป่วย..."
-            className="w-full rounded-lg border border-line py-2 pl-9 pr-3 text-sm text-ink-800 placeholder:text-ink-300 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
-          />
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-2 max-w-lg flex-1">
+          <div className="relative flex-1 max-w-xs">
+            <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-300" />
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="ค้นหา HN หรือชื่อผู้ป่วย..."
+              className="w-full rounded-lg border border-line py-2 pl-9 pr-3 text-sm text-ink-800 placeholder:text-ink-300 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+            />
+          </div>
+          {view === "table" && (
+            <select
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value)}
+              className="rounded-lg border border-line bg-white px-3 py-2 text-sm font-medium text-ink-700 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 transition-colors shadow-sm cursor-pointer font-['Prompt']"
+            >
+              <option value="all">สถานะทั้งหมด</option>
+              <option value="ตีกลับ">ตีกลับ</option>
+              <option value="เอกสารไม่ครบ">เอกสารไม่ครบ</option>
+              <option value="รอเซ็นยินยอม">รอเซ็นยินยอม</option>
+              <option value="พร้อมเบิก">พร้อมเบิก</option>
+              <option value="รอเลข ERP">รอเลข ERP</option>
+              <option value="พร้อมส่งมอบ">พร้อมส่งมอบ</option>
+              <option value="ส่งมอบแล้ว">ส่งมอบแล้ว</option>
+              <option value="-">-</option>
+            </select>
+          )}
         </div>
-        <span className="text-sm text-ink-400">{filtered.length} รายการ</span>
+        <span className="text-sm text-ink-400 shrink-0">{filtered.length} รายการ</span>
       </div>
 
       {view === "table" ? (
