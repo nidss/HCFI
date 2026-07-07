@@ -146,10 +146,29 @@ export function PatientSign() {
   const patient = findPatient(hn ?? "");
   const [step, setStep] = useState(1);
   const [sigConsent, setSigConsent] = useState("");
+  const [isConsentSaved, setIsConsentSaved] = useState(patient?.consentSigned ?? false);
   const [sigInvoice, setSigInvoice] = useState("");
   const [docPageIndex, setDocPageIndex] = useState(0);
   const [showFullScreenDoc, setShowFullScreenDoc] = useState(false);
   const [fullscreenZoomScale, setFullscreenZoomScale] = useState(0.95);
+
+  useEffect(() => {
+    if (patient) {
+      setIsConsentSaved(patient.consentSigned);
+    }
+  }, [patient?.consentSigned]);
+
+  const handleConsentSignatureChange = (url: string) => {
+    setSigConsent(url);
+    setIsConsentSaved(false);
+  };
+
+  const handleSaveConsent = () => {
+    if (patient && sigConsent) {
+      signConsent(patient.hn);
+      setIsConsentSaved(true);
+    }
+  };
 
   const previewSrc = patient
     ? patient.nationalId === "0000000000000"
@@ -292,18 +311,34 @@ export function PatientSign() {
               <label className="block text-xs font-medium text-ink-600 font-['Prompt']">
                 ลงนามรับรองสำเนาถูกต้อง (Signature)
               </label>
-              <SignatureCanvas onSave={setSigConsent} value={sigConsent} />
+              <SignatureCanvas onSave={handleConsentSignatureChange} value={sigConsent} />
             </div>
 
             {/* Actions */}
-            <button
-              disabled={!sigConsent}
-              onClick={handleNextStep}
-              className="mt-8 w-full bg-brand-600 text-white font-medium py-3.5 px-4 rounded-xl font-['Prompt'] text-sm hover:bg-brand-700 transition-colors shadow-sm disabled:opacity-50 flex items-center justify-center gap-1.5"
-            >
-              <span>บันทึกลายเซ็นและดำเนินการต่อ</span>
-              <ChevronRight size={16} />
-            </button>
+            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <button
+                type="button"
+                disabled={!sigConsent}
+                onClick={handleSaveConsent}
+                className={isConsentSaved 
+                  ? "bg-brand-50 border border-brand-200 text-[#0a5f5e] font-medium py-3.5 px-4 rounded-xl font-['Prompt'] text-sm hover:bg-brand-100 transition-colors shadow-sm flex items-center justify-center gap-1.5 cursor-pointer"
+                  : "bg-white border-2 border-brand-600 text-brand-600 font-medium py-3.5 px-4 rounded-xl font-['Prompt'] text-sm hover:bg-brand-50 transition-colors shadow-sm disabled:opacity-40 disabled:hover:bg-white disabled:cursor-not-allowed flex items-center justify-center gap-1.5 cursor-pointer"
+                }
+              >
+                {isConsentSaved ? <Check size={16} className="stroke-[2.5]" /> : <PenTool size={16} />}
+                <span>{isConsentSaved ? "บันทึกลายเซ็นเรียบร้อย" : "บันทึกลายเซ็น"}</span>
+              </button>
+
+              <button
+                type="button"
+                disabled={!isConsentSaved}
+                onClick={handleNextStep}
+                className="bg-brand-600 text-white font-medium py-3.5 px-4 rounded-xl font-['Prompt'] text-sm hover:bg-brand-700 transition-colors shadow-sm disabled:opacity-40 disabled:bg-slate-100 disabled:border disabled:border-slate-200 disabled:text-ink-300 disabled:cursor-not-allowed flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <span>ดำเนินการต่อ</span>
+                <ChevronRight size={16} />
+              </button>
+            </div>
           </div>
         )}
 

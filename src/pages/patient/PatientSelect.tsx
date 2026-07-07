@@ -45,7 +45,7 @@ export function PatientSelect() {
 
         <div className="flex items-center gap-2">
           <img src="slogo.png" alt="Hospital Logo" className="h-9 w-auto object-contain rounded-lg" />
-          <h1 className="text-lg font-medium text-ink-800 font-['Prompt']">พอร์ตัลเซ็นเอกสารคนไข้ (iPad)</h1>
+          <h1 className="text-lg font-medium text-ink-800 font-['Prompt']">พอร์ทัลเซ็นเอกสารคนไข้ (iPad)</h1>
         </div>
       </div>
 
