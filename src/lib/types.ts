@@ -56,6 +56,7 @@ export interface Patient {
   invoiceSigned: boolean;
   ocrConfidence?: number;
   batchId?: string;
+  insurers: string[];
 }
 
 export interface InvoiceQueueItem {

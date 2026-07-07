@@ -88,6 +88,7 @@ export function Documents() {
                   <th className="px-5 py-3 font-medium">HN</th>
                   <th className="px-5 py-3 font-medium">ชื่อผู้ป่วย</th>
                   <th className="px-5 py-3 font-medium">วันที่เข้ารับบริการ</th>
+                  <th className="px-5 py-3 font-medium">บริษัทประกัน</th>
                   <th className="px-5 py-3 font-medium">ขั้นตอน</th>
                   <th className="px-5 py-3 font-medium">มูลค่าเคลม</th>
                   <th className="px-5 py-3 font-medium">สถานะ</th>
@@ -103,6 +104,22 @@ export function Documents() {
                     <td className="px-5 py-3 font-medium text-ink-700">{p.hn}</td>
                     <td className="px-5 py-3 text-ink-600">{p.name}</td>
                     <td className="px-5 py-3 text-ink-500">{formatThaiDate(p.visitDate)}</td>
+                    <td className="px-5 py-3">
+                      <div className="flex flex-wrap gap-1">
+                        {p.insurers && p.insurers.length > 0 ? (
+                          p.insurers.map((ins) => (
+                            <span
+                              key={ins}
+                              className="inline-block rounded bg-brand-50 border border-brand-100 text-brand-700 text-[10px] font-bold px-1.5 py-0.5"
+                            >
+                              {ins}
+                            </span>
+                          ))
+                        ) : (
+                          <span className="text-xs text-ink-300">-</span>
+                        )}
+                      </div>
+                    </td>
                     <td className="px-5 py-3">
                       {p.stage > 0 ? (
                         <span className="rounded-md bg-line-soft px-2 py-1 text-xs font-medium text-ink-500">

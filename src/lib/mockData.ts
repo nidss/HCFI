@@ -141,6 +141,23 @@ const seedRows: SeedRow[] = [
   { hn: "HN 6604600", name: "สมฉวี มีความสุข", nationalId: "0000000000000", daysAgo: 0, stage: 0, claimValue: null, status: "-" },
 ];
 
+export function getInsurersForHn(hn: string): string[] {
+  const lastDigit = parseInt(hn.replace(/\D/g, "").slice(-1)) || 0;
+  const insurerGroups = [
+    ["AIA"],
+    ["MTL"],
+    ["TLI", "FWD"],
+    ["AIA", "AXA"],
+    ["TMLTH"],
+    ["FWD"],
+    ["PLT", "BLA"],
+    ["MTL", "OLI"],
+    ["AIA", "TLI"],
+    ["AXA", "BLA", "OLI"],
+  ];
+  return insurerGroups[lastDigit % insurerGroups.length];
+}
+
 export function createInitialPatients(): Patient[] {
   return seedRows.map((row) => ({
     hn: row.hn,
@@ -155,6 +172,7 @@ export function createInitialPatients(): Patient[] {
     invoiceSigned: row.status !== "รอเซ็นยินยอม" && row.status !== "-",
     ocrConfidence: row.ocrConfidence,
     batchId: row.batchId,
+    insurers: getInsurersForHn(row.hn),
   }));
 }
 

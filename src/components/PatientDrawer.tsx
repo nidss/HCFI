@@ -25,9 +25,28 @@ export function PatientDrawer({ patient, onClose }: { patient: Patient; onClose:
         </div>
 
         <div className="flex items-center justify-between border-b border-line-soft p-5">
-          <div>
-            <p className="text-xs text-ink-400">มูลค่าเคลม</p>
-            <p className="text-sm font-medium text-ink-700">{formatCurrency(patient.claimValue)}</p>
+          <div className="flex gap-6">
+            <div>
+              <p className="text-xs text-ink-400">มูลค่าเคลม</p>
+              <p className="text-sm font-medium text-ink-700">{formatCurrency(patient.claimValue)}</p>
+            </div>
+            <div>
+              <p className="text-xs text-ink-400 mb-0.5">บริษัทประกัน</p>
+              <div className="flex flex-wrap gap-1">
+                {patient.insurers && patient.insurers.length > 0 ? (
+                  patient.insurers.map((ins) => (
+                    <span
+                      key={ins}
+                      className="inline-block rounded bg-brand-50 border border-brand-100 text-brand-700 text-[10px] font-bold px-1.5 py-0.5"
+                    >
+                      {ins}
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-xs text-ink-300">-</span>
+                )}
+              </div>
+            </div>
           </div>
           <StatusBadge status={patient.status} />
         </div>
