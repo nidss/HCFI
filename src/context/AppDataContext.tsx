@@ -134,7 +134,23 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
     (fileName: string, overrideHn?: string | null): InvoiceQueueItem => {
       const match = fileName.match(/(66\d{5})/);
       const guessedHn = overrideHn || (match ? `HN ${match[1]}` : null);
-      const p = guessedHn ? patients.find((x) => x.hn === guessedHn) : undefined;
+      let p = guessedHn ? patients.find((x) => x.hn === guessedHn) : undefined;
+
+      // If no matching patient is found by HN, auto-match with the first candidate needing invoice signature
+      if (!p) {
+        p = patients.find(
+          (x) =>
+            x.documents.some(
+              (d) => d.kind === "ใบเสร็จรับเงิน (Invoice)" && d.status === "รอดำเนินการ"
+            )
+        );
+      }
+
+      // If still not found, just pick the first patient who hasn't signed their invoice
+      if (!p) {
+        p = patients.find((x) => !x.invoiceSigned);
+      }
+
       const confidence = p ? Math.floor(88 + Math.random() * 11) : null;
       const queueItem: InvoiceQueueItem = {
         id: `Q-${Math.random().toString(36).slice(2, 9)}`,
@@ -145,7 +161,27 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
         status: p ? "จับคู่สำเร็จ" : "ต้องตรวจสอบด้วยตนเอง",
         addedAt: new Date().toISOString(),
       };
+
       setInvoiceQueue((prev) => [queueItem, ...prev]);
+
+      // If a patient was successfully matched, update their document status for invoice to "ครบถ้วน"
+      if (p) {
+        const targetHn = p.hn;
+        setPatients((prev) =>
+          prev.map((x) => {
+            if (x.hn !== targetHn) return x;
+            const updated: Patient = {
+              ...x,
+              documents: x.documents.map((d) =>
+                d.kind === "ใบเสร็จรับเงิน (Invoice)" ? { ...d, status: "ครบถ้วน" as const, fileName } : d
+              ),
+            };
+            updated.status = recomputeStatus(updated);
+            return updated;
+          })
+        );
+      }
+
       addAuditLog({
         user: "cashier.nok",
         action: "จับคู่ด้วย OCR",
