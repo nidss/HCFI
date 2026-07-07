@@ -22,10 +22,12 @@ export function PatientSelect() {
   const filtered = useMemo(() => {
     if (!searchTerm.trim()) return pendingPatients;
     const lower = searchTerm.toLowerCase();
+    const cleanSearch = lower.replace(/[-\s]/g, "");
     return pendingPatients.filter(
       (p) =>
         p.name.toLowerCase().includes(lower) ||
-        p.hn.toLowerCase().includes(lower)
+        p.hn.toLowerCase().includes(lower) ||
+        (p.nationalId && p.nationalId.replace(/[-\s]/g, "").includes(cleanSearch))
     );
   }, [pendingPatients, searchTerm]);
 
@@ -55,9 +57,9 @@ export function PatientSelect() {
             <PenTool size={24} />
           </div>
           <div>
-            <h2 className="text-lg font-medium text-ink-900 font-['Prompt']">กรุณาเลือกรายชื่อของท่านเพื่อเซ็นรับรอง</h2>
+            <h2 className="text-lg font-medium text-ink-900 font-['Prompt']">กรุณาเลือกรายชื่อเพื่อเซ็นรับรอง</h2>
             <p className="text-sm text-ink-400 font-['Prompt'] mt-1 leading-relaxed">
-              กรุณาพิมพ์ค้นหาชื่อ หรือเลข HN ของท่าน จากนั้นแตะที่แถบรายชื่อเพื่อเริ่มเซ็นรับรองสำเนาบัตรประชาชน และรับทราบรายการค่าใช้จ่ายการรักษาพยาบาล
+              กรุณาพิมพ์ค้นหาชื่อ หรือเลข HN หรือเลขประจำตัวประชาชน จากนั้นแตะที่แถบรายชื่อเพื่อทำการลงลายมือชื่อ
             </p>
           </div>
         </div>
@@ -69,7 +71,7 @@ export function PatientSelect() {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="ค้นหาชื่อผู้ป่วย, นามสกุล หรือ เลข HN..."
+            placeholder="ค้นหาชื่อผู้ป่วย, นามสกุล, เลข HN หรือเลขประจำตัวประชาชน..."
             className="w-full bg-white border border-[#dbe3ec] rounded-2xl py-4 pl-12 pr-4 text-base text-ink-800 placeholder:text-ink-300 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 shadow-sm transition-all"
           />
         </div>
