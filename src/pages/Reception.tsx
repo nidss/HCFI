@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Check, IdCard, Loader2, PenLine, ScanLine, Search, UserRound, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Card, PageHeader } from "../components/PageHeader";
@@ -21,6 +21,14 @@ export function Reception() {
   const [uploadedPreviews, setUploadedPreviews] = useState<Record<string, string>>({});
   const [dragOver, setDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => setToastMessage(null), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
 
   const result = resultHn ? patients.find((p) => p.hn === resultHn) : undefined;
 
@@ -229,7 +237,7 @@ export function Reception() {
                   <button
                     type="button"
                     onClick={() => {
-                      window.open(`${window.location.origin}${window.location.pathname}#/patient/sign/${result.hn}`, "_blank");
+                      setToastMessage("ส่งข้อมูลไปที่ iPad เรียบร้อยแล้ว");
                     }}
                     className="flex items-center gap-1.5 rounded-lg border border-status-ready-fg bg-status-ready-bg/10 px-5 py-2.5 text-sm font-medium text-status-ready-fg hover:bg-status-ready-bg/20 transition-colors shadow-sm"
                   >
@@ -240,7 +248,11 @@ export function Reception() {
                   <button
                     type="button"
                     onClick={() => {
-                      window.open(`${window.location.origin}${window.location.pathname}#/patient/sign/${result.hn}`, "_blank");
+                      setToastMessage("ส่งข้อมูลไปที่ iPad เรียบร้อยแล้ว");
+                      // Simulating iPad signature completion for a seamless mock experience
+                      setTimeout(() => {
+                        signConsent(result.hn);
+                      }, 2000);
                     }}
                     className="flex items-center gap-1.5 rounded-lg border border-brand-200 bg-brand-50 px-5 py-2.5 text-sm font-medium text-brand-700 hover:bg-brand-100 transition-colors shadow-sm"
                   >
@@ -308,6 +320,39 @@ export function Reception() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Toast Notification */}
+      {toastMessage && (
+        <>
+          <style>{`
+            @keyframes slide-in-right {
+              from {
+                transform: translateX(120%);
+                opacity: 0;
+              }
+              to {
+                transform: translateX(0);
+                opacity: 1;
+              }
+            }
+            .animate-slide-in-right {
+              animation: slide-in-right 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            }
+          `}</style>
+          <div className="fixed top-6 right-6 z-[60] flex items-center justify-between gap-4 rounded-xl bg-status-ready-bg border border-status-ready-fg/30 p-5 text-sm font-semibold text-status-ready-fg shadow-2xl animate-slide-in-right max-w-sm w-80">
+            <div className="flex items-center gap-2.5">
+              <span className="inline-block size-2 rounded-full bg-status-ready-fg animate-pulse shrink-0" />
+              <span>{toastMessage}</span>
+            </div>
+            <button
+              onClick={() => setToastMessage(null)}
+              className="rounded-lg p-1 text-status-ready-fg/70 hover:bg-status-ready-fg/10 hover:text-status-ready-fg transition-colors shrink-0"
+            >
+              <X size={16} />
+            </button>
+          </div>
+        </>
       )}
     </div>
   );
