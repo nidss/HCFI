@@ -158,7 +158,7 @@ export function Cashier() {
 
       {viewingInvoiceHn && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-          <div className="relative max-w-xl w-full rounded-xl bg-white p-6 shadow-2xl animate-fade-in">
+          <div className="relative max-w-4xl w-full rounded-xl bg-white p-6 shadow-2xl animate-fade-in">
             <div className="mb-4 flex items-center justify-between border-b border-line-soft pb-3">
               <h3 className="text-base font-semibold text-ink-800">ตรวจสอบใบเสร็จรับเงิน (Invoice)</h3>
               <button
@@ -207,7 +207,7 @@ export function Cashier() {
               </div>
 
               {/* Image Viewport */}
-              <div className="w-full max-h-[55vh] overflow-auto flex items-start justify-center border border-line-soft/55 rounded bg-[#f6f8fb] p-2 min-h-[350px]">
+              <div className="w-full max-h-[68vh] overflow-auto flex items-start justify-center border border-line-soft/55 rounded bg-[#f6f8fb] p-2 min-h-[350px]">
                 <img
                   src="https://nidss.github.io/HCFI/example_docs/hospital_document_mockups_Page_13.jpg"
                   alt="Invoice Document"
