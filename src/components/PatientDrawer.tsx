@@ -11,7 +11,7 @@ export function PatientDrawer({ patient, onClose }: { patient: Patient; onClose:
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-ink-900/40">
-      <div className="h-full w-full max-w-md overflow-y-auto bg-white shadow-xl animate-fade-in">
+      <div className="h-full w-full max-w-xl overflow-y-auto bg-white shadow-xl animate-fade-in">
         <div className="flex items-start justify-between border-b border-line-soft p-5">
           <div>
             <p className="text-lg font-medium text-ink-800">{patient.name}</p>
