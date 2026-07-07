@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Check, CheckCircle2, ChevronLeft, ChevronRight, Maximize2, PenTool, ShieldCheck, X } from "lucide-react";
+import { ArrowLeft, Check, CheckCircle2, ChevronLeft, ChevronRight, Maximize2, PenTool, ShieldCheck, X, ZoomIn, ZoomOut } from "lucide-react";
 import { useAppData } from "../../context/AppDataContext";
 
 // Responsive touch-friendly HTML5 Canvas Signature Pad
@@ -149,6 +149,7 @@ export function PatientSign() {
   const [sigInvoice, setSigInvoice] = useState("");
   const [docPageIndex, setDocPageIndex] = useState(0);
   const [showFullScreenDoc, setShowFullScreenDoc] = useState(false);
+  const [fullscreenZoomScale, setFullscreenZoomScale] = useState(1.2);
 
   const previewSrc = patient
     ? patient.nationalId === "0000000000000"
@@ -505,19 +506,54 @@ export function PatientSign() {
               </button>
               <button
                 type="button"
-                onClick={() => setShowFullScreenDoc(false)}
+                onClick={() => {
+                  setShowFullScreenDoc(false);
+                  setFullscreenZoomScale(1.2);
+                }}
                 className="rounded-lg border border-line bg-white p-2 text-ink-600 hover:bg-slate-50 transition-colors cursor-pointer"
               >
                 <X size={16} />
               </button>
             </div>
           </div>
-          <div className="flex-1 w-full flex items-center justify-center overflow-auto bg-slate-50/50 rounded-xl p-3 border border-line-soft">
-            <img
-              src={exampleDocs[docPageIndex]}
-              alt={`Full Screen Page ${docPageIndex + 3}`}
-              className="max-h-full max-w-full object-contain rounded shadow-sm"
-            />
+
+          <div className="relative flex-1 w-full flex flex-col bg-slate-50/50 rounded-xl border border-line-soft overflow-hidden">
+            {/* Zoom Controls */}
+            <div className="absolute top-4 right-4 flex items-center gap-1 bg-white/95 border border-line-soft rounded-lg p-1.5 shadow-md z-10">
+              <button
+                type="button"
+                onClick={() => setFullscreenZoomScale((prev) => Math.max(0.5, prev - 0.25))}
+                className="rounded p-1 hover:bg-slate-100 text-ink-600 transition-colors cursor-pointer"
+                title="Zoom Out"
+              >
+                <ZoomOut size={15} />
+              </button>
+              <span className="text-[11px] font-mono font-semibold text-ink-600 px-1 select-none">
+                {Math.round(fullscreenZoomScale * 100)}%
+              </span>
+              <button
+                type="button"
+                onClick={() => setFullscreenZoomScale((prev) => Math.min(3, prev + 0.25))}
+                className="rounded p-1 hover:bg-slate-100 text-ink-600 transition-colors cursor-pointer"
+                title="Zoom In"
+              >
+                <ZoomIn size={15} />
+              </button>
+            </div>
+
+            {/* Document Image Viewport */}
+            <div className="flex-1 w-full overflow-auto flex items-start justify-center p-6 bg-slate-100">
+              <img
+                src={exampleDocs[docPageIndex]}
+                alt={`Full Screen Page ${docPageIndex + 3}`}
+                className="rounded shadow-md transition-all duration-150 origin-top"
+                style={{
+                  width: `${fullscreenZoomScale * 100}%`,
+                  maxWidth: fullscreenZoomScale === 1 ? "100%" : "none",
+                  height: "auto",
+                }}
+              />
+            </div>
           </div>
         </div>
       )}
