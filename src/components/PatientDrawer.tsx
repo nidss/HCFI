@@ -71,6 +71,11 @@ export function PatientDrawer({ patient, onClose }: { patient: Patient; onClose:
                           ? "ถูกตีกลับโดยบริษัทประกัน - กรุณาอัปโหลดเอกสารที่แก้ไขแล้ว"
                           : "ยังไม่ได้รับเอกสาร"}
                       </p>
+                      {d.status === "ตีกลับ" && (
+                        <p className="text-xs text-status-danger-fg mt-0.5 font-medium">
+                          เหตุผลที่ตีกลับคือ รายละเอียดของคนไข้ไม่ชัดเจนพอ
+                        </p>
+                      )}
                     </div>
                     {d.status === "ครบถ้วน" ? (
                       <span className="shrink-0 rounded-full bg-status-ready-bg px-2.5 py-1 text-[11px] font-medium text-status-ready-fg">
