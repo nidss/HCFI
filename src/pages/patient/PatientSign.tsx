@@ -149,7 +149,7 @@ export function PatientSign() {
   const [sigInvoice, setSigInvoice] = useState("");
   const [docPageIndex, setDocPageIndex] = useState(0);
   const [showFullScreenDoc, setShowFullScreenDoc] = useState(false);
-  const [fullscreenZoomScale, setFullscreenZoomScale] = useState(1.2);
+  const [fullscreenZoomScale, setFullscreenZoomScale] = useState(0.95);
 
   const previewSrc = patient
     ? patient.nationalId === "0000000000000"
@@ -508,7 +508,7 @@ export function PatientSign() {
                 type="button"
                 onClick={() => {
                   setShowFullScreenDoc(false);
-                  setFullscreenZoomScale(1.2);
+                  setFullscreenZoomScale(0.95);
                 }}
                 className="rounded-lg border border-line bg-white p-2 text-ink-600 hover:bg-slate-50 transition-colors cursor-pointer"
               >
