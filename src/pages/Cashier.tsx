@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { FileCheck2, PenLine, Receipt, X } from "lucide-react";
 import { Card, PageHeader, EmptyState } from "../components/PageHeader";
@@ -12,6 +12,14 @@ export function Cashier() {
   const state = location.state as { hn?: string; name?: string } | null;
   const [signingHn, setSigningHn] = useState<string | null>(null);
   const [viewingInvoiceHn, setViewingInvoiceHn] = useState<string | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => setToastMessage(null), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
 
   const unmatchedCandidates = patients.filter((p) =>
     p.documents.some((d) => d.kind === "ใบเสร็จรับเงิน (Invoice)" && d.status === "รอดำเนินการ"),
@@ -177,15 +185,52 @@ export function Cashier() {
                 onClick={() => {
                   const targetHn = viewingInvoiceHn;
                   setViewingInvoiceHn(null);
-                  setSigningHn(targetHn);
+                  setToastMessage("ส่งข้อมูลไปที่ iPad เรียบร้อยแล้ว");
+                  // Simulating iPad signature completion for a seamless mock experience
+                  setTimeout(() => {
+                    signInvoice(targetHn);
+                  }, 2000);
                 }}
                 className="flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2 text-xs font-medium text-white hover:bg-brand-700 shadow-sm transition-colors"
               >
-                <PenLine size={13} /> ลงนามรับรองเอกสาร
+                <PenLine size={13} /> ลงลายมือชื่อรับรองเอกสาร
               </button>
             </div>
           </div>
         </div>
+      )}
+
+      {/* Toast Notification */}
+      {toastMessage && (
+        <>
+          <style>{`
+            @keyframes slide-in-right {
+              from {
+                transform: translateX(120%);
+                opacity: 0;
+              }
+              to {
+                transform: translateX(0);
+                opacity: 1;
+              }
+            }
+            .animate-slide-in-right {
+              animation: slide-in-right 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            }
+          `}</style>
+          <div className="fixed top-6 right-6 z-[60] flex items-center justify-between gap-4 rounded-xl bg-status-ready-bg border border-status-ready-fg/30 p-5 text-sm font-semibold text-status-ready-fg shadow-2xl animate-slide-in-right max-w-sm w-80">
+            <div className="flex items-center gap-2.5">
+              <span className="inline-block size-2 rounded-full bg-status-ready-fg animate-pulse shrink-0" />
+              <span>{toastMessage}</span>
+            </div>
+            <button
+              onClick={() => setToastMessage(null)}
+              className="rounded-lg p-1 text-status-ready-fg/70 hover:bg-status-ready-fg/10 hover:text-status-ready-fg transition-colors shrink-0"
+            >
+              <X size={16} />
+            </button>
+          </div>
+        </>
       )}
     </div>
   );
