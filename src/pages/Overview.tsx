@@ -69,7 +69,7 @@ export function Overview() {
             pillClass="bg-status-danger-bg text-status-danger-fg"
           />
           <StatCard
-            label="พร้อมเบิก (ครบเอกสาร)"
+            label="พร้อมเบิก (เอกสารครบ)"
             value={stats.ready}
             pillLabel="พร้อมทำใบสรุปจ่าย"
             pillClass="bg-status-ready-bg text-status-ready-fg"
