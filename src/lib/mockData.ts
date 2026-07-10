@@ -206,7 +206,7 @@ export function createInitialDeliveryLinks(): DeliveryLink[] {
       token: "tok_9f21ac3e8b4d",
       expiresInDays: 7,
       createdAt: relativeDate(1, 8, 5),
-      expiresAt: relativeDate(-6, 8, 5),
+      expiresAt: "2037-12-31T16:59:59Z",
       emailSent: true,
       attempts: [
         { timestamp: relativeDate(1, 9, 30), ip: "58.11.20.4", success: true },
