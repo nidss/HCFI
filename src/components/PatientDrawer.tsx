@@ -5,7 +5,15 @@ import { StatusBadge } from "./StatusBadge";
 import { formatCurrency, formatThaiDate } from "../lib/mockData";
 import { useAppData } from "../context/AppDataContext";
 
-export function PatientDrawer({ patient, onClose }: { patient: Patient; onClose: () => void }) {
+export function PatientDrawer({
+  patient,
+  insurer,
+  onClose,
+}: {
+  patient: Patient;
+  insurer?: string | null;
+  onClose: () => void;
+}) {
   const { uploadDocument } = useAppData();
   const [pendingKind, setPendingKind] = useState<DocKind | null>(null);
 
@@ -33,7 +41,11 @@ export function PatientDrawer({ patient, onClose }: { patient: Patient; onClose:
             <div>
               <p className="text-xs text-ink-400 mb-0.5">บริษัทประกัน</p>
               <div className="flex flex-wrap gap-1">
-                {patient.insurers && patient.insurers.length > 0 ? (
+                {insurer ? (
+                  <span className="inline-block rounded bg-brand-50 border border-brand-100 text-brand-700 text-[10px] font-bold px-1.5 py-0.5">
+                    {insurer}
+                  </span>
+                ) : patient.insurers && patient.insurers.length > 0 ? (
                   patient.insurers.map((ins) => (
                     <span
                       key={ins}

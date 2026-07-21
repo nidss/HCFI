@@ -27,10 +27,14 @@ export function Documents() {
   const [selectedHn, setSelectedHn] = useState<string | null>(
     (location.state as { focusHn?: string } | null)?.focusHn ?? null,
   );
+  const [selectedInsurer, setSelectedInsurer] = useState<string | null>(null);
 
   useEffect(() => {
     const focusHn = (location.state as { focusHn?: string } | null)?.focusHn;
-    if (focusHn) setSelectedHn(focusHn);
+    if (focusHn) {
+      setSelectedHn(focusHn);
+      setSelectedInsurer(null);
+    }
   }, [location.state]);
 
   const filtered = useMemo(() => {
@@ -146,7 +150,10 @@ export function Documents() {
                 {tableRows.map((row) => (
                   <tr
                     key={row.key}
-                    onClick={() => setSelectedHn(row.patient.hn)}
+                    onClick={() => {
+                      setSelectedHn(row.patient.hn);
+                      setSelectedInsurer(row.insurer);
+                    }}
                     className="cursor-pointer border-b border-line-soft last:border-0 hover:bg-canvas"
                   >
                     <td className="px-5 py-3 font-medium text-ink-700">{row.patient.hn}</td>
@@ -194,7 +201,10 @@ export function Documents() {
                   {items.map((p) => (
                     <button
                       key={p.hn}
-                      onClick={() => setSelectedHn(p.hn)}
+                      onClick={() => {
+                        setSelectedHn(p.hn);
+                        setSelectedInsurer(null);
+                      }}
                       className="w-full rounded-lg border border-line bg-white p-3 text-left shadow-card hover:border-brand-300"
                     >
                       <p className="truncate text-xs font-medium text-ink-700">{p.hn}</p>
@@ -213,7 +223,16 @@ export function Documents() {
         </div>
       )}
 
-      {selectedPatient && <PatientDrawer patient={selectedPatient} onClose={() => setSelectedHn(null)} />}
+      {selectedPatient && (
+        <PatientDrawer
+          patient={selectedPatient}
+          insurer={selectedInsurer}
+          onClose={() => {
+            setSelectedHn(null);
+            setSelectedInsurer(null);
+          }}
+        />
+      )}
     </div>
   );
 }
