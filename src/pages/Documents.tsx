@@ -40,10 +40,29 @@ export function Documents() {
     }
     const q = query.trim().toLowerCase();
     if (q) {
-      result = result.filter((p) => p.hn.toLowerCase().includes(q) || p.name.toLowerCase().includes(q));
+      result = result.filter(
+        (p) =>
+          p.hn.toLowerCase().includes(q) ||
+          p.name.toLowerCase().includes(q) ||
+          p.insurers?.some((ins) => ins.toLowerCase().includes(q))
+      );
     }
     return result;
   }, [patients, query, selectedStatus]);
+
+  const tableRows = useMemo(() => {
+    const rows: { patient: (typeof patients)[0]; insurer: string | null; key: string }[] = [];
+    filtered.forEach((p) => {
+      if (p.insurers && p.insurers.length > 0) {
+        p.insurers.forEach((ins) => {
+          rows.push({ patient: p, insurer: ins, key: `${p.hn}-${ins}` });
+        });
+      } else {
+        rows.push({ patient: p, insurer: null, key: p.hn });
+      }
+    });
+    return rows;
+  }, [filtered]);
 
   const selectedPatient = selectedHn ? patients.find((p) => p.hn === selectedHn) : undefined;
 
@@ -103,7 +122,9 @@ export function Documents() {
             </select>
           )}
         </div>
-        <span className="text-sm text-ink-400 shrink-0">{filtered.length} รายการ</span>
+        <span className="text-sm text-ink-400 shrink-0">
+          {view === "table" ? tableRows.length : filtered.length} รายการ
+        </span>
       </div>
 
       {view === "table" ? (
@@ -122,43 +143,36 @@ export function Documents() {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((p) => (
+                {tableRows.map((row) => (
                   <tr
-                    key={p.hn}
-                    onClick={() => setSelectedHn(p.hn)}
+                    key={row.key}
+                    onClick={() => setSelectedHn(row.patient.hn)}
                     className="cursor-pointer border-b border-line-soft last:border-0 hover:bg-canvas"
                   >
-                    <td className="px-5 py-3 font-medium text-ink-700">{p.hn}</td>
-                    <td className="px-5 py-3 text-ink-600">{p.name}</td>
-                    <td className="px-5 py-3 text-ink-500">{formatThaiDate(p.visitDate)}</td>
+                    <td className="px-5 py-3 font-medium text-ink-700">{row.patient.hn}</td>
+                    <td className="px-5 py-3 text-ink-600">{row.patient.name}</td>
+                    <td className="px-5 py-3 text-ink-500">{formatThaiDate(row.patient.visitDate)}</td>
                     <td className="px-5 py-3">
-                      <div className="flex flex-wrap gap-1">
-                        {p.insurers && p.insurers.length > 0 ? (
-                          p.insurers.map((ins) => (
-                            <span
-                              key={ins}
-                              className="inline-block rounded bg-brand-50 border border-brand-100 text-brand-700 text-[10px] font-bold px-1.5 py-0.5"
-                            >
-                              {ins}
-                            </span>
-                          ))
-                        ) : (
-                          <span className="text-xs text-ink-300">-</span>
-                        )}
-                      </div>
+                      {row.insurer ? (
+                        <span className="inline-block rounded bg-brand-50 border border-brand-100 text-brand-700 text-[10px] font-bold px-1.5 py-0.5">
+                          {row.insurer}
+                        </span>
+                      ) : (
+                        <span className="text-xs text-ink-300">-</span>
+                      )}
                     </td>
                     <td className="px-5 py-3">
-                      {p.stage > 0 ? (
+                      {row.patient.stage > 0 ? (
                         <span className="rounded-md bg-line-soft px-2 py-1 text-xs font-medium text-ink-500">
-                          STAGE {p.stage}
+                          STAGE {row.patient.stage}
                         </span>
                       ) : (
                         <span className="text-xs text-ink-300">ยังไม่เข้ารักษา</span>
                       )}
                     </td>
-                    <td className="px-5 py-3 text-ink-600">{formatCurrency(p.claimValue)}</td>
+                    <td className="px-5 py-3 text-ink-600">{formatCurrency(row.patient.claimValue)}</td>
                     <td className="px-5 py-3">
-                      <StatusBadge status={p.status} />
+                      <StatusBadge status={row.patient.status} />
                     </td>
                   </tr>
                 ))}
